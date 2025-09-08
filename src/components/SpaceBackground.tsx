@@ -47,9 +47,13 @@ const SpaceBackgroundContainer = styled.div`
             transform: scale(1) rotate(0deg);
             opacity: 0.8;
         }
+        50% {
+            transform: scale(1.02) rotate(0.1deg); /* Reduced scale and rotation */
+            opacity: 0.85;
+        }
         100% {
-            transform: scale(1.1) rotate(1deg);
-            opacity: 1;
+            transform: scale(1) rotate(0deg);
+            opacity: 0.8;
         }
     }
 `;
@@ -91,7 +95,7 @@ const Starfield = styled.div`
             radial-gradient(1px 1px at 35% 95%, #ffffff, transparent);
         background-repeat: repeat;
         background-size: 400px 300px;
-        animation: twinkleField 4s ease-in-out infinite alternate;
+        animation: twinkleField 8s ease-in-out infinite alternate; /* Reduced frequency */
         opacity: 0.9;
     }
 
@@ -201,7 +205,7 @@ const TwinklingStars = styled.div`
                 transparent 2px
             );
         background-size: 500px 400px;
-        animation: twinkleStars 3s ease-in-out infinite alternate;
+        animation: twinkleStars 6s ease-in-out infinite alternate; /* Reduced frequency */
     }
 
     &::after {
@@ -270,7 +274,7 @@ const TwinklingStars = styled.div`
                 transparent 2px
             );
         background-size: 600px 500px;
-        animation: twinkleStars2 4s ease-in-out infinite alternate-reverse;
+        animation: twinkleStars2 8s ease-in-out infinite alternate-reverse; /* Reduced frequency */
     }
 
     @keyframes twinkleStars {

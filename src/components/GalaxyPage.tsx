@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const GalaxyPageContainer = styled(motion.div)<{ $isVisible: boolean }>`
     position: fixed;
@@ -568,11 +569,15 @@ const SpaceTransition = styled(motion.div)<{ $isVisible: boolean }>`
 `;
 
 interface GalaxyPageProps {
-    isVisible: boolean;
-    onClose: () => void;
+    isVisible?: boolean;
+    onClose?: () => void;
 }
 
-const GalaxyPage: React.FC<GalaxyPageProps> = ({ isVisible, onClose }) => {
+const GalaxyPage: React.FC<GalaxyPageProps> = ({
+    isVisible = true,
+    onClose,
+}) => {
+    const navigate = useNavigate();
     const [showJourneyPopup, setShowJourneyPopup] = React.useState(false);
     const [showRocketAnimation, setShowRocketAnimation] = React.useState(false);
     const [rocketLaunched, setRocketLaunched] = React.useState(false); // Show journey popup after a delay when page is visible
@@ -685,7 +690,7 @@ const GalaxyPage: React.FC<GalaxyPageProps> = ({ isVisible, onClose }) => {
                     as the stars in this cosmic celebration. 💫
                 </GalaxyMessage>
                 <BackToHomeButton
-                    onClick={onClose}
+                    onClick={onClose || (() => navigate("/"))}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     initial={{ y: 30, opacity: 0 }}

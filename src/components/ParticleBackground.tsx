@@ -26,7 +26,7 @@ interface Particle {
     color: string;
 }
 
-const ParticleBackground: React.FC = () => {
+const ParticleBackground: React.FC = React.memo(() => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const animationRef = useRef<number | undefined>(undefined);
     const particlesRef = useRef<Particle[]>([]);
@@ -48,22 +48,22 @@ const ParticleBackground: React.FC = () => {
         resizeCanvas();
         window.addEventListener("resize", resizeCanvas);
 
-        // Initialize particles
+        // Initialize particles - reduce count for better performance
         const initParticles = () => {
             const particles: Particle[] = [];
             const particleCount = Math.min(
-                100,
-                Math.floor((canvas.width * canvas.height) / 15000)
+                50, // Reduced from 100
+                Math.floor((canvas.width * canvas.height) / 30000) // Increased divisor
             );
 
             for (let i = 0; i < particleCount; i++) {
                 particles.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
-                    size: Math.random() * 3 + 1,
-                    speedX: (Math.random() - 0.5) * 0.5,
-                    speedY: (Math.random() - 0.5) * 0.5,
-                    opacity: Math.random() * 0.5 + 0.2,
+                    size: Math.random() * 2 + 0.5, // Smaller particles
+                    speedX: (Math.random() - 0.5) * 0.3, // Slower movement
+                    speedY: (Math.random() - 0.5) * 0.3,
+                    opacity: Math.random() * 0.3 + 0.1, // More transparent
                     color: Math.random() > 0.5 ? "#ff6b9d" : "#a18cd1",
                 });
             }
@@ -73,17 +73,23 @@ const ParticleBackground: React.FC = () => {
 
         initParticles();
 
-        // Mouse move handler
+        // Throttled mouse move handler for better performance
+        let mouseThrottleTimeout: NodeJS.Timeout;
         const handleMouseMove = (e: MouseEvent) => {
-            mouseRef.current = {
-                x: e.clientX,
-                y: e.clientY,
-            };
+            if (mouseThrottleTimeout) return;
+
+            mouseThrottleTimeout = setTimeout(() => {
+                mouseRef.current = {
+                    x: e.clientX,
+                    y: e.clientY,
+                };
+                mouseThrottleTimeout = null as any;
+            }, 16); // ~60fps throttling
         };
 
         window.addEventListener("mousemove", handleMouseMove);
 
-        // Animation loop
+        // Optimized animation loop
         const animate = () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -92,15 +98,16 @@ const ParticleBackground: React.FC = () => {
                 particle.x += particle.speedX;
                 particle.y += particle.speedY;
 
-                // Mouse interaction
+                // Simplified mouse interaction - only for nearby particles
                 const dx = mouseRef.current.x - particle.x;
                 const dy = mouseRef.current.y - particle.y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
 
-                if (distance < 100) {
-                    const force = (100 - distance) / 100;
-                    particle.x -= dx * force * 0.01;
-                    particle.y -= dy * force * 0.01;
+                if (distance < 80) {
+                    // Reduced interaction radius
+                    const force = (80 - distance) / 80;
+                    particle.x -= dx * force * 0.005; // Reduced force
+                    particle.y -= dy * force * 0.005;
                 }
 
                 // Boundary check
@@ -124,26 +131,30 @@ const ParticleBackground: React.FC = () => {
                 ctx.fill();
                 ctx.restore();
 
-                // Draw connections
-                particlesRef.current
-                    .slice(index + 1)
-                    .forEach((otherParticle) => {
-                        const dx = particle.x - otherParticle.x;
-                        const dy = particle.y - otherParticle.y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
+                // Remove connections for better performance - too expensive
+                // Only draw connections for every 3rd particle to reduce calculations
+                if (index % 3 === 0) {
+                    particlesRef.current
+                        .slice(index + 1)
+                        .forEach((otherParticle) => {
+                            const dx = particle.x - otherParticle.x;
+                            const dy = particle.y - otherParticle.y;
+                            const distance = Math.sqrt(dx * dx + dy * dy);
 
-                        if (distance < 100) {
-                            ctx.save();
-                            ctx.globalAlpha = ((100 - distance) / 100) * 0.2;
-                            ctx.strokeStyle = particle.color;
-                            ctx.lineWidth = 0.5;
-                            ctx.beginPath();
-                            ctx.moveTo(particle.x, particle.y);
-                            ctx.lineTo(otherParticle.x, otherParticle.y);
-                            ctx.stroke();
-                            ctx.restore();
-                        }
-                    });
+                            if (distance < 60) {
+                                // Reduced connection distance
+                                ctx.save();
+                                ctx.globalAlpha = ((60 - distance) / 60) * 0.1; // More transparent
+                                ctx.strokeStyle = particle.color;
+                                ctx.lineWidth = 0.3; // Thinner lines
+                                ctx.beginPath();
+                                ctx.moveTo(particle.x, particle.y);
+                                ctx.lineTo(otherParticle.x, otherParticle.y);
+                                ctx.stroke();
+                                ctx.restore();
+                            }
+                        });
+                }
             });
 
             animationRef.current = requestAnimationFrame(animate);
@@ -165,6 +176,6 @@ const ParticleBackground: React.FC = () => {
             <Canvas ref={canvasRef} />
         </ParticleContainer>
     );
-};
+});
 
 export default ParticleBackground;

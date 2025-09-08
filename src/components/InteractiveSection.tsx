@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import GalaxyPage from "./GalaxyPage";
+import { useNavigate } from "react-router-dom";
 
 const InteractiveContainer = styled.section`
     padding: ${({ theme }) => theme.spacing.xxl} 0;
@@ -23,7 +23,6 @@ const InteractiveContainer = styled.section`
             transparent 50%
         );
     position: relative;
-    overflow: hidden;
 
     &::before {
         content: "";
@@ -43,6 +42,8 @@ const InteractiveContainer = styled.section`
                 transparent 40%
             );
         animation: subtleFloat 20s ease-in-out infinite alternate;
+        pointer-events: none;
+        z-index: 0;
     }
 
     @keyframes subtleFloat {
@@ -59,6 +60,8 @@ const Container = styled.div`
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 ${({ theme }) => theme.spacing.md};
+    position: relative;
+    z-index: 5;
 `;
 
 const SectionHeader = styled.div`
@@ -73,6 +76,7 @@ const SectionTitle = styled(motion.h2)`
     margin-bottom: ${({ theme }) => theme.spacing.md};
     text-align: center;
     position: relative;
+    font-weight: 600;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 
     &::before {
@@ -246,8 +250,8 @@ const PuzzleModal = styled(motion.div)<{ $isVisible: boolean }>`
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(15px);
     display: ${({ $isVisible }) => ($isVisible ? "flex" : "none")};
     align-items: center;
     justify-content: center;
@@ -255,102 +259,86 @@ const PuzzleModal = styled(motion.div)<{ $isVisible: boolean }>`
 `;
 
 const PuzzleContent = styled(motion.div)`
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(15px);
-    padding: ${({ theme }) => theme.spacing.xl};
-    border-radius: ${({ theme }) => theme.borderRadius.lg};
-    max-width: 600px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 50%, #fff5f7 100%);
+    backdrop-filter: blur(20px);
+    padding: ${({ theme }) => theme.spacing.xxl};
+    border-radius: ${({ theme }) => theme.borderRadius.xl};
+    max-width: 700px;
     width: 90%;
-    max-height: 80vh;
+    max-height: 85vh;
     overflow-y: auto;
     position: relative;
-    border: 2px solid rgba(255, 107, 157, 0.2);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    border: 3px solid rgba(255, 107, 157, 0.3);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3),
+        0 0 60px rgba(255, 107, 157, 0.1);
+    animation: puzzleGlow 2s ease-in-out infinite alternate;
 `;
 
-const CloseButton = styled.button`
-    position: absolute;
-    top: ${({ theme }) => theme.spacing.md};
-    right: ${({ theme }) => theme.spacing.md};
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: ${({ theme }) => theme.colors.gray.medium};
-    transition: color 0.3s ease;
-
-    &:hover {
-        color: ${({ theme }) => theme.colors.primary};
-    }
-`;
-
-const PuzzleContainer = styled.div`
-    max-width: 500px;
-    margin: ${({ theme }) => theme.spacing.lg} auto;
-`;
-
-const PuzzleQuestion = styled.h4`
-    font-size: 1.3rem;
-    color: ${({ theme }) => theme.colors.primary};
+const PuzzleHeader = styled.div`
     text-align: center;
-    margin-bottom: ${({ theme }) => theme.spacing.lg};
+    margin-bottom: ${({ theme }) => theme.spacing.xl};
+    position: relative;
+`;
+
+const PuzzleTitle = styled.h3`
+    font-size: 2.2rem;
     font-family: ${({ theme }) => theme.fonts.heading};
-`;
-
-const PuzzleInput = styled.input`
-    width: 100%;
-    padding: ${({ theme }) => theme.spacing.md};
-    border: 2px solid ${({ theme }) => theme.colors.primary};
-    border-radius: ${({ theme }) => theme.borderRadius.md};
-    font-size: 1.1rem;
-    text-align: center;
+    background: linear-gradient(45deg, #ff6b9d, #a18cd1, #4fd1c7, #ffd93d);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: puzzleTitleGradient 3s ease-in-out infinite;
     margin-bottom: ${({ theme }) => theme.spacing.md};
-    font-family: ${({ theme }) => theme.fonts.body};
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-weight: 600;
 
-    &:focus {
-        outline: none;
-        border-color: ${({ theme }) => theme.colors.secondary};
-        box-shadow: 0 0 10px rgba(255, 107, 157, 0.3);
+    @keyframes puzzleTitleGradient {
+        0%,
+        100% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
     }
 `;
 
-const PuzzleHint = styled.p`
-    font-size: 0.9rem;
-    color: ${({ theme }) => theme.colors.gray.medium};
-    text-align: center;
+const PuzzleSubtitle = styled.p`
+    font-size: 1.1rem;
+    color: #666;
     margin-bottom: ${({ theme }) => theme.spacing.lg};
     font-style: italic;
 `;
 
-const PuzzleResult = styled.div<{ isCorrect: boolean }>`
-    padding: ${({ theme }) => theme.spacing.md};
-    border-radius: ${({ theme }) => theme.borderRadius.md};
-    text-align: center;
-    margin-top: ${({ theme }) => theme.spacing.md};
-    background: ${({ isCorrect }) =>
-        isCorrect
-            ? "linear-gradient(135deg, #4ade80 0%, #22c55e 100%)"
-            : "linear-gradient(135deg, #f87171 0%, #ef4444 100%)"};
-    color: white;
-    font-weight: 600;
+const PuzzleContainer = styled.div`
+    max-width: 600px;
+    margin: 0 auto;
 `;
 
-const NewPuzzleButton = styled(motion.button)`
-    background: linear-gradient(135deg, #a18cd1 0%, #ff6b9d 100%);
-    color: white;
-    border: none;
-    padding: ${({ theme }) => theme.spacing.sm}
-        ${({ theme }) => theme.spacing.lg};
-    border-radius: 25px;
+const CloseButton = styled.button`
+    position: absolute;
+    top: ${({ theme }) => theme.spacing.lg};
+    right: ${({ theme }) => theme.spacing.lg};
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid rgba(255, 107, 157, 0.3);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
     cursor: pointer;
-    font-size: 0.9rem;
-    font-weight: 500;
-    margin-top: ${({ theme }) => theme.spacing.md};
+    color: #666;
+    font-size: 1.5rem;
+    font-weight: bold;
     transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(161, 140, 209, 0.4);
+        background: #ff6b9d;
+        color: white;
+        border-color: #ff6b9d;
+        transform: scale(1.1);
     }
 `;
 
@@ -358,6 +346,8 @@ const PuzzleButtonContainer = styled.div`
     display: flex;
     justify-content: center;
     margin-top: ${({ theme }) => theme.spacing.xxl};
+    position: relative;
+    z-index: 10;
 `;
 
 const PuzzleButton = styled(motion.button)`
@@ -368,15 +358,30 @@ const PuzzleButton = styled(motion.button)`
         ${({ theme }) => theme.spacing.xl};
     border-radius: 50px;
     cursor: pointer;
-    font-size: 1.2rem;
-    font-weight: 600;
+    font-size: 1.4rem;
+    font-weight: 500;
     font-family: ${({ theme }) => theme.fonts.heading};
     box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
     transition: all 0.3s ease;
+    position: relative;
+    z-index: 11;
+    pointer-events: auto;
+    min-width: 120px;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 
     &:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 25px rgba(255, 107, 157, 0.4);
+    }
+
+    &:active {
+        transform: translateY(0px);
+        box-shadow: 0 2px 8px rgba(255, 107, 157, 0.3);
     }
 
     &::before {
@@ -392,7 +397,7 @@ const FloatingDecorations = styled.div`
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 0;
+    z-index: 1;
     overflow: hidden;
 `;
 
@@ -444,6 +449,180 @@ const FloatingSparkle = styled(motion.div)<{ delay: number; size: number }>`
     }
 `;
 
+const MemoryGameContainer = styled.div`
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    max-width: 450px;
+    margin: 0 auto;
+    padding: ${({ theme }) => theme.spacing.lg};
+`;
+
+const MemoryCard = styled(motion.div)<{ flipped: boolean; matched: boolean }>`
+    width: 90px;
+    height: 90px;
+    perspective: 1000px;
+    cursor: pointer;
+    position: relative;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+`;
+
+const MemoryCardInner = styled.div<{ flipped: boolean }>`
+    transform: ${({ flipped }) =>
+        flipped ? "rotateY(180deg)" : "rotateY(0deg)"};
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+`;
+
+const MemoryCardFront = styled.div`
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+
+    &::before {
+        content: "?";
+        font-size: 2.5rem;
+        font-weight: bold;
+    }
+`;
+
+const MemoryCardBack = styled.div<{ matched: boolean }>`
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    transform: rotateY(180deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: ${({ matched }) =>
+        matched
+            ? "linear-gradient(135deg, #4ade80 0%, #22c55e 100%)"
+            : "linear-gradient(135deg, #ff6b9d 0%, #a18cd1 100%)"};
+    border-radius: 16px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    font-size: 2.2rem;
+    transition: all 0.3s ease;
+
+    ${({ matched }) =>
+        matched &&
+        `
+        box-shadow: 0 0 30px rgba(74, 222, 128, 0.6);
+        transform: rotateY(180deg) scale(1.05);
+    `}
+`;
+
+const MemoryGameTitle = styled.h3`
+    text-align: center;
+    margin-bottom: ${({ theme }) => theme.spacing.xl};
+    font-size: 2.2rem;
+    color: #ff6b9d;
+    font-weight: 400;
+    font-family: ${({ theme }) => theme.fonts.heading};
+`;
+
+const JourneyOverlay = styled(motion.div)`
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    gap: 2rem;
+`;
+
+const RocketEmoji = styled(motion.div)`
+    font-size: 8rem;
+    color: white;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    animation: rocketFloat 3s ease-in-out infinite;
+
+    @keyframes rocketFloat {
+        0%,
+        100% {
+            transform: translateY(0px) rotate(-3deg) scale(1);
+        }
+        50% {
+            transform: translateY(-20px) rotate(3deg) scale(1.1);
+        }
+    }
+
+    @media (max-width: 768px) {
+        font-size: 6rem;
+    }
+`;
+
+const JourneyText = styled(motion.div)`
+    font-size: 3rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: white;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    position: relative;
+    text-align: center;
+    font-family: ${({ theme }) => theme.fonts.heading};
+
+    &::after {
+        content: "";
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+        height: 3px;
+        background: linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.8) 50%,
+            transparent 100%
+        );
+        border-radius: 2px;
+        animation: rainbowLine 3s ease-in-out infinite;
+    }
+
+    @keyframes rainbowLine {
+        0%,
+        100% {
+            opacity: 0.7;
+        }
+        50% {
+            opacity: 1;
+            transform: translateX(-50%) scaleX(1.1);
+        }
+    }
+
+    @media (max-width: 768px) {
+        font-size: 2.2rem;
+        letter-spacing: 0.5px;
+    }
+`;
+
 interface CountdownTime {
     days: number;
     hours: number;
@@ -463,39 +642,80 @@ const InteractiveSection: React.FC = () => {
         seconds: 0,
     });
     const [showPuzzle, setShowPuzzle] = useState(false);
-    const [currentPuzzle, setCurrentPuzzle] = useState(0);
-    const [userAnswer, setUserAnswer] = useState("");
-    const [showResult, setShowResult] = useState(false);
-    const [isCorrect, setIsCorrect] = useState(false);
-    const [showGalaxy, setShowGalaxy] = useState(false);
+    const [showJourneyMessage, setShowJourneyMessage] = useState(false);
+    const navigate = useNavigate();
 
-    // Text-based puzzles
-    const puzzles = [
-        {
-            question:
-                "What has four letters, is sometimes hot and sometimes cold, but always makes you feel better?",
-            answer: "love",
-            hint: "It's the feeling that brings us together 💕",
-        },
-        {
-            question:
-                "I am not a season, but I make everything bloom. I am not the sun, but I brighten your room. What am I?",
-            answer: "smile",
-            hint: "It's something you do with your face 😊",
-        },
-        {
-            question:
-                "What grows stronger when shared, costs nothing to give, but is priceless to receive?",
-            answer: "happiness",
-            hint: "It's a feeling that multiplies when given away ✨",
-        },
-        {
-            question:
-                "I have no wings, yet I can fly. I have no voice, yet I can cry. I bring people together and never say goodbye. What am I?",
-            answer: "heart",
-            hint: "It beats inside your chest ❤️",
-        },
-    ];
+    // Memory game state
+    const [cards, setCards] = useState<any[]>([]);
+    const [flippedCards, setFlippedCards] = useState<number[]>([]);
+    const [matchedCards, setMatchedCards] = useState<number[]>([]);
+
+    // Initialize memory game
+    useEffect(() => {
+        if (showPuzzle) {
+            // const cardEmojis = ["🌹", "💖", "🌸", "�", "🌺", "�", "🌷", "💓"];
+            const cardEmojis = ["🌹", "💖"];
+            const shuffledCards = [...cardEmojis, ...cardEmojis]
+                .sort(() => Math.random() - 0.5)
+                .map((emoji, index) => ({
+                    id: index,
+                    value: emoji,
+                    flipped: false,
+                    matched: false,
+                }));
+            setCards(shuffledCards);
+            setFlippedCards([]);
+            setMatchedCards([]);
+        }
+    }, [showPuzzle]);
+
+    // Handle card click
+    const handleCardClick = (index: number) => {
+        if (
+            flippedCards.length === 2 ||
+            cards[index].flipped ||
+            cards[index].matched
+        )
+            return;
+
+        const newFlipped = [...flippedCards, index];
+        setFlippedCards(newFlipped);
+
+        const newCards = [...cards];
+        newCards[index].flipped = true;
+        setCards(newCards);
+
+        if (newFlipped.length === 2) {
+            const [first, second] = newFlipped;
+            if (cards[first].value === cards[second].value) {
+                // Match - instantly turn green
+                newCards[first].matched = true;
+                newCards[second].matched = true;
+                setCards(newCards);
+                setMatchedCards([...matchedCards, first, second]);
+                setFlippedCards([]);
+                if (matchedCards.length + 2 === cards.length) {
+                    // Wait 2 seconds with modal open, then show rocket and close modal
+                    setTimeout(() => {
+                        setShowJourneyMessage(true);
+                        setShowPuzzle(false); // Close modal after rocket appears
+                        setTimeout(() => {
+                            setShowJourneyMessage(false);
+                            navigate("/galaxy");
+                        }, 3000); // 3 seconds
+                    }, 1000); // Wait 2 seconds before showing rocket
+                }
+            } else {
+                // No match
+                setTimeout(() => {
+                    newCards[first].flipped = false;
+                    newCards[second].flipped = false;
+                    setCards(newCards);
+                    setFlippedCards([]);
+                }, 1000);
+            }
+        }
+    };
 
     // Countdown to a special date (you can customize this)
     useEffect(() => {
@@ -536,35 +756,6 @@ const InteractiveSection: React.FC = () => {
     };
     const handlePuzzle = () => {
         setShowPuzzle(true);
-        setShowResult(false);
-        setUserAnswer("");
-    };
-    const handleAnswerSubmit = () => {
-        const currentPuzzleData = puzzles[currentPuzzle];
-        const isAnswerCorrect =
-            userAnswer.toLowerCase().trim() ===
-            currentPuzzleData.answer.toLowerCase();
-        setIsCorrect(isAnswerCorrect);
-        setShowResult(true);
-
-        if (isAnswerCorrect) {
-            setTimeout(() => {
-                setShowPuzzle(false);
-                setShowGalaxy(true);
-            }, 1500);
-        }
-    };
-
-    const handleNextPuzzle = () => {
-        setCurrentPuzzle((prev) => (prev + 1) % puzzles.length);
-        setUserAnswer("");
-        setShowResult(false);
-    };
-
-    const handleKeyPress = (e: React.KeyboardEvent) => {
-        if (e.key === "Enter") {
-            handleAnswerSubmit();
-        }
     };
 
     const containerVariants = {
@@ -717,84 +908,90 @@ const InteractiveSection: React.FC = () => {
                             animate={inView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.8, delay: 0.6 }}
                         >
-                            Solve Me
+                            Solve Me 💕
                         </PuzzleButton>
                     </PuzzleButtonContainer>
                 </Container>
             </InteractiveContainer>{" "}
             <PuzzleModal $isVisible={showPuzzle}>
                 <PuzzleContent
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ duration: 0.3 }}
+                    initial={{ scale: 0, opacity: 0, rotateY: -90 }}
+                    animate={{ scale: 1, opacity: 1, rotateY: 0 }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
                 >
                     <CloseButton onClick={() => setShowPuzzle(false)}>
                         ×
                     </CloseButton>
-                    <h3 style={{ textAlign: "center", marginBottom: "20px" }}>
-                        Love Riddle 💕
-                    </h3>
+
+                    <PuzzleHeader>
+                        <PuzzleTitle>💕 Love's Challenge 💕</PuzzleTitle>
+                        <PuzzleSubtitle>
+                            Show me the depth of your love, my dear!
+                        </PuzzleSubtitle>
+                    </PuzzleHeader>
+
                     <PuzzleContainer>
-                        <PuzzleQuestion>
-                            {puzzles[currentPuzzle].question}
-                        </PuzzleQuestion>{" "}
-                        <PuzzleInput
-                            type="text"
-                            value={userAnswer}
-                            onChange={(e) => setUserAnswer(e.target.value)}
-                            onKeyPress={handleKeyPress}
-                            placeholder="Type your answer here..."
-                        />
-                        {showResult && !isCorrect && (
-                            <PuzzleHint>
-                                💡 Hint: {puzzles[currentPuzzle].hint}
-                            </PuzzleHint>
-                        )}
-                        {!showResult && (
-                            <div style={{ textAlign: "center" }}>
-                                <button
-                                    onClick={handleAnswerSubmit}
-                                    style={{
-                                        background:
-                                            "linear-gradient(135deg, #ff6b9d 0%, #a18cd1 100%)",
-                                        color: "white",
-                                        border: "none",
-                                        padding: "10px 20px",
-                                        borderRadius: "25px",
-                                        cursor: "pointer",
-                                        fontSize: "1rem",
-                                        fontWeight: "500",
-                                    }}
+                        <MemoryGameTitle>
+                            Find our matching hearts to unlock our cosmic love
+                            story! 💖
+                        </MemoryGameTitle>
+                        <MemoryGameContainer>
+                            {cards.map((card, index) => (
+                                <MemoryCard
+                                    key={card.id}
+                                    flipped={card.flipped || card.matched}
+                                    matched={card.matched}
+                                    onClick={() => handleCardClick(index)}
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    transition={{ duration: 0.2 }}
                                 >
-                                    Submit Answer
-                                </button>
-                            </div>
-                        )}
-                        {showResult && (
-                            <>
-                                <PuzzleResult isCorrect={isCorrect}>
-                                    {isCorrect
-                                        ? "🎉 Correct! Well done!"
-                                        : `❌ Not quite right. The answer is: ${puzzles[currentPuzzle].answer}`}
-                                </PuzzleResult>
-                                <div style={{ textAlign: "center" }}>
-                                    <NewPuzzleButton
-                                        onClick={handleNextPuzzle}
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
+                                    <MemoryCardInner
+                                        flipped={card.flipped || card.matched}
                                     >
-                                        Next Riddle
-                                    </NewPuzzleButton>
-                                </div>
-                            </>
-                        )}{" "}
+                                        <MemoryCardFront />
+                                        <MemoryCardBack matched={card.matched}>
+                                            {card.value}
+                                        </MemoryCardBack>
+                                    </MemoryCardInner>
+                                </MemoryCard>
+                            ))}
+                        </MemoryGameContainer>
                     </PuzzleContainer>
-                </PuzzleContent>{" "}
+                </PuzzleContent>
             </PuzzleModal>
-            <GalaxyPage
-                isVisible={showGalaxy}
-                onClose={() => setShowGalaxy(false)}
-            />
+            {/* Full-screen Journey Overlay */}
+            {showJourneyMessage && (
+                <JourneyOverlay
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                >
+                    <RocketEmoji
+                        initial={{ scale: 0, rotate: -180 }}
+                        animate={{ scale: 1, rotate: 0 }}
+                        transition={{
+                            duration: 1,
+                            ease: "easeOut",
+                            delay: 0.2,
+                        }}
+                    >
+                        🚀
+                    </RocketEmoji>
+                    <JourneyText
+                        initial={{ scale: 0.5, opacity: 0, y: 30 }}
+                        animate={{ scale: 1, opacity: 1, y: 0 }}
+                        transition={{
+                            duration: 0.8,
+                            ease: "easeOut",
+                            delay: 0.5,
+                        }}
+                    >
+                        Let's go to the space! 🚀💕
+                    </JourneyText>
+                </JourneyOverlay>
+            )}
         </>
     );
 };

@@ -378,19 +378,24 @@ const DetailItem = styled(motion.div)`
     border: 1px solid rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
     will-change: transform, box-shadow;
+    transform-style: preserve-3d;
 
     &:hover {
-        transform: translateY(-12px) scale(1.03) rotateX(5deg);
-        box-shadow: 0 25px 50px rgba(255, 107, 157, 0.25),
-            0 0 0 1px rgba(255, 107, 157, 0.2),
-            inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        transform: translateY(-20px) scale(1.08) rotateX(10deg) rotateY(3deg);
+        box-shadow: 0 35px 70px rgba(255, 107, 157, 0.4),
+            0 0 0 2px rgba(255, 107, 157, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.8),
+            0 0 50px rgba(255, 107, 157, 0.3),
+            0 0 100px rgba(161, 140, 209, 0.2);
         background: linear-gradient(
             135deg,
             rgba(255, 255, 255, 1) 0%,
-            rgba(254, 207, 239, 0.7) 50%,
-            rgba(255, 182, 193, 0.6) 100%
+            rgba(254, 207, 239, 0.9) 50%,
+            rgba(255, 182, 193, 0.8) 100%
         );
-        border-color: rgba(255, 107, 157, 0.4);
+        border-color: rgba(255, 107, 157, 0.6);
+        animation: cardPulse 1.5s ease-in-out infinite,
+            cardGlow 3s ease-in-out infinite;
     }
 
     &::before {
@@ -403,9 +408,9 @@ const DetailItem = styled(motion.div)`
         background: linear-gradient(
             90deg,
             transparent,
-            rgba(255, 107, 157, 0.2),
-            rgba(161, 140, 209, 0.2),
-            rgba(79, 209, 199, 0.2),
+            rgba(255, 107, 157, 0.3),
+            rgba(161, 140, 209, 0.3),
+            rgba(79, 209, 199, 0.3),
             transparent
         );
         transition: left 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -425,10 +430,10 @@ const DetailItem = styled(motion.div)`
         bottom: -3px;
         background: linear-gradient(
             45deg,
-            rgba(255, 107, 157, 0.3),
-            rgba(161, 140, 209, 0.3),
-            rgba(79, 209, 199, 0.3),
-            rgba(255, 107, 157, 0.3)
+            rgba(255, 107, 157, 0.4),
+            rgba(161, 140, 209, 0.4),
+            rgba(79, 209, 199, 0.4),
+            rgba(255, 107, 157, 0.4)
         );
         border-radius: ${({ theme }) => theme.borderRadius.lg};
         z-index: -1;
@@ -441,13 +446,104 @@ const DetailItem = styled(motion.div)`
         opacity: 1;
     }
 
+    @keyframes cardPulse {
+        0%,
+        100% {
+            transform: translateY(-20px) scale(1.08) rotateX(10deg)
+                rotateY(3deg);
+        }
+        50% {
+            transform: translateY(-25px) scale(1.12) rotateX(12deg)
+                rotateY(4deg);
+        }
+    }
+
+    @keyframes cardGlow {
+        0%,
+        100% {
+            filter: drop-shadow(0 0 20px rgba(255, 107, 157, 0.3));
+        }
+        50% {
+            filter: drop-shadow(0 0 40px rgba(255, 107, 157, 0.6));
+        }
+    }
+
     @keyframes borderPulse {
         0%,
         100% {
-            opacity: 0.2;
+            opacity: 0.3;
         }
         50% {
-            opacity: 0.6;
+            opacity: 0.8;
+        }
+    }
+
+    /* Particle effects on hover */
+    &:hover .particle {
+        opacity: 1;
+        animation: particleFloat 2.5s ease-in-out infinite;
+        filter: drop-shadow(0 0 8px rgba(255, 107, 157, 0.8));
+    }
+
+    /* Add sparkle burst effect on hover */
+    &:hover::before {
+        left: 100%;
+        animation: shimmerSweep 1.2s ease-in-out infinite;
+    }
+
+    @keyframes shimmerSweep {
+        0% {
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 107, 157, 0.4),
+                rgba(161, 140, 209, 0.4),
+                rgba(79, 209, 199, 0.4),
+                transparent
+            );
+        }
+        50% {
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.6),
+                rgba(255, 107, 157, 0.5),
+                rgba(161, 140, 209, 0.5),
+                transparent
+            );
+        }
+        100% {
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 107, 157, 0.4),
+                rgba(161, 140, 209, 0.4),
+                rgba(79, 209, 199, 0.4),
+                transparent
+            );
+        }
+    }
+
+    @keyframes particleFloat {
+        0%,
+        100% {
+            transform: translateY(0px) translateX(0px) scale(1) rotate(0deg);
+            opacity: 0.8;
+        }
+        25% {
+            transform: translateY(-20px) translateX(8px) scale(1.3)
+                rotate(90deg);
+            opacity: 1;
+        }
+        50% {
+            transform: translateY(-35px) translateX(-8px) scale(0.9)
+                rotate(180deg);
+            opacity: 0.7;
+        }
+        75% {
+            transform: translateY(-20px) translateX(5px) scale(1.2)
+                rotate(270deg);
+            opacity: 0.9;
         }
     }
 `;
@@ -474,8 +570,20 @@ const DetailValue = styled.span`
 
     ${DetailItem}:hover & {
         color: #ff6b9d;
-        transform: scale(1.05);
-        text-shadow: 0 0 10px rgba(255, 107, 157, 0.3);
+        transform: scale(1.1);
+        text-shadow: 0 0 15px rgba(255, 107, 157, 0.6),
+            0 0 30px rgba(255, 107, 157, 0.4);
+        animation: textPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes textPulse {
+        0%,
+        100% {
+            transform: scale(1.1);
+        }
+        50% {
+            transform: scale(1.15);
+        }
     }
 
     &::after {
@@ -735,7 +843,7 @@ const AboutSection: React.FC = () => {
                         <PortraitContainer variants={itemVariants}>
                             <PortraitFrame>
                                 <PortraitImg
-                                    src="/image.png"
+                                    src="/image.webp"
                                     alt="Beautiful You"
                                 />
                                 <PortraitOverlay />
@@ -764,6 +872,49 @@ const AboutSection: React.FC = () => {
                                     animate={inView ? { opacity: 1, x: 0 } : {}}
                                     transition={{ duration: 0.6, delay: 0.6 }}
                                 >
+                                    {/* Floating particles */}
+                                    <div
+                                        className="particle"
+                                        style={{
+                                            position: "absolute",
+                                            top: "20%",
+                                            left: "30%",
+                                            fontSize: "12px",
+                                            opacity: 0,
+                                            transition: "opacity 0.3s ease",
+                                        }}
+                                    >
+                                        ✨
+                                    </div>
+                                    <div
+                                        className="particle"
+                                        style={{
+                                            position: "absolute",
+                                            top: "60%",
+                                            right: "25%",
+                                            fontSize: "10px",
+                                            opacity: 0,
+                                            transition: "opacity 0.3s ease",
+                                            animationDelay: "0.5s",
+                                        }}
+                                    >
+                                        💖
+                                    </div>
+                                    <div
+                                        className="particle"
+                                        style={{
+                                            position: "absolute",
+                                            bottom: "30%",
+                                            left: "20%",
+                                            fontSize: "8px",
+                                            opacity: 0,
+                                            transition: "opacity 0.3s ease",
+                                            animationDelay: "1s",
+                                        }}
+                                    >
+                                        ⭐
+                                    </div>
+
                                     <DetailLabel>What I love most:</DetailLabel>
                                     <DetailValue>
                                         Everything about you ❤️
@@ -789,6 +940,49 @@ const AboutSection: React.FC = () => {
                                     animate={inView ? { opacity: 1, x: 0 } : {}}
                                     transition={{ duration: 0.6, delay: 0.8 }}
                                 >
+                                    {/* Floating particles */}
+                                    <div
+                                        className="particle"
+                                        style={{
+                                            position: "absolute",
+                                            top: "25%",
+                                            right: "30%",
+                                            fontSize: "11px",
+                                            opacity: 0,
+                                            transition: "opacity 0.3s ease",
+                                        }}
+                                    >
+                                        💫
+                                    </div>
+                                    <div
+                                        className="particle"
+                                        style={{
+                                            position: "absolute",
+                                            top: "70%",
+                                            left: "25%",
+                                            fontSize: "9px",
+                                            opacity: 0,
+                                            transition: "opacity 0.3s ease",
+                                            animationDelay: "0.7s",
+                                        }}
+                                    >
+                                        🌟
+                                    </div>
+                                    <div
+                                        className="particle"
+                                        style={{
+                                            position: "absolute",
+                                            bottom: "20%",
+                                            right: "15%",
+                                            fontSize: "7px",
+                                            opacity: 0,
+                                            transition: "opacity 0.3s ease",
+                                            animationDelay: "1.2s",
+                                        }}
+                                    >
+                                        💕
+                                    </div>
+
                                     <DetailLabel>
                                         How long I'll love you:
                                     </DetailLabel>

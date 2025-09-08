@@ -24,8 +24,8 @@ export const theme = {
         },
     },
     fonts: {
-        heading: "'Playfair Display', serif",
-        body: "'Inter', sans-serif",
+        heading: "'National Park', sans-serif",
+        body: "'National Park', sans-serif",
     },
     spacing: {
         xs: "0.5rem",

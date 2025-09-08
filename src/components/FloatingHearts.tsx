@@ -34,7 +34,7 @@ interface Heart {
 const heartEmojis = ["💕", "💖", "💗", "💘", "💝", "❤️", "💓", "💞"];
 const heartColors = ["#ff6b9d", "#a18cd1", "#fecfef", "#ff9a9e", "#fad0c4"];
 
-const FloatingHearts: React.FC = () => {
+const FloatingHearts: React.FC = React.memo(() => {
     const [hearts, setHearts] = useState<Heart[]>([]);
     const [isGenerating, setIsGenerating] = useState(false);
     const [lastGenerationTime, setLastGenerationTime] = useState(0);
@@ -58,7 +58,7 @@ const FloatingHearts: React.FC = () => {
         setLastGenerationTime(now);
 
         const newHearts: Heart[] = [];
-        const heartCount = 15; // Increased from 8 to 15 hearts
+        const heartCount = 8; // Reduced from 15 to 8 hearts
 
         for (let i = 0; i < heartCount; i++) {
             newHearts.push({
@@ -105,7 +105,7 @@ const FloatingHearts: React.FC = () => {
         setLastGenerationTime(now);
 
         const newHearts: Heart[] = [];
-        const heartCount = 20; // Increased from 10 to 20 hearts
+        const heartCount = 12; // Reduced from 20 to 12 hearts
 
         for (let i = 0; i < heartCount; i++) {
             newHearts.push({
@@ -168,18 +168,18 @@ const FloatingHearts: React.FC = () => {
                             rotate: 0,
                         }}
                         animate={{
-                            x: heart.x + (Math.random() - 0.5) * 150,
-                            y: heart.y + (Math.random() - 0.5) * 100,
+                            x: heart.x + (Math.random() - 0.5) * 100, // Reduced movement range
+                            y: heart.y + (Math.random() - 0.5) * 80,
                             opacity: [0, 1, 1, 0.8, 0],
                             scale: [0, 0.8, 1, 1.1, 0],
-                            rotate: [0, 45, 90, 135, 180],
+                            rotate: [0, 30, 60, 90, 120], // Reduced rotation complexity
                         }}
                         exit={{
                             opacity: 0,
                             scale: 0,
                         }}
                         transition={{
-                            duration: 3.5,
+                            duration: 2.5, // Reduced from 3.5s
                             ease: "easeOut",
                             times: [0, 0.2, 0.5, 0.8, 1],
                         }}
@@ -190,6 +190,6 @@ const FloatingHearts: React.FC = () => {
             </AnimatePresence>
         </HeartsContainer>
     );
-};
+});
 
 export default FloatingHearts;

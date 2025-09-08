@@ -55,51 +55,13 @@ const TypewriterText = styled.span<{ $isTyping: boolean }>`
     }
 `;
 
-const ScrollToTop = styled(motion.button)`
-    position: fixed;
-    bottom: ${({ theme }) => theme.spacing.lg};
-    right: ${({ theme }) => theme.spacing.lg};
-    width: 60px;
-    height: 60px;
-    background: ${({ theme }) => theme.colors.gradients.primary};
-    border: none;
-    border-radius: 50%;
-    color: ${({ theme }) => theme.colors.white};
-    font-size: 1.5rem;
-    cursor: pointer;
-    box-shadow: ${({ theme }) => theme.shadows.medium};
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-
-    &:hover {
-        transform: translateY(-5px);
-        box-shadow: ${({ theme }) => theme.shadows.strong};
-    }
-`;
-
 const Footer: React.FC = () => {
     const [displayedText, setDisplayedText] = useState("");
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isTyping, setIsTyping] = useState(true);
-    const [showScrollTop, setShowScrollTop] = useState(false);
 
     const footerMessage =
         "Thank you for being the light of my life. I love you more than words can express. 💕";
-
-    useEffect(() => {
-        // Handle scroll visibility for scroll-to-top button
-        const handleScroll = () => {
-            const scrolled = window.scrollY;
-            const windowHeight = window.innerHeight;
-            setShowScrollTop(scrolled > windowHeight / 2);
-        };
-
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
 
     useEffect(() => {
         // Typewriter effect
@@ -114,13 +76,6 @@ const Footer: React.FC = () => {
             setIsTyping(false);
         }
     }, [currentIndex, footerMessage]);
-
-    const handleScrollToTop = () => {
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth",
-        });
-    };
 
     return (
         <>
@@ -149,19 +104,6 @@ const Footer: React.FC = () => {
                     </FooterContent>
                 </Container>
             </FooterContainer>
-
-            {showScrollTop && (
-                <ScrollToTop
-                    onClick={handleScrollToTop}
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0 }}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                >
-                    <i className="fas fa-arrow-up" />
-                </ScrollToTop>
-            )}
         </>
     );
 };
