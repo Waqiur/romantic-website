@@ -9,6 +9,7 @@ export const GlobalStyles = createGlobalStyle`
 
   html {
     overflow-x: hidden;
+    scroll-behavior: smooth;
   }
 
   body {

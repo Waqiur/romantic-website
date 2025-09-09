@@ -19,6 +19,7 @@ const LoveNotes = lazy(() => import("./components/LoveNotes"));
 const SpaceBackground = lazy(() => import("./components/SpaceBackground"));
 const CursorFollower = lazy(() => import("./components/CursorFollower"));
 const GalaxyPage = lazy(() => import("./components/GalaxyPage"));
+const EarthPage = lazy(() => import("./components/EarthPage"));
 
 const MainPage = styled.div`
     position: relative;
@@ -190,6 +191,7 @@ function App() {
                             }
                         />
                         <Route path="/galaxy" element={<GalaxyPage />} />
+                        <Route path="/earth" element={<EarthPage />} />
                     </Routes>
                 </Suspense>
             </Router>
