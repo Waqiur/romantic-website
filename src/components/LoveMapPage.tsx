@@ -77,25 +77,6 @@ const CarouselImage = styled.img`
     }
 `;
 
-const MilestoneModal = styled(motion.div)`
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(0, 0, 0, 0.9);
-    padding: 2rem;
-    border-radius: 20px;
-    border: 2px solid #42e1f5;
-    max-width: 400px;
-    text-align: center;
-    z-index: 2000;
-    box-shadow: 0 0 50px rgba(66, 225, 245, 0.5);
-`;
-
-const ModalContent = styled.div`
-    color: white;
-`;
-
 const ModalTitle = styled.h2`
     color: #42e1f5;
     margin-bottom: 1rem;
@@ -174,10 +155,7 @@ const Button = styled(motion.button)`
 interface Milestone {
     id: number;
     title: string;
-    description: string;
     message: string;
-    x: number;
-    y: number;
     type: string;
 }
 
@@ -185,81 +163,57 @@ const milestones: Milestone[] = [
     {
         id: 1,
         title: "Mercury",
-        description: "",
         message:
             "Swift as Mercury's dance around the Sun,\nOur love is bright, a journey just begun.\nEach orbit closer, our hearts align,\nSo tell me, will you be my only one?",
-        x: -350,
-        y: 0,
         type: "mercury",
     },
     {
         id: 2,
         title: "Venus",
-        description: "",
         message:
             "Like Venus, you shine with dazzling light,\nThe morning star that makes my world bright.\nIn your glow, my soul feels fine,\nWill you be my Venus, forever mine?",
-        x: -250,
-        y: 0,
         type: "venus",
     },
     {
         id: 3,
         title: "Earth",
-        description: "",
         message:
             "Earth holds wonders, oceans wide,\nBut you're the beauty by my side.\nMy home, my joy, my grand design,\nWill you be my Earth, forever mine?",
-        x: -150,
-        y: 0,
         type: "earth",
     },
     {
         id: 4,
         title: "Mars",
-        description: "",
         message:
             "Mars burns red with passion and flame,\nOur hearts together ignite the same.\nAcross the stars, our love imparts,\nWill you be my Mars, keeper of my heart?",
-        x: -50,
-        y: 0,
         type: "mars",
     },
     {
         id: 5,
         title: "Jupiter",
-        description: "",
         message:
             "Jupiter reigns, the mighty king,\nYet your love is my everything.\nBigger than planets, brighter than time,\nWill you be my Jupiter, always mine?",
-        x: 50,
-        y: 0,
         type: "jupiter",
     },
     {
         id: 6,
         title: "Saturn",
-        description: "",
         message:
             "Saturn wears its rings with grace,\nEndless circles in time and space.\nSo many layers, strong and true,\nWill you be my Saturn, I'll orbit you?",
-        x: 150,
-        y: 0,
         type: "saturn",
     },
     {
         id: 7,
         title: "Uranus",
-        description: "",
         message:
             "Uranus spins, a mystery rare,\nLike our bond, beyond compare.\nThrough the unknown, we'll intertwine,\nWill you be my Uranus, forever mine?",
-        x: 250,
-        y: 0,
         type: "uranus",
     },
     {
         id: 8,
         title: "Neptune",
-        description: "",
         message:
             "Neptune drifts in a world so far,\nYet love can cross the farthest star.\nNo distance breaks what we define,\nWill you be my Neptune, always mine?",
-        x: 350,
-        y: 0,
         type: "neptune",
     },
 ];
@@ -269,12 +223,10 @@ interface LoveMapPageProps {
 }
 
 const LoveMapPage: React.FC<LoveMapPageProps> = ({ isVisible = true }) => {
-    const [showProposal, setShowProposal] = useState(false);
     const [proposalAccepted, setProposalAccepted] = useState(false);
     const [currentMilestoneIndex, setCurrentMilestoneIndex] = useState(0);
     const [showFinalMessage, setShowFinalMessage] = useState(false);
     const [showFinalImage, setShowFinalImage] = useState(false);
-    const [showFireworks, setShowFireworks] = useState(false);
     const [imageLoaded, setImageLoaded] = useState(false);
 
     // Mixed transition variants for each milestone
@@ -335,21 +287,6 @@ const LoveMapPage: React.FC<LoveMapPageProps> = ({ isVisible = true }) => {
 
     const currentVariant =
         transitionVariants[currentMilestoneIndex % transitionVariants.length];
-
-    const handleProposalResponse = (accepted: boolean) => {
-        setProposalAccepted(accepted);
-        if (accepted) {
-            // Celebration animation or message
-            setTimeout(() => {
-                alert(
-                    "Congratulations! You've embarked on the greatest journey of all! 💕"
-                );
-            }, 1000);
-        } else {
-            alert("That's okay! Our journey continues... 🌟");
-        }
-        setShowProposal(false);
-    };
 
     return (
         <LoveMapContainer $isVisible={isVisible}>
@@ -574,12 +511,7 @@ const LoveMapPage: React.FC<LoveMapPageProps> = ({ isVisible = true }) => {
                         <Button
                             onClick={() => {
                                 setShowFinalImage(false);
-                                setShowFireworks(true);
-                                // Trigger celebration after fireworks
-                                setTimeout(() => {
-                                    setShowFireworks(false);
-                                    setProposalAccepted(true);
-                                }, 3000);
+                                setProposalAccepted(true);
                             }}
                             style={{ marginTop: "2rem" }}
                             whileHover={{ scale: 1.05 }}
