@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 // Helper functions for generating stars
 function alphaRandom() {
@@ -157,7 +158,7 @@ const EarthSVG = styled(motion.div)`
 
 const RocketImage = styled(motion.img)`
     position: absolute;
-    top: -1%;
+    top: -2%;
     left: 43%;
     transform: translate(-50%, -50%);
     width: 100px;
@@ -174,12 +175,47 @@ const RocketImage = styled(motion.img)`
     }
 `;
 
+const StartJourneyButton = styled(motion.button)`
+    position: absolute;
+    bottom: 7%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #42e1f5 0%, #06ca95 100%);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: 600;
+    font-family: ${({ theme }) => theme?.fonts?.heading || "Arial, sans-serif"};
+    box-shadow: 0 10px 30px rgba(66, 225, 245, 0.4);
+    transition: all 0.3s ease;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    z-index: 1000;
+
+    &:hover {
+        transform: translateX(-50%) translateY(-3px);
+        box-shadow: 0 15px 40px rgba(66, 225, 245, 0.6);
+        background: linear-gradient(135deg, #06ca95 0%, #42e1f5 100%);
+    }
+`;
+
 interface EarthPageProps {
     isVisible?: boolean;
     onClose?: () => void;
 }
 
 const EarthPage: React.FC<EarthPageProps> = ({ isVisible = true, onClose }) => {
+    const [isFlying, setIsFlying] = useState(false);
+    const navigate = useNavigate();
+
+    const handleStartJourney = () => {
+        setIsFlying(true);
+        setTimeout(() => {
+            navigate("/galaxy");
+        }, 2000); // Navigate after 2 seconds
+    };
+
     return (
         <EarthContainer isVisible={isVisible}>
             {/* Main Content */}
@@ -197,7 +233,7 @@ const EarthPage: React.FC<EarthPageProps> = ({ isVisible = true, onClose }) => {
                         className="box"
                         width="700px"
                         height="700px"
-                        viewBox="0 0 356 445"
+                        viewBox="0 0 356 500"
                         version="1.1"
                         xmlns="http://www.w3.org/2000/svg"
                         xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -417,17 +453,53 @@ const EarthPage: React.FC<EarthPageProps> = ({ isVisible = true, onClose }) => {
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.95 }}
                         initial={{ scale: 0, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        transition={{
-                            delay: 2.5,
-                            duration: 1.2,
-                            type: "spring",
-                        }}
+                        animate={
+                            isFlying
+                                ? {
+                                      x: [0, 100, 300, 500, 700, 800],
+                                      y: [0, -150, -300, -450, -550, -600],
+                                      rotate: [0, 10, 25, 35, 45, 45],
+                                      scale: [1, 0.8, 0.6, 0.4, 0.3, 0.2],
+                                      opacity: [1, 1, 1, 0.8, 0.5, 0],
+                                      filter: [
+                                          "drop-shadow(0 0 20px rgba(255, 255, 255, 0.6))",
+                                          "brightness(1.2) drop-shadow(0 0 25px rgba(255,255,255,0.7))",
+                                          "brightness(1.5) drop-shadow(0 0 30px rgba(255,255,255,0.8))",
+                                          "brightness(1.8) drop-shadow(0 0 35px rgba(255,255,255,0.9))",
+                                          "brightness(2) drop-shadow(0 0 40px rgba(255,255,255,1))",
+                                          "brightness(2) drop-shadow(0 0 30px rgba(255,255,255,0.9))",
+                                      ],
+                                  }
+                                : {
+                                      x: 0,
+                                      y: 0,
+                                      rotate: 0,
+                                      scale: 1,
+                                      opacity: 1,
+                                      filter: "drop-shadow(0 0 20px rgba(255, 255, 255, 0.6))",
+                                  }
+                        }
+                        transition={
+                            isFlying
+                                ? { duration: 2.5, ease: "easeIn" }
+                                : { delay: 2.5, duration: 1.2, type: "spring" }
+                        }
                     />
                 </EarthSVG>
             </EarthContent>
+
+            <StartJourneyButton
+                onClick={handleStartJourney}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 3, duration: 1 }}
+                disabled={isFlying}
+            >
+                🚀 Start Journey
+            </StartJourneyButton>
         </EarthContainer>
     );
 };
-
 export default EarthPage;

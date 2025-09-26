@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const GalaxyPageContainer = styled(motion.div)<{ $isVisible: boolean }>`
     position: fixed;
@@ -289,6 +290,31 @@ const BackToHomeButton = styled(motion.button)`
     }
 `;
 
+const LoveMapButton = styled(motion.button)`
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    background: linear-gradient(135deg, #ff6b9d 0%, #a18cd1 100%);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 600;
+    font-family: ${({ theme }) => theme?.fonts?.heading || "Arial, sans-serif"};
+    box-shadow: 0 10px 30px rgba(255, 107, 157, 0.4);
+    transition: all 0.3s ease;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    z-index: 1000;
+
+    &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(255, 107, 157, 0.6);
+        background: linear-gradient(135deg, #a18cd1 0%, #ff6b9d 100%);
+    }
+`;
+
 interface GalaxyPageProps {
     isVisible?: boolean;
     onClose?: () => void;
@@ -317,6 +343,8 @@ const GalaxyPage: React.FC<GalaxyPageProps> = ({
     isVisible = true,
     onClose,
 }) => {
+    const navigate = useNavigate();
+
     return (
         <GalaxyPageContainer $isVisible={isVisible}>
             <SolarSystem>
@@ -333,6 +361,17 @@ const GalaxyPage: React.FC<GalaxyPageProps> = ({
                 {/* <Pluto /> */}
             </SolarSystem>
 
+            <LoveMapButton
+                onClick={() => navigate("/lovemap")}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 2.5, duration: 1 }}
+            >
+                💕 Explore Love Map
+            </LoveMapButton>
+
             <BackToHomeButton
                 onClick={onClose || (() => window.history.back())}
                 whileHover={{ scale: 1.05 }}
@@ -346,7 +385,6 @@ const GalaxyPage: React.FC<GalaxyPageProps> = ({
         </GalaxyPageContainer>
     );
 };
-
 export default GalaxyPage;
 
 // CSS for orbital animation
