@@ -110,6 +110,49 @@ const ModalText = styled.p`
     font-size: 1.15rem;
 `;
 
+const ScrollingText = styled(motion.div)`
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, #1c2837 0%, #050608 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2500;
+    overflow: hidden;
+`;
+
+const ScrollingContent = styled.div`
+    text-align: center;
+    color: white;
+    font-size: 1.4rem;
+    line-height: 1.8;
+    max-width: 600px;
+    white-space: pre-line;
+`;
+
+const FinalImageContainer = styled(motion.div)`
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, #1c2837 0%, #050608 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2600;
+`;
+
+const FinalImage = styled.img`
+    max-width: 500px;
+    max-height: 500px;
+    object-fit: contain;
+`;
+
 const Button = styled(motion.button)`
     background: linear-gradient(135deg, #42e1f5 0%, #06ca95 100%);
     color: white;
@@ -229,6 +272,10 @@ const LoveMapPage: React.FC<LoveMapPageProps> = ({ isVisible = true }) => {
     const [showProposal, setShowProposal] = useState(false);
     const [proposalAccepted, setProposalAccepted] = useState(false);
     const [currentMilestoneIndex, setCurrentMilestoneIndex] = useState(0);
+    const [showFinalMessage, setShowFinalMessage] = useState(false);
+    const [showFinalImage, setShowFinalImage] = useState(false);
+    const [showFireworks, setShowFireworks] = useState(false);
+    const [imageLoaded, setImageLoaded] = useState(false);
 
     // Mixed transition variants for each milestone
     const transitionVariants = [
@@ -341,7 +388,7 @@ const LoveMapPage: React.FC<LoveMapPageProps> = ({ isVisible = true }) => {
                             <Button
                                 onClick={() => {
                                     if (currentMilestoneIndex === 7) {
-                                        setShowProposal(true);
+                                        setShowFinalMessage(true);
                                     } else {
                                         setCurrentMilestoneIndex(
                                             (prev) => prev + 1
@@ -365,33 +412,183 @@ const LoveMapPage: React.FC<LoveMapPageProps> = ({ isVisible = true }) => {
                 </AnimatePresence>
             </MapContainer>
 
-            {/* Proposal Modal */}
-            {showProposal && (
-                <MilestoneModal
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    exit={{ scale: 0, opacity: 0 }}
+            {/* Final Scrolling Message */}
+            {showFinalMessage && (
+                <ScrollingText
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
                 >
-                    <ModalContent>
-                        <ModalTitle>� Our Future</ModalTitle>
-                        <ModalText>
-                            Just as we journeyed from Earth to the stars, will
-                            you journey through life with me?
-                        </ModalText>
-                        <div>
+                    <ScrollingContent>
+                        <motion.div
+                            initial={{ y: 100, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 0.5, duration: 1 }}
+                        >
+                            We flew past Mercury, swift and bright,
+                        </motion.div>
+                        <motion.div
+                            initial={{ y: 100, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 1, duration: 1 }}
+                        >
+                            Through Venus, glowing with love's pure light.
+                        </motion.div>
+                        <motion.div
+                            initial={{ y: 100, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 1.5, duration: 1 }}
+                        >
+                            Across the Earth, where memories grow,
+                        </motion.div>
+                        <motion.div
+                            initial={{ y: 100, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 2, duration: 1 }}
+                        >
+                            To fiery Mars, where passions show.
+                        </motion.div>
+                        <motion.div
+                            initial={{ y: 100, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 2.5, duration: 1 }}
+                        >
+                            Through Jupiter's realm, so grand, so wide,
+                        </motion.div>
+                        <motion.div
+                            initial={{ y: 100, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 3, duration: 1 }}
+                        >
+                            And Saturn's rings where dreams reside.
+                        </motion.div>
+                        <motion.div
+                            initial={{ y: 100, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 3.5, duration: 1 }}
+                        >
+                            Past Uranus, unique and rare,
+                        </motion.div>
+                        <motion.div
+                            initial={{ y: 100, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 4, duration: 1 }}
+                        >
+                            To Neptune's depths, love beyond compare.
+                        </motion.div>
+                        <motion.div
+                            initial={{ y: 100, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 4.5, duration: 1 }}
+                        >
+                            Now in the stars, just you and me,
+                        </motion.div>
+                        <motion.div
+                            initial={{ y: 100, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 5, duration: 1 }}
+                        >
+                            Boundless love across the galaxy.
+                        </motion.div>
+                        <motion.div
+                            initial={{ y: 100, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 5.5, duration: 1 }}
+                        >
+                            Through every world, my heart is true,
+                        </motion.div>
+                        <motion.div
+                            initial={{ y: 100, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 6, duration: 1 }}
+                        >
+                            So tell me—will you be my girlfriend too?
+                        </motion.div>
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 7, duration: 1 }}
+                        >
                             <Button
-                                onClick={() => handleProposalResponse(true)}
+                                onClick={() => {
+                                    setShowFinalMessage(false);
+                                    setShowFinalImage(true);
+                                    setImageLoaded(false); // Reset loading state
+                                }}
+                                style={{ marginTop: "2rem" }}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
                             >
-                                Yes! 💕
+                                Next
                             </Button>
-                            <Button
-                                onClick={() => handleProposalResponse(false)}
+                        </motion.div>
+                    </ScrollingContent>
+                </ScrollingText>
+            )}
+
+            {/* Final Image Display */}
+            {showFinalImage && (
+                <FinalImageContainer>
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={
+                            imageLoaded
+                                ? { opacity: 1, scale: 1 }
+                                : { opacity: 0, scale: 0.9 }
+                        }
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                    >
+                        <FinalImage
+                            src="/carousel-images/image_9.webp"
+                            alt="Final romantic image"
+                            onLoad={() => setImageLoaded(true)}
+                            style={{ display: imageLoaded ? "block" : "none" }}
+                        />
+                        {!imageLoaded && (
+                            <div
+                                style={{
+                                    width: "500px",
+                                    height: "500px",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    background: "rgba(255,255,255,0.1)",
+                                    borderRadius: "20px",
+                                    color: "#42e1f5",
+                                    fontSize: "1.2rem",
+                                }}
                             >
-                                Maybe Later 🌟
-                            </Button>
-                        </div>
-                    </ModalContent>
-                </MilestoneModal>
+                                Loading your special moment... ✨
+                            </div>
+                        )}
+                    </motion.div>
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={
+                            imageLoaded
+                                ? { opacity: 1, y: 0 }
+                                : { opacity: 0, y: 20 }
+                        }
+                        transition={{ duration: 0.6, delay: 0.3 }}
+                    >
+                        <Button
+                            onClick={() => {
+                                setShowFinalImage(false);
+                                setShowFireworks(true);
+                                // Trigger celebration after fireworks
+                                setTimeout(() => {
+                                    setShowFireworks(false);
+                                    setProposalAccepted(true);
+                                }, 3000);
+                            }}
+                            style={{ marginTop: "2rem" }}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                        >
+                            Yes! 💕
+                        </Button>
+                    </motion.div>
+                </FinalImageContainer>
             )}
 
             {/* Celebration */}
