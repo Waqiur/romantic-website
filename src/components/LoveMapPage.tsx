@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import SpaceBackground from "./SpaceBackground";
+import MusicPlayer from "./MusicPlayer";
 
 const LoveMapContainer = styled(motion.div)<{ $isVisible: boolean }>`
     position: fixed;
@@ -304,6 +305,7 @@ const LoveMapPage: React.FC<LoveMapPageProps> = ({ isVisible = true }) => {
     return (
         <LoveMapContainer $isVisible={isVisible}>
             <SpaceBackground />
+            <MusicPlayer />
             <MapContainer>
                 <AnimatePresence mode="wait">
                     <motion.div
@@ -547,7 +549,7 @@ const LoveMapPage: React.FC<LoveMapPageProps> = ({ isVisible = true }) => {
                         left: 0,
                         width: "100%",
                         height: "100%",
-                        background: "rgba(0,0,0,1)",
+                        background: "rgba(0,0,0,0.8)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
