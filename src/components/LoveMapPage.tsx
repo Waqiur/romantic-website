@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import SpaceBackground from "./SpaceBackground";
 
 const LoveMapContainer = styled(motion.div)<{ $isVisible: boolean }>`
@@ -228,6 +229,18 @@ const LoveMapPage: React.FC<LoveMapPageProps> = ({ isVisible = true }) => {
     const [showFinalMessage, setShowFinalMessage] = useState(false);
     const [showFinalImage, setShowFinalImage] = useState(false);
     const [imageLoaded, setImageLoaded] = useState(false);
+    const navigate = useNavigate();
+
+    // Auto redirect to main page after celebration
+    useEffect(() => {
+        if (proposalAccepted) {
+            const timer = setTimeout(() => {
+                navigate("/");
+            }, 2500); // 2.5 seconds
+
+            return () => clearTimeout(timer);
+        }
+    }, [proposalAccepted, navigate]);
 
     // Mixed transition variants for each milestone
     const transitionVariants = [
@@ -534,7 +547,7 @@ const LoveMapPage: React.FC<LoveMapPageProps> = ({ isVisible = true }) => {
                         left: 0,
                         width: "100%",
                         height: "100%",
-                        background: "rgba(0,0,0,0.8)",
+                        background: "rgba(0,0,0,1)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
