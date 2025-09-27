@@ -5,6 +5,15 @@ import { useInView } from "react-intersection-observer";
 
 const AboutContainer = styled.section`
     padding: ${({ theme }) => theme.spacing.xxl} 0;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        padding: ${({ theme }) => theme.spacing.xl} 0;
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        padding: ${({ theme }) => theme.spacing.lg} 0;
+    }
+
     background: linear-gradient(
             135deg,
             rgba(255, 255, 255, 0.95) 0%,
@@ -97,15 +106,31 @@ const Container = styled.div`
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 ${({ theme }) => theme.spacing.md};
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        padding: 0 ${({ theme }) => theme.spacing.sm};
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        padding: 0 ${({ theme }) => theme.spacing.xs};
+    }
 `;
 
 const SectionHeader = styled.div`
     text-align: center;
     margin-bottom: ${({ theme }) => theme.spacing.xxl};
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        margin-bottom: ${({ theme }) => theme.spacing.xl};
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        margin-bottom: ${({ theme }) => theme.spacing.lg};
+    }
 `;
 
 const SectionTitle = styled(motion.h2)`
-    font-size: clamp(3rem, 6vw, 4.5rem);
+    font-size: clamp(2rem, 5vw, 3.5rem);
     font-family: ${({ theme }) => theme.fonts.heading};
     background: linear-gradient(
         135deg,
@@ -142,6 +167,12 @@ const SectionTitle = styled(motion.h2)`
         font-size: 1.8rem;
         animation: sparkleFloat 4s ease-in-out infinite;
         color: #ff6b9d;
+
+        @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+            font-size: 1.2rem;
+            top: -15px;
+            left: -20px;
+        }
     }
 
     &::after {
@@ -151,6 +182,12 @@ const SectionTitle = styled(motion.h2)`
         right: -40px;
         font-size: 2rem;
         animation: heartFloat 3s ease-in-out infinite;
+
+        @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+            font-size: 1.4rem;
+            top: -15px;
+            right: -25px;
+        }
     }
 
     @keyframes sparkleFloat {
@@ -192,6 +229,10 @@ const AboutContent = styled.div`
         grid-template-columns: 1fr;
         gap: ${({ theme }) => theme.spacing.xl};
         text-align: center;
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        gap: ${({ theme }) => theme.spacing.lg};
     }
 `;
 
@@ -262,8 +303,20 @@ const PortraitImg = styled.img`
     border-radius: ${({ theme }) => theme.borderRadius.lg};
     transition: transform 0.3s ease;
 
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        height: 400px;
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        height: 300px;
+    }
+
     &:hover {
         transform: scale(1.05);
+
+        @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+            transform: scale(1.02);
+        }
     }
 `;
 
@@ -294,12 +347,24 @@ const AboutText = styled(motion.div)`
 `;
 
 const HighlightText = styled(motion.p)`
-    font-size: 1.4rem;
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
     font-weight: 500;
     color: #1a202c;
     margin-bottom: ${({ theme }) => theme.spacing.xl};
     position: relative;
     padding: ${({ theme }) => theme.spacing.lg};
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        padding: ${({ theme }) => theme.spacing.md};
+        margin-bottom: ${({ theme }) => theme.spacing.lg};
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        padding: ${({ theme }) => theme.spacing.sm};
+        margin-bottom: ${({ theme }) => theme.spacing.md};
+        font-size: 1rem;
+    }
+
     background: linear-gradient(
         135deg,
         rgba(255, 255, 255, 0.95) 0%,
@@ -362,6 +427,19 @@ const DetailItem = styled(motion.div)`
     align-items: center;
     padding: ${({ theme }) => theme.spacing.lg};
     margin-bottom: ${({ theme }) => theme.spacing.lg};
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        padding: ${({ theme }) => theme.spacing.md};
+        margin-bottom: ${({ theme }) => theme.spacing.md};
+        flex-direction: column;
+        gap: ${({ theme }) => theme.spacing.xs};
+        text-align: center;
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        padding: ${({ theme }) => theme.spacing.sm};
+        margin-bottom: ${({ theme }) => theme.spacing.sm};
+    }
     background: linear-gradient(
         135deg,
         rgba(255, 255, 255, 0.95) 0%,
@@ -382,6 +460,10 @@ const DetailItem = styled(motion.div)`
 
     &:hover {
         transform: translateY(-20px) scale(1.08) rotateX(10deg) rotateY(3deg);
+
+        @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+            transform: translateY(-8px) scale(1.02);
+        }
         box-shadow: 0 35px 70px rgba(255, 107, 157, 0.4),
             0 0 0 2px rgba(255, 107, 157, 0.4),
             inset 0 1px 0 rgba(255, 255, 255, 0.8),
@@ -554,6 +636,11 @@ const DetailLabel = styled.span`
     position: relative;
     z-index: 2;
     transition: color 0.3s ease;
+    font-size: clamp(0.9rem, 2vw, 1rem);
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        margin-bottom: ${({ theme }) => theme.spacing.xs};
+    }
 
     ${DetailItem}:hover & {
         color: #2d3748;
@@ -563,7 +650,7 @@ const DetailLabel = styled.span`
 const DetailValue = styled.span`
     color: #1a202c;
     font-weight: 700;
-    font-size: 1.1rem;
+    font-size: clamp(1rem, 2.2vw, 1.1rem);
     position: relative;
     z-index: 2;
     transition: all 0.3s ease;
@@ -636,6 +723,10 @@ const FloatingDecorations = styled.div`
     pointer-events: none;
     z-index: 0;
     overflow: hidden;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        display: none; /* Hide floating decorations on mobile for better performance */
+    }
 `;
 
 const FloatingDecoration = styled(motion.div)<{ delay: number; size: number }>`

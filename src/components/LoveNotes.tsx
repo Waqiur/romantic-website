@@ -88,21 +88,20 @@ interface Note {
 }
 
 const loveMessages = [
-    "You make my heart skip a beat every single day! 💖",
-    "Your smile is my favorite view in the world ✨",
-    "I fall in love with you more every moment 💕",
-    "You are my sunshine on the cloudiest days ☀️",
-    "Every love song makes me think of you 🎵",
-    "You're not just my love, you're my best friend 👫",
-    "Your laugh is my favorite sound in the universe 😄",
-    "I love how you make ordinary moments feel magical ✨",
-    "You have the most beautiful soul I've ever known 💫",
-    "My love for you grows stronger with each passing day 🌹",
-    "You're the reason I believe in fairytales 🏰",
-    "Your hugs feel like home to me 🤗",
-    "I love the way you see the world with such wonder 🌍",
-    "You make me want to be the best version of myself 💪",
-    "Your presence turns any place into paradise 🌴",
+    "Even miles apart, you make my heart skip a beat every single day 💖",
+    "Your smile may be far away, but it’s still my favorite view ✨",
+    "With every message and call, I fall in love with you more 💕",
+    "Even oceans apart, you’re my sunshine on cloudy days ☀️",
+    "Every love song reminds me of us — no matter the distance 🎵",
+    "You’re not just my love, you’re my best friend across the miles 👫",
+    "Hearing your laugh makes the distance disappear 😄",
+    "Even from afar, you make ordinary moments feel magical ✨",
+    "Your soul shines brighter than any star I see from here 💫",
+    "My love for you grows stronger, no matter how far apart we are 🌹",
+    "You’re the reason I believe love knows no distance 🏰",
+    "You see the world with such wonder — and I’m grateful I get to share it with you 🌍",
+    "You inspire me to be my best, even from a thousand miles away 💪",
+    "No matter where we are, your love feels like home 🌎",
 ];
 
 const LoveNotes: React.FC = () => {

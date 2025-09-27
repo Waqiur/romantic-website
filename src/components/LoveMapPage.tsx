@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import SpaceBackground from "./SpaceBackground";
-import MusicPlayer from "./MusicPlayer";
+import { theme } from "../styles/theme";
 
 const LoveMapContainer = styled(motion.div)<{ $isVisible: boolean }>`
     position: fixed;
@@ -46,13 +46,28 @@ const MapContainer = styled.div`
 
 const PlanetImage = styled.img`
     position: relative;
-    width: 320px;
-    height: 320px;
+    width: clamp(200px, 25vw, 320px);
+    height: clamp(200px, 25vw, 320px);
     object-fit: contain;
     transition: all 0.3s ease;
 
     &:hover {
         transform: scale(1.05);
+    }
+
+    @media (max-width: ${theme.breakpoints.tablet}) {
+        width: clamp(150px, 30vw, 250px);
+        height: clamp(150px, 30vw, 250px);
+    }
+
+    @media (max-width: ${theme.breakpoints.mobile}) {
+        width: clamp(120px, 35vw, 180px);
+        height: clamp(120px, 35vw, 180px);
+    }
+
+    @media (max-width: 480px) {
+        width: clamp(100px, 40vw, 150px);
+        height: clamp(100px, 40vw, 150px);
     }
 `;
 
@@ -61,36 +76,68 @@ const CenterContent = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 3rem;
+    padding: clamp(1rem, 4vw, 3rem);
     text-align: center;
-    max-width: 500px;
+    max-width: clamp(300px, 50vw, 500px);
     position: relative;
     z-index: 1;
+
+    @media (max-width: ${theme.breakpoints.tablet}) {
+        padding: clamp(0.5rem, 3vw, 2rem);
+        width: 100%;
+    }
+
+    @media (max-width: ${theme.breakpoints.mobile}) {
+        width: 100%;
+    }
 `;
 
 const CarouselImage = styled.img`
     width: 100%;
-    max-width: 300px;
+    max-width: clamp(200px, 25vw, 300px);
     height: auto;
     transition: all 0.3s ease;
 
     &:hover {
         transform: scale(1.05);
     }
+
+    @media (max-width: ${theme.breakpoints.tablet}) {
+        max-width: clamp(150px, 30vw, 250px);
+    }
+
+    @media (max-width: ${theme.breakpoints.mobile}) {
+        max-width: clamp(120px, 35vw, 180px);
+    }
+
+    @media (max-width: 480px) {
+        max-width: clamp(100px, 40vw, 150px);
+    }
 `;
 
 const ModalTitle = styled.h2`
     color: #42e1f5;
-    margin-bottom: 1rem;
-    font-size: 2.5rem;
+    margin-bottom: clamp(0.5rem, 2vw, 1rem);
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
     font-weight: 600;
+
+    @media (max-width: ${theme.breakpoints.mobile}) {
+        font-size: clamp(1.5rem, 5vw, 2rem);
+        margin-bottom: clamp(0.5rem, 2vw, 0.8rem);
+    }
 `;
 
 const ModalText = styled.p`
-    margin-bottom: 1.5rem;
+    margin-bottom: clamp(1rem, 3vw, 1.5rem);
     line-height: 1.6;
     white-space: pre-line;
-    font-size: 1.15rem;
+    font-size: clamp(0.9rem, 2.5vw, 1.15rem);
+
+    @media (max-width: ${theme.breakpoints.mobile}) {
+        font-size: clamp(0.8rem, 3vw, 1rem);
+        line-height: 1.5;
+        margin-bottom: clamp(0.8rem, 2.5vw, 1.2rem);
+    }
 `;
 
 const ScrollingText = styled(motion.div)`
@@ -110,10 +157,15 @@ const ScrollingText = styled(motion.div)`
 const ScrollingContent = styled.div`
     text-align: center;
     color: white;
-    font-size: 1.4rem;
+    font-size: clamp(1rem, 3vw, 1.4rem);
     line-height: 1.8;
-    max-width: 600px;
+    max-width: clamp(300px, 80vw, 600px);
     white-space: pre-line;
+
+    @media (max-width: ${theme.breakpoints.mobile}) {
+        font-size: clamp(0.9rem, 4vw, 1.2rem);
+        line-height: 1.6;
+    }
 `;
 
 const FinalImageContainer = styled(motion.div)`
@@ -131,26 +183,45 @@ const FinalImageContainer = styled(motion.div)`
 `;
 
 const FinalImage = styled.img`
-    max-width: 500px;
-    max-height: 500px;
+    max-width: clamp(300px, 60vw, 500px);
+    max-height: clamp(300px, 60vh, 500px);
     object-fit: contain;
+    width: 100%;
+    height: auto;
+
+    @media (max-width: ${theme.breakpoints.tablet}) {
+        max-width: clamp(250px, 70vw, 400px);
+        max-height: clamp(250px, 50vh, 400px);
+    }
+
+    @media (max-width: ${theme.breakpoints.mobile}) {
+        max-width: clamp(200px, 80vw, 350px);
+        max-height: clamp(200px, 40vh, 350px);
+    }
 `;
 
 const Button = styled(motion.button)`
     background: linear-gradient(135deg, #42e1f5 0%, #06ca95 100%);
     color: white;
     border: none;
-    padding: 0.75rem 1.5rem;
+    padding: clamp(0.6rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.5rem);
     border-radius: 25px;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
     font-weight: 600;
-    margin: 0 0.5rem;
+    margin: 0 clamp(0.25rem, 1vw, 0.5rem);
     transition: all 0.3s ease;
+    white-space: nowrap;
 
     &:hover {
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(66, 225, 245, 0.4);
+    }
+
+    @media (max-width: ${theme.breakpoints.mobile}) {
+        padding: clamp(0.5rem, 3vw, 0.7rem) clamp(0.8rem, 4vw, 1.2rem);
+        font-size: clamp(0.8rem, 3.5vw, 0.95rem);
+        margin: clamp(0.5rem, 2vw, 1rem) clamp(0.2rem, 1vw, 0.3rem);
     }
 `;
 
@@ -230,7 +301,16 @@ const LoveMapPage: React.FC<LoveMapPageProps> = ({ isVisible = true }) => {
     const [showFinalMessage, setShowFinalMessage] = useState(false);
     const [showFinalImage, setShowFinalImage] = useState(false);
     const [imageLoaded, setImageLoaded] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     // Auto redirect to main page after celebration
     useEffect(() => {
@@ -305,7 +385,6 @@ const LoveMapPage: React.FC<LoveMapPageProps> = ({ isVisible = true }) => {
     return (
         <LoveMapContainer $isVisible={isVisible}>
             <SpaceBackground />
-            <MusicPlayer />
             <MapContainer>
                 <AnimatePresence mode="wait">
                     <motion.div
@@ -319,10 +398,16 @@ const LoveMapPage: React.FC<LoveMapPageProps> = ({ isVisible = true }) => {
                         style={{
                             display: "flex",
                             alignItems: "center",
-                            justifyContent: "space-around",
-                            width: "75%",
-                            height: "80%",
-                            gap: "2rem",
+                            justifyContent: isMobile
+                                ? "center"
+                                : "space-around",
+                            width: isMobile
+                                ? "clamp(90%, 75vw, 75%)"
+                                : "clamp(80%, 75vw, 75%)",
+                            height: "clamp(70%, 80vh, 80%)",
+                            gap: "clamp(0.5rem, 3vw, 2rem)",
+                            flexDirection: isMobile ? "column" : "row",
+                            padding: "clamp(1rem, 3vw, 2rem)",
                         }}
                     >
                         <PlanetImage
@@ -330,36 +415,79 @@ const LoveMapPage: React.FC<LoveMapPageProps> = ({ isVisible = true }) => {
                             alt={milestones[currentMilestoneIndex].type}
                         />
 
-                        <CenterContent>
-                            <ModalTitle>
-                                {milestones[currentMilestoneIndex].title}
-                            </ModalTitle>
-                            <ModalText>
-                                {milestones[currentMilestoneIndex].message}
-                            </ModalText>
-                            <Button
-                                onClick={() => {
-                                    if (currentMilestoneIndex === 7) {
-                                        setShowFinalMessage(true);
-                                    } else {
-                                        setCurrentMilestoneIndex(
-                                            (prev) => prev + 1
-                                        );
-                                    }
-                                }}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                            >
-                                Yes, continue our journey! 💕
-                            </Button>
-                        </CenterContent>
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                                gap: "clamp(1rem, 2vw, 1.5rem)",
+                            }}
+                        >
+                            <CenterContent>
+                                <ModalTitle>
+                                    {milestones[currentMilestoneIndex].title}
+                                </ModalTitle>
+                                <ModalText>
+                                    {milestones[currentMilestoneIndex].message}
+                                </ModalText>
+                            </CenterContent>
 
-                        <CarouselImage
-                            src={`/carousel-images/image_${
-                                currentMilestoneIndex + 1
-                            }.webp`}
-                            alt={`Carousel image ${currentMilestoneIndex + 1}`}
-                        />
+                            {/* Button below text on large screens */}
+                            {!isMobile && (
+                                <Button
+                                    onClick={() => {
+                                        if (currentMilestoneIndex === 7) {
+                                            setShowFinalMessage(true);
+                                        } else {
+                                            setCurrentMilestoneIndex(
+                                                (prev) => prev + 1
+                                            );
+                                        }
+                                    }}
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                >
+                                    Yes, continue our journey! 💕
+                                </Button>
+                            )}
+                        </div>
+
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                                gap: "clamp(1rem, 2vw, 1.5rem)",
+                            }}
+                        >
+                            <CarouselImage
+                                src={`/carousel-images/image_${
+                                    currentMilestoneIndex + 1
+                                }.webp`}
+                                alt={`Carousel image ${
+                                    currentMilestoneIndex + 1
+                                }`}
+                            />
+
+                            {/* Button below carousel image on mobile */}
+                            {isMobile && (
+                                <Button
+                                    onClick={() => {
+                                        if (currentMilestoneIndex === 7) {
+                                            setShowFinalMessage(true);
+                                        } else {
+                                            setCurrentMilestoneIndex(
+                                                (prev) => prev + 1
+                                            );
+                                        }
+                                    }}
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                >
+                                    Yes, continue our journey! 💕
+                                </Button>
+                            )}
+                        </div>
                     </motion.div>
                 </AnimatePresence>
             </MapContainer>
@@ -376,86 +504,110 @@ const LoveMapPage: React.FC<LoveMapPageProps> = ({ isVisible = true }) => {
                             initial={{ y: 100, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 0.5, duration: 1 }}
+                            style={{ marginBottom: "1rem" }}
                         >
-                            We flew past Mercury, swift and bright,
+                            <motion.div
+                                initial={{ y: 100, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                transition={{ delay: 0.5, duration: 1 }}
+                            >
+                                We flew past Mercury, swift and bright,
+                            </motion.div>
+                            <motion.div
+                                initial={{ y: 100, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                transition={{ delay: 1, duration: 1 }}
+                            >
+                                Through Venus, glowing with love's pure light.
+                            </motion.div>
+                            <motion.div
+                                initial={{ y: 100, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                transition={{ delay: 1.5, duration: 1 }}
+                            >
+                                Across the Earth, where memories grow,
+                            </motion.div>
+                            <motion.div
+                                initial={{ y: 100, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                transition={{ delay: 2, duration: 1 }}
+                            >
+                                To fiery Mars, where passions show.
+                            </motion.div>
                         </motion.div>
-                        <motion.div
-                            initial={{ y: 100, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: 1, duration: 1 }}
-                        >
-                            Through Venus, glowing with love's pure light.
-                        </motion.div>
-                        <motion.div
-                            initial={{ y: 100, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: 1.5, duration: 1 }}
-                        >
-                            Across the Earth, where memories grow,
-                        </motion.div>
-                        <motion.div
-                            initial={{ y: 100, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: 2, duration: 1 }}
-                        >
-                            To fiery Mars, where passions show.
-                        </motion.div>
+
                         <motion.div
                             initial={{ y: 100, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 2.5, duration: 1 }}
+                            style={{ marginBottom: "1rem" }}
                         >
-                            Through Jupiter's realm, so grand, so wide,
+                            <motion.div
+                                initial={{ y: 100, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                transition={{ delay: 2.5, duration: 1 }}
+                            >
+                                Through Jupiter's realm, so grand, so wide,
+                            </motion.div>
+                            <motion.div
+                                initial={{ y: 100, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                transition={{ delay: 3, duration: 1 }}
+                            >
+                                And Saturn's rings where dreams reside.
+                            </motion.div>
+                            <motion.div
+                                initial={{ y: 100, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                transition={{ delay: 3.5, duration: 1 }}
+                            >
+                                Past Uranus, unique and rare,
+                            </motion.div>
+                            <motion.div
+                                initial={{ y: 100, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                transition={{ delay: 4, duration: 1 }}
+                            >
+                                To Neptune's depths, love beyond compare.
+                            </motion.div>
                         </motion.div>
-                        <motion.div
-                            initial={{ y: 100, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: 3, duration: 1 }}
-                        >
-                            And Saturn's rings where dreams reside.
-                        </motion.div>
-                        <motion.div
-                            initial={{ y: 100, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: 3.5, duration: 1 }}
-                        >
-                            Past Uranus, unique and rare,
-                        </motion.div>
-                        <motion.div
-                            initial={{ y: 100, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: 4, duration: 1 }}
-                        >
-                            To Neptune's depths, love beyond compare.
-                        </motion.div>
+
                         <motion.div
                             initial={{ y: 100, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 4.5, duration: 1 }}
+                            style={{ marginBottom: "1rem" }}
                         >
-                            Now in the stars, just you and me,
+                            <motion.div
+                                initial={{ y: 100, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                transition={{ delay: 4.5, duration: 1 }}
+                            >
+                                Now in the stars, just you and me,
+                            </motion.div>
+                            <motion.div
+                                initial={{ y: 100, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                transition={{ delay: 5, duration: 1 }}
+                            >
+                                Boundless love across the galaxy.
+                            </motion.div>
+                            <motion.div
+                                initial={{ y: 100, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                transition={{ delay: 5.5, duration: 1 }}
+                            >
+                                Through every world, my heart is true,
+                            </motion.div>
+                            <motion.div
+                                initial={{ y: 100, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                transition={{ delay: 6, duration: 1 }}
+                            >
+                                So tell me—will you be my girlfriend too?
+                            </motion.div>
                         </motion.div>
-                        <motion.div
-                            initial={{ y: 100, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: 5, duration: 1 }}
-                        >
-                            Boundless love across the galaxy.
-                        </motion.div>
-                        <motion.div
-                            initial={{ y: 100, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: 5.5, duration: 1 }}
-                        >
-                            Through every world, my heart is true,
-                        </motion.div>
-                        <motion.div
-                            initial={{ y: 100, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: 6, duration: 1 }}
-                        >
-                            So tell me—will you be my girlfriend too?
-                        </motion.div>
+
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -563,14 +715,23 @@ const LoveMapPage: React.FC<LoveMapPageProps> = ({ isVisible = true }) => {
                             rotate: [0, 10, -10, 0],
                         }}
                         transition={{ duration: 2, repeat: Infinity }}
-                        style={{ fontSize: "4rem", marginBottom: "1rem" }}
+                        style={{
+                            fontSize: "clamp(2rem, 8vw, 4rem)",
+                            marginBottom: "clamp(0.5rem, 2vw, 1rem)",
+                        }}
                     >
                         💕🎉
                     </motion.div>
                     <motion.h1
                         initial={{ y: 50, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
-                        style={{ color: "#42e1f5", textAlign: "center" }}
+                        style={{
+                            color: "#42e1f5",
+                            textAlign: "center",
+                            fontSize: "clamp(1.5rem, 5vw, 2.5rem)",
+                            fontWeight: 600,
+                            padding: "0 clamp(1rem, 5vw, 2rem)",
+                        }}
                     >
                         She Said Yes! Forever Begins! 🚀❤️
                     </motion.h1>

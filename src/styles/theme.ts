@@ -53,6 +53,31 @@ export const theme = {
         tablet: "768px",
         desktop: "1024px",
         wide: "1200px",
+        ultrawide: "1440px",
+    },
+    responsive: {
+        // Fluid spacing that scales with viewport
+        fluidSpacing: {
+            xs: "clamp(0.25rem, 1vw, 0.5rem)",
+            sm: "clamp(0.5rem, 2vw, 1rem)",
+            md: "clamp(1rem, 3vw, 1.5rem)",
+            lg: "clamp(1.5rem, 4vw, 2rem)",
+            xl: "clamp(2rem, 5vw, 3rem)",
+            xxl: "clamp(3rem, 6vw, 4rem)",
+        },
+        // Fluid typography
+        typography: {
+            small: "clamp(0.875rem, 2vw, 1rem)",
+            body: "clamp(1rem, 2.5vw, 1.125rem)",
+            large: "clamp(1.125rem, 3vw, 1.25rem)",
+            h6: "clamp(1rem, 3vw, 1.125rem)",
+            h5: "clamp(1.125rem, 3.5vw, 1.25rem)",
+            h4: "clamp(1.25rem, 4vw, 1.5rem)",
+            h3: "clamp(1.5rem, 4.5vw, 1.875rem)",
+            h2: "clamp(1.875rem, 5vw, 2.25rem)",
+            h1: "clamp(2.25rem, 6vw, 3rem)",
+            hero: "clamp(3rem, 8vw, 5rem)",
+        },
     },
 };
 

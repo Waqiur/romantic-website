@@ -23,6 +23,16 @@ const InteractiveContainer = styled.section`
             transparent 50%
         );
     position: relative;
+    width: 100%;
+    overflow-x: hidden;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        padding: ${({ theme }) => theme.spacing.xl} 0;
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        padding: ${({ theme }) => theme.spacing.lg} 0;
+    }
 
     &::before {
         content: "";
@@ -54,6 +64,13 @@ const InteractiveContainer = styled.section`
             transform: translateY(-15px) rotate(0.3deg);
         }
     }
+
+    /* Reduce animation on mobile for performance */
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        &::before {
+            animation: none;
+        }
+    }
 `;
 
 const Container = styled.div`
@@ -62,6 +79,16 @@ const Container = styled.div`
     padding: 0 ${({ theme }) => theme.spacing.md};
     position: relative;
     z-index: 5;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        padding: 0 ${({ theme }) => theme.spacing.sm};
+        max-width: 95%;
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        padding: 0 ${({ theme }) => theme.spacing.xs};
+        max-width: 90%;
+    }
 `;
 
 const SectionHeader = styled.div`
@@ -70,32 +97,65 @@ const SectionHeader = styled.div`
 `;
 
 const SectionTitle = styled(motion.h2)`
-    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-size: clamp(1.8rem, 4vw, 3rem);
     font-family: ${({ theme }) => theme.fonts.heading};
-    color: #ff6b9d;
+    background: linear-gradient(
+        135deg,
+        #ff6b9d 0%,
+        #c44569 30%,
+        #a18cd1 60%,
+        #4fd1c7 90%
+    );
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: titleGradient 6s ease-in-out infinite;
     margin-bottom: ${({ theme }) => theme.spacing.md};
     text-align: center;
     position: relative;
     font-weight: 600;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    text-shadow: 0 0 30px rgba(255, 107, 157, 0.3);
+
+    @keyframes titleGradient {
+        0%,
+        100% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+    }
 
     &::before {
         content: "✨";
         position: absolute;
-        top: -20px;
-        left: -25px;
-        font-size: 1.5rem;
+        top: -25px;
+        left: -30px;
+        font-size: 1.8rem;
         animation: sparkleFloat 4s ease-in-out infinite;
         color: #ff6b9d;
+
+        @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+            font-size: 1.2rem;
+            top: -15px;
+            left: -20px;
+        }
     }
 
     &::after {
         content: "💕";
         position: absolute;
-        top: -15px;
-        right: -30px;
-        font-size: 1.8rem;
+        top: -20px;
+        right: -40px;
+        font-size: 2rem;
         animation: heartFloat 3s ease-in-out infinite;
+
+        @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+            font-size: 1.4rem;
+            top: -15px;
+            right: -25px;
+        }
     }
 
     @keyframes sparkleFloat {
@@ -104,7 +164,7 @@ const SectionTitle = styled(motion.h2)`
             transform: translateY(0px) rotate(0deg) scale(1);
         }
         50% {
-            transform: translateY(-6px) rotate(180deg) scale(1.2);
+            transform: translateY(-8px) rotate(180deg) scale(1.2);
         }
     }
 
@@ -114,7 +174,7 @@ const SectionTitle = styled(motion.h2)`
             transform: translateY(0px) rotate(0deg);
         }
         50% {
-            transform: translateY(-8px) rotate(3deg);
+            transform: translateY(-10px) rotate(5deg);
         }
     }
 `;
@@ -133,6 +193,17 @@ const InteractiveGrid = styled.div`
     gap: ${({ theme }) => theme.spacing.xl};
     max-width: 1000px;
     margin: 0 auto;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: ${({ theme }) => theme.spacing.lg};
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        grid-template-columns: 1fr;
+        gap: ${({ theme }) => theme.spacing.md};
+        max-width: 100%;
+    }
 `;
 
 const InteractiveCard = styled(motion.div)`
@@ -149,11 +220,25 @@ const InteractiveCard = styled(motion.div)`
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     will-change: transform, box-shadow, border-color;
 
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        padding: ${({ theme }) => theme.spacing.lg};
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        padding: ${({ theme }) => theme.spacing.md};
+        margin-bottom: ${({ theme }) => theme.spacing.sm};
+    }
+
     &:hover {
         transform: translateY(-8px);
         box-shadow: 0 15px 35px rgba(255, 107, 157, 0.2);
         border-color: rgba(255, 107, 157, 0.4);
         background: rgba(255, 255, 255, 0.98);
+
+        @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(255, 107, 157, 0.15);
+        }
     }
 
     &::before {
@@ -179,25 +264,37 @@ const InteractiveCard = styled(motion.div)`
 `;
 
 const CardIcon = styled(motion.div)`
-    font-size: 4rem;
+    font-size: clamp(2.5rem, 6vw, 4rem);
     margin-bottom: ${({ theme }) => theme.spacing.lg};
     filter: drop-shadow(0 2px 8px rgba(255, 107, 157, 0.2));
     transition: transform 0.15s ease-out, filter 0.15s ease-out;
     will-change: transform, filter;
 
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        margin-bottom: ${({ theme }) => theme.spacing.md};
+    }
+
     ${InteractiveCard}:hover & {
         transform: scale(1.1);
         filter: drop-shadow(0 4px 12px rgba(255, 107, 157, 0.3));
+
+        @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+            transform: scale(1.05);
+        }
     }
 `;
 
 const CardTitle = styled.h3`
-    font-size: 1.4rem;
+    font-size: clamp(1.3rem, 3vw, 1.8rem);
     font-family: ${({ theme }) => theme.fonts.heading};
     color: #2d3748;
     margin-bottom: ${({ theme }) => theme.spacing.md};
     position: relative;
     font-weight: 600;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        margin-bottom: ${({ theme }) => theme.spacing.sm};
+    }
 
     &::after {
         content: "";
@@ -220,12 +317,17 @@ const CardTitle = styled.h3`
 const CardDescription = styled.p`
     color: #4a5568;
     line-height: 1.6;
-    font-size: 0.95rem;
+    font-size: clamp(1rem, 2.2vw, 1.1rem);
     margin-bottom: ${({ theme }) => theme.spacing.md};
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        margin-bottom: ${({ theme }) => theme.spacing.sm};
+        line-height: 1.5;
+    }
 `;
 
 const CountdownDisplay = styled(motion.div)`
-    font-size: 1.8rem;
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
     font-weight: bold;
     color: #ff6b9d;
     margin-top: ${({ theme }) => theme.spacing.md};
@@ -233,10 +335,16 @@ const CountdownDisplay = styled(motion.div)`
     transition: transform 0.15s ease-out, background 0.15s ease-out;
     background: rgba(255, 255, 255, 0.9);
     padding: ${({ theme }) => theme.spacing.sm}
-        ${({ theme }) => theme.spacing.md};
+        ${({ theme }) => theme.spacing.sm};
     border-radius: 20px;
     border: 1px solid rgba(255, 107, 157, 0.2);
     will-change: transform, background;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        padding: ${({ theme }) => theme.spacing.xs}
+            ${({ theme }) => theme.spacing.sm};
+        margin-top: ${({ theme }) => theme.spacing.sm};
+    }
 
     ${InteractiveCard}:hover & {
         transform: scale(1.05);
@@ -272,16 +380,62 @@ const PuzzleContent = styled(motion.div)`
     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3),
         0 0 60px rgba(255, 107, 157, 0.1);
     animation: puzzleGlow 2s ease-in-out infinite alternate;
+
+    @keyframes puzzleGlow {
+        0% {
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3),
+                0 0 60px rgba(255, 107, 157, 0.1);
+        }
+        100% {
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3),
+                0 0 80px rgba(255, 107, 157, 0.2);
+        }
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        padding: ${({ theme }) => theme.spacing.xl};
+        width: 95%;
+        max-width: 600px;
+        max-height: 90vh;
+        border-radius: ${({ theme }) => theme.borderRadius.lg};
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        padding: ${({ theme }) => theme.spacing.md};
+        width: 98%;
+        max-width: none;
+        max-height: 95vh;
+        border-radius: ${({ theme }) => theme.borderRadius.md};
+        border-width: 2px;
+        margin: ${({ theme }) => theme.spacing.xs};
+    }
+
+    @media (max-width: 320px) {
+        padding: ${({ theme }) => theme.spacing.sm};
+        width: 95%;
+        max-height: 98vh;
+    }
 `;
 
 const PuzzleHeader = styled.div`
     text-align: center;
     margin-bottom: ${({ theme }) => theme.spacing.xl};
+    padding-top: ${({ theme }) => theme.spacing.lg};
     position: relative;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        margin-bottom: ${({ theme }) => theme.spacing.lg};
+        padding-top: ${({ theme }) => theme.spacing.md};
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        margin-bottom: ${({ theme }) => theme.spacing.md};
+        padding-top: ${({ theme }) => theme.spacing.sm};
+    }
 `;
 
 const PuzzleTitle = styled.h3`
-    font-size: 2.2rem;
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
     font-family: ${({ theme }) => theme.fonts.heading};
     background: linear-gradient(45deg, #ff6b9d, #a18cd1, #4fd1c7, #ffd93d);
     background-size: 400% 400%;
@@ -305,10 +459,14 @@ const PuzzleTitle = styled.h3`
 `;
 
 const PuzzleSubtitle = styled.p`
-    font-size: 1.1rem;
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
     color: #666;
     margin-bottom: ${({ theme }) => theme.spacing.lg};
     font-style: italic;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        margin-bottom: ${({ theme }) => theme.spacing.md};
+    }
 `;
 
 const PuzzleContainer = styled.div`
@@ -318,8 +476,8 @@ const PuzzleContainer = styled.div`
 
 const CloseButton = styled.button`
     position: absolute;
-    top: ${({ theme }) => theme.spacing.lg};
-    right: ${({ theme }) => theme.spacing.lg};
+    top: ${({ theme }) => theme.spacing.md};
+    right: ${({ theme }) => theme.spacing.md};
     background: rgba(255, 255, 255, 0.9);
     border: 2px solid rgba(255, 107, 157, 0.3);
     border-radius: 50%;
@@ -333,12 +491,40 @@ const CloseButton = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        top: ${({ theme }) => theme.spacing.sm};
+        right: ${({ theme }) => theme.spacing.sm};
+        width: 36px;
+        height: 36px;
+        font-size: 1.3rem;
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        top: ${({ theme }) => theme.spacing.xs};
+        right: ${({ theme }) => theme.spacing.xs};
+        width: 32px;
+        height: 32px;
+        font-size: 1.2rem;
+    }
 
     &:hover {
         background: #ff6b9d;
         color: white;
         border-color: #ff6b9d;
         transform: scale(1.1);
+        box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+
+        @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+            transform: scale(1.05);
+        }
+    }
+
+    &:active {
+        transform: scale(0.95);
     }
 `;
 
@@ -374,9 +560,30 @@ const PuzzleButton = styled(motion.button)`
     user-select: none;
     -webkit-tap-highlight-color: transparent;
 
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        padding: ${({ theme }) => theme.spacing.md}
+            ${({ theme }) => theme.spacing.lg};
+        font-size: 1.2rem;
+        min-width: 100px;
+        min-height: 45px;
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        padding: ${({ theme }) => theme.spacing.sm}
+            ${({ theme }) => theme.spacing.md};
+        font-size: 1rem;
+        min-width: 90px;
+        min-height: 40px;
+    }
+
     &:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 25px rgba(255, 107, 157, 0.4);
+
+        @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(255, 107, 157, 0.3);
+        }
     }
 
     &:active {
@@ -387,6 +594,10 @@ const PuzzleButton = styled(motion.button)`
     &::before {
         content: "🧩";
         margin-right: 8px;
+
+        @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+            margin-right: 6px;
+        }
     }
 `;
 
@@ -399,6 +610,10 @@ const FloatingDecorations = styled.div`
     pointer-events: none;
     z-index: 1;
     overflow: hidden;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        display: none; /* Hide on mobile for better performance */
+    }
 `;
 
 const FloatingDecoration = styled(motion.div)<{ delay: number; size: number }>`
@@ -456,6 +671,26 @@ const MemoryGameContainer = styled.div`
     max-width: 450px;
     margin: 0 auto;
     padding: ${({ theme }) => theme.spacing.lg};
+    justify-items: center;
+    align-items: center;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        max-width: 380px;
+        gap: 12px;
+        padding: ${({ theme }) => theme.spacing.md};
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        max-width: 280px;
+        gap: 8px;
+        padding: ${({ theme }) => theme.spacing.sm};
+    }
+
+    @media (max-width: 320px) {
+        max-width: 240px;
+        gap: 6px;
+        padding: ${({ theme }) => theme.spacing.xs};
+    }
 `;
 
 const MemoryCard = styled(motion.div)<{ flipped: boolean; matched: boolean }>`
@@ -464,9 +699,33 @@ const MemoryCard = styled(motion.div)<{ flipped: boolean; matched: boolean }>`
     perspective: 1000px;
     cursor: pointer;
     position: relative;
+    transition: transform 0.2s ease;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        width: 75px;
+        height: 75px;
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        width: 60px;
+        height: 60px;
+    }
+
+    @media (max-width: 320px) {
+        width: 50px;
+        height: 50px;
+    }
 
     &:hover {
         transform: scale(1.05);
+
+        @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+            transform: scale(1.02);
+        }
+    }
+
+    &:active {
+        transform: scale(0.98);
     }
 `;
 
@@ -498,9 +757,25 @@ const MemoryCardFront = styled.div`
     color: rgba(255, 255, 255, 0.9);
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        border-radius: 14px;
+        border-width: 2px;
+        font-size: 2rem;
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        border-radius: 12px;
+        font-size: 1.5rem;
+    }
+
+    @media (max-width: 320px) {
+        border-radius: 10px;
+        font-size: 1.2rem;
+    }
+
     &::before {
         content: "?";
-        font-size: 2.5rem;
+        font-size: inherit;
         font-weight: bold;
     }
 `;
@@ -523,21 +798,47 @@ const MemoryCardBack = styled.div<{ matched: boolean }>`
     font-size: 2.2rem;
     transition: all 0.3s ease;
 
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        border-radius: 14px;
+        border-width: 2px;
+        font-size: 1.8rem;
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        border-radius: 12px;
+        font-size: 1.4rem;
+    }
+
+    @media (max-width: 320px) {
+        border-radius: 10px;
+        font-size: 1.1rem;
+    }
+
     ${({ matched }) =>
         matched &&
         `
         box-shadow: 0 0 30px rgba(74, 222, 128, 0.6);
         transform: rotateY(180deg) scale(1.05);
+        
+        @media (max-width: 480px) {
+            box-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
+            transform: rotateY(180deg) scale(1.03);
+        }
     `}
 `;
 
 const MemoryGameTitle = styled.h3`
     text-align: center;
     margin-bottom: ${({ theme }) => theme.spacing.xl};
-    font-size: 2.2rem;
+    font-size: clamp(1.2rem, 3.5vw, 2.2rem);
     color: #ff6b9d;
     font-weight: 400;
     font-family: ${({ theme }) => theme.fonts.heading};
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        margin-bottom: ${({ theme }) => theme.spacing.lg};
+        line-height: 1.3;
+    }
 `;
 
 const JourneyOverlay = styled(motion.div)`
@@ -555,10 +856,21 @@ const JourneyOverlay = styled(motion.div)`
     justify-content: center;
     z-index: 9999;
     gap: 2rem;
+    padding: ${({ theme }) => theme.spacing.md};
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        gap: 1.5rem;
+        padding: ${({ theme }) => theme.spacing.sm};
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        gap: 1rem;
+        padding: ${({ theme }) => theme.spacing.xs};
+    }
 `;
 
 const RocketEmoji = styled(motion.div)`
-    font-size: 8rem;
+    font-size: clamp(4rem, 12vw, 8rem);
     color: white;
     text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
     animation: rocketFloat 3s ease-in-out infinite;
@@ -570,23 +882,45 @@ const RocketEmoji = styled(motion.div)`
         }
         50% {
             transform: translateY(-20px) rotate(3deg) scale(1.1);
+
+            @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+                transform: translateY(-10px) rotate(2deg) scale(1.05);
+            }
         }
     }
 
-    @media (max-width: 768px) {
-        font-size: 6rem;
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
     }
 `;
 
 const JourneyText = styled(motion.div)`
-    font-size: 3rem;
+    font-size: clamp(1.8rem, 6vw, 3rem);
     font-weight: 600;
-    letter-spacing: 1px;
+    letter-spacing: clamp(0.3px, 0.2vw, 1px);
     color: white;
     text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
     position: relative;
     text-align: center;
     font-family: ${({ theme }) => theme.fonts.heading};
+    line-height: 1.2;
+    max-width: 90vw;
+    word-wrap: break-word;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+        max-width: 95vw;
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        line-height: 1.1;
+        max-width: 98vw;
+    }
 
     &::after {
         content: "";
@@ -604,6 +938,18 @@ const JourneyText = styled(motion.div)`
         );
         border-radius: 2px;
         animation: rainbowLine 3s ease-in-out infinite;
+
+        @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+            bottom: -10px;
+            height: 2px;
+            width: 85%;
+        }
+
+        @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+            bottom: -8px;
+            height: 1.5px;
+            width: 90%;
+        }
     }
 
     @keyframes rainbowLine {
@@ -614,12 +960,11 @@ const JourneyText = styled(motion.div)`
         50% {
             opacity: 1;
             transform: translateX(-50%) scaleX(1.1);
-        }
-    }
 
-    @media (max-width: 768px) {
-        font-size: 2.2rem;
-        letter-spacing: 0.5px;
+            @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+                transform: translateX(-50%) scaleX(1.05);
+            }
+        }
     }
 `;
 
@@ -701,7 +1046,7 @@ const InteractiveSection: React.FC = () => {
                         setShowPuzzle(false); // Close modal after rocket appears
                         setTimeout(() => {
                             setShowJourneyMessage(false);
-                            navigate("/galaxy");
+                            navigate("/earth");
                         }, 3000); // 3 seconds
                     }, 1000); // Wait 2 seconds before showing rocket
                 }

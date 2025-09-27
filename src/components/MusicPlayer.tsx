@@ -1,17 +1,18 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
+import { useMusic } from "../contexts/MusicContext";
 
 const MusicContainer = styled.div`
     position: fixed;
-    top: ${({ theme }) => theme.spacing.lg};
-    right: ${({ theme }) => theme.spacing.lg};
+    top: clamp(1rem, 3vw, ${({ theme }) => theme.spacing.lg});
+    right: clamp(1rem, 3vw, ${({ theme }) => theme.spacing.lg});
     z-index: 1000;
 `;
 
 const MusicButton = styled(motion.button)<{ $isPlaying: boolean }>`
-    width: 60px;
-    height: 60px;
+    width: clamp(50px, 8vw, 60px);
+    height: clamp(50px, 8vw, 60px);
     background: ${({ $isPlaying }) =>
         $isPlaying
             ? "linear-gradient(135deg, #ff6b9d 0%, #a18cd1 100%)"
@@ -20,7 +21,7 @@ const MusicButton = styled(motion.button)<{ $isPlaying: boolean }>`
     border: 2px solid #ff6b9d;
     border-radius: 50%;
     color: ${({ $isPlaying }) => ($isPlaying ? "#ffffff" : "#ff6b9d")};
-    font-size: 1.5rem;
+    font-size: clamp(1.2rem, 2.5vw, 1.5rem);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -55,16 +56,16 @@ const MusicButton = styled(motion.button)<{ $isPlaying: boolean }>`
 
 const LoopIndicator = styled.div<{ $isPlaying: boolean }>`
     position: absolute;
-    top: -8px;
-    right: -8px;
-    width: 20px;
-    height: 20px;
+    top: clamp(-6px, -1vw, -8px);
+    right: clamp(-6px, -1vw, -8px);
+    width: clamp(16px, 3vw, 20px);
+    height: clamp(16px, 3vw, 20px);
     background: linear-gradient(135deg, #ff6b9d 0%, #a18cd1 100%);
     border-radius: 50%;
     display: ${({ $isPlaying }) => ($isPlaying ? "flex" : "none")};
     align-items: center;
     justify-content: center;
-    font-size: 0.6rem;
+    font-size: clamp(0.5rem, 1vw, 0.6rem);
     color: white;
     font-weight: bold;
     box-shadow: 0 2px 8px rgba(255, 107, 157, 0.3);
@@ -77,49 +78,16 @@ const PlayIcon = styled(motion.i)`
 `;
 
 const MusicPlayer: React.FC = () => {
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const audioRef = useRef<HTMLAudioElement>(null);
-
-    const toggleMusic = async () => {
-        if (!audioRef.current || isLoading) return;
-
-        setIsLoading(true);
-
-        try {
-            if (isPlaying) {
-                audioRef.current.pause();
-                setIsPlaying(false);
-            } else {
-                // Wait for any previous operations to complete
-                await new Promise((resolve) => setTimeout(resolve, 100));
-
-                const playPromise = audioRef.current.play();
-                if (playPromise !== undefined) {
-                    await playPromise;
-                    setIsPlaying(true);
-                }
-            }
-        } catch (error) {
-            console.error("Audio playback error:", error);
-            // Reset state on error
-            setIsPlaying(false);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+    const { isPlaying, isLoading, toggleMusic, audioRef } = useMusic();
 
     const handleAudioError = (
         e: React.SyntheticEvent<HTMLAudioElement, Event>
     ) => {
         console.error("Audio loading error:", e);
-        setIsPlaying(false);
-        setIsLoading(false);
     };
 
     const handleAudioLoad = () => {
         console.log("Audio file loaded successfully");
-        setIsLoading(false);
     };
 
     const handleAudioEnded = () => {

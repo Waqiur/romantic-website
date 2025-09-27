@@ -158,10 +158,10 @@ const EarthSVG = styled(motion.div)`
 
 const RocketImage = styled(motion.img)`
     position: absolute;
-    top: -2%;
-    left: 43%;
-    transform: translate(-50%, -50%);
-    width: 100px;
+    top: 1%;
+    left: 45%;
+    transform: translate(-50%, 0%);
+    width: 80px;
     margin-top: 200px;
     height: auto;
     z-index: 20;
@@ -169,8 +169,47 @@ const RocketImage = styled(motion.img)`
     filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.6));
     transition: all 0.3s ease;
 
+    /* Responsive sizing for all screen types */
+    @media (max-width: 1200px) {
+        width: 70px;
+        top: 2.5%;
+    }
+
+    @media (max-width: 768px) {
+        width: 60px;
+        top: 3.5%;
+    }
+
+    @media (max-width: 600px) {
+        width: 60px;
+        top: 2.5%;
+    }
+
+    @media (max-width: 540px) {
+        width: 60px;
+        top: 1.5%;
+    }
+
+    @media (max-width: 480px) {
+        width: 50px;
+        top: 2%;
+        left: 45%;
+    }
+
+    @media (max-width: 390px) {
+        width: 50px;
+        top: 0%;
+        left: 45%;
+    }
+
+    @media (max-width: 320px) {
+        width: 40px;
+        top: -1%;
+        left: 43%;
+    }
+
     &:hover {
-        transform: translate(-50%, -50%) scale(1.1);
+        transform: translate(-50%, 0%) scale(1.1);
         filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.8));
     }
 `;
@@ -212,7 +251,7 @@ const EarthPage: React.FC<EarthPageProps> = ({ isVisible = true, onClose }) => {
     const handleStartJourney = () => {
         setIsFlying(true);
         setTimeout(() => {
-            navigate("/galaxy");
+            navigate("/lovemap");
         }, 2000); // Navigate after 2 seconds
     };
 
@@ -449,7 +488,6 @@ const EarthPage: React.FC<EarthPageProps> = ({ isVisible = true, onClose }) => {
                     <RocketImage
                         src="/rocket.webp"
                         alt="Rocket"
-                        onClick={onClose || (() => window.history.back())}
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.95 }}
                         initial={{ scale: 0, opacity: 0 }}

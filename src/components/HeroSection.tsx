@@ -24,7 +24,9 @@ const HeroContainer = styled.section`
 const HeroContent = styled(Glass)`
     text-align: center;
     z-index: 2;
-    width: 800px;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 ${({ theme }) => theme.spacing.md};
     padding: ${({ theme }) => theme.spacing.xl};
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(20px);
@@ -34,6 +36,20 @@ const HeroContent = styled(Glass)`
         0 0 0 1px rgba(255, 255, 255, 0.1),
         inset 0 1px 0 rgba(255, 255, 255, 0.2);
     position: relative;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        max-width: 90%;
+        margin: 0 ${({ theme }) => theme.spacing.sm};
+        padding: ${({ theme }) => theme.spacing.lg};
+        border-radius: 20px;
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        max-width: 95%;
+        margin: 0 ${({ theme }) => theme.spacing.xs};
+        padding: ${({ theme }) => theme.spacing.md};
+        border-radius: 16px;
+    }
 
     &::before {
         content: "";
@@ -51,6 +67,14 @@ const HeroContent = styled(Glass)`
         border-radius: 24px;
         opacity: 0.7;
         z-index: -1;
+
+        @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+            border-radius: 20px;
+        }
+
+        @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+            border-radius: 16px;
+        }
     }
 `;
 
@@ -99,7 +123,7 @@ const Cursor = styled.span<{ $visible: boolean }>`
 `;
 
 const HeroSubtitle = styled(motion.p)`
-    font-size: 1.4rem;
+    font-size: clamp(1rem, 3vw, 1.4rem);
     color: rgba(255, 255, 255, 0.9);
     margin-bottom: ${({ theme }) => theme.spacing.xl};
     font-weight: 400;
@@ -109,15 +133,37 @@ const HeroSubtitle = styled(motion.p)`
     margin-left: auto;
     margin-right: auto;
     position: relative;
+    padding: 0 ${({ theme }) => theme.spacing.md};
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        max-width: 100%;
+        padding: 0 ${({ theme }) => theme.spacing.sm};
+        margin-bottom: ${({ theme }) => theme.spacing.lg};
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        padding: 0 ${({ theme }) => theme.spacing.xs};
+        margin-bottom: ${({ theme }) => theme.spacing.md};
+        line-height: 1.5;
+
+        br {
+            display: none;
+        }
+    }
 
     &::before {
         content: '"';
         position: absolute;
         top: -10px;
         left: -20px;
-        font-size: 3rem;
+        font-size: clamp(2rem, 5vw, 3rem);
         color: rgba(255, 107, 157, 0.6);
         font-family: serif;
+
+        @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+            left: -10px;
+            top: -5px;
+        }
     }
 
     &::after {
@@ -125,37 +171,39 @@ const HeroSubtitle = styled(motion.p)`
         position: absolute;
         bottom: -30px;
         right: -20px;
-        font-size: 3rem;
+        font-size: clamp(2rem, 5vw, 3rem);
         color: rgba(255, 107, 157, 0.6);
         font-family: serif;
+
+        @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+            right: -10px;
+            bottom: -15px;
+        }
     }
 `;
 
 const PulsingHeart = styled(motion.div)`
-    font-size: 5rem;
+    font-size: clamp(3rem, 8vw, 5rem);
     color: #ff6b9d;
     display: inline-block;
     margin: ${({ theme }) => theme.spacing.xl} 0;
     cursor: pointer;
     position: relative;
-    filter: drop-shadow(0 0 20px rgba(255, 107, 157, 0.4));
+    filter: drop-shadow(0 0 40px rgba(255, 107, 157, 0.4));
 
-    &::before {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 120%;
-        height: 120%;
-        background: radial-gradient(
-            circle,
-            rgba(255, 107, 157, 0.3) 0%,
-            transparent 70%
-        );
-        border-radius: 50%;
-        animation: heartGlow 2s ease-in-out infinite alternate;
-        z-index: -1;
+    /* Touch-friendly for mobile */
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        margin: ${({ theme }) => theme.spacing.lg} 0;
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        margin: ${({ theme }) => theme.spacing.md} 0;
     }
 
     @keyframes heartGlow {

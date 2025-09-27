@@ -126,18 +126,90 @@ export const GlobalStyles = createGlobalStyle`
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 ${({ theme }) => theme.spacing.md};
+    width: 100%;
 
     @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
       padding: 0 ${({ theme }) => theme.spacing.sm};
+      max-width: 95%;
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+      padding: 0 ${({ theme }) => theme.spacing.xs};
+      max-width: 90%;
     }
   }
 
   /* Section spacing */
   section {
     padding: ${({ theme }) => theme.spacing.xxl} 0;
+    width: 100%;
 
     @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
       padding: ${({ theme }) => theme.spacing.xl} 0;
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+      padding: ${({ theme }) => theme.spacing.lg} 0;
+    }
+  }
+
+  /* Responsive typography */
+  .responsive-title {
+    font-size: clamp(2rem, 5vw, 4rem);
+    line-height: 1.2;
+  }
+
+  .responsive-subtitle {
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    line-height: 1.4;
+  }
+
+  .responsive-text {
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+    line-height: 1.6;
+  }
+
+  /* Mobile-first responsive utilities */
+  .hide-mobile {
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+      display: none;
+    }
+  }
+
+  .hide-tablet {
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+      display: none;
+    }
+  }
+
+  .show-mobile {
+    display: none;
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+      display: block;
+    }
+  }
+
+  /* Responsive grid */
+  .responsive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: ${({ theme }) => theme.spacing.lg};
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+      grid-template-columns: 1fr;
+      gap: ${({ theme }) => theme.spacing.md};
+    }
+  }
+
+  /* Responsive flex */
+  .responsive-flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: ${({ theme }) => theme.spacing.md};
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+      flex-direction: column;
+      align-items: center;
     }
   }
 
