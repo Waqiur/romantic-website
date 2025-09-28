@@ -10,6 +10,14 @@ const NotesContainer = styled.div`
     height: 100%;
     pointer-events: none;
     z-index: 998;
+
+    /* Reduce motion on mobile for better performance */
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        * {
+            animation-duration: 0.3s !important;
+            transition-duration: 0.2s !important;
+        }
+    }
 `;
 
 const LoveNote = styled(motion.div)`
@@ -20,13 +28,21 @@ const LoveNote = styled(motion.div)`
         ${({ theme }) => theme.spacing.lg};
     border-radius: ${({ theme }) => theme.borderRadius.lg};
     box-shadow: ${({ theme }) => theme.shadows.strong};
-    max-width: 300px;
-    font-size: 1rem;
+    max-width: min(280px, 85vw);
+    width: 100%;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
     line-height: 1.4;
     backdrop-filter: blur(10px);
     border: 2px solid rgba(255, 255, 255, 0.2);
     pointer-events: auto;
     cursor: pointer;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        padding: ${({ theme }) => theme.spacing.sm}
+            ${({ theme }) => theme.spacing.md};
+        max-width: min(250px, 90vw);
+        font-size: 0.85rem;
+    }
 
     &::before {
         content: "";
@@ -38,6 +54,14 @@ const LoveNote = styled(motion.div)`
         border-left: 10px solid transparent;
         border-right: 10px solid transparent;
         border-top: 10px solid ${({ theme }) => theme.colors.primary};
+
+        @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+            left: 15px;
+            border-left-width: 8px;
+            border-right-width: 8px;
+            border-top-width: 8px;
+            bottom: -8px;
+        }
     }
 
     &::after {
@@ -54,6 +78,14 @@ const LoveNote = styled(motion.div)`
         align-items: center;
         justify-content: center;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+        @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+            top: -12px;
+            right: -12px;
+            width: 24px;
+            height: 24px;
+            font-size: 1.2rem;
+        }
     }
 `;
 
@@ -73,6 +105,14 @@ const CloseButton = styled.button`
     justify-content: center;
     font-size: 0.8rem;
     transition: all 0.2s ease;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        width: 20px;
+        height: 20px;
+        font-size: 0.7rem;
+        top: 3px;
+        right: 3px;
+    }
 
     &:hover {
         background: rgba(255, 255, 255, 0.3);
@@ -134,15 +174,28 @@ const LoveNotes: React.FC = () => {
             loveMessages[Math.floor(Math.random() * loveMessages.length)];
         const windowWidth = window.innerWidth;
         const windowHeight = window.innerHeight;
+        const isMobile = windowWidth <= 768;
+
+        // Adjust positioning for mobile vs desktop
+        const sideMargin = isMobile ? 15 : 20;
+        const topMargin = isMobile ? 80 : 20; // More top margin on mobile for status bar
+        const noteWidth = isMobile ? 250 : 300;
+        const noteHeight = isMobile ? 120 : 150;
 
         // Position the note randomly, but ensure it's visible
         const x = Math.max(
-            20,
-            Math.min(windowWidth - 320, Math.random() * windowWidth)
+            sideMargin,
+            Math.min(
+                windowWidth - noteWidth - sideMargin,
+                Math.random() * (windowWidth - noteWidth)
+            )
         );
         const y = Math.max(
-            20,
-            Math.min(windowHeight - 200, Math.random() * windowHeight)
+            topMargin,
+            Math.min(
+                windowHeight - noteHeight - sideMargin,
+                Math.random() * (windowHeight - noteHeight)
+            )
         );
 
         const newNote: Note = {
@@ -193,11 +246,11 @@ const LoveNotes: React.FC = () => {
                         transition={{
                             type: "spring",
                             stiffness: 300,
-                            damping: 20,
+                            damping: 25,
                         }}
                         whileHover={{
-                            scale: 1.05,
-                            rotate: 2,
+                            scale: 1.02,
+                            rotate: 1,
                             transition: { duration: 0.2 },
                         }}
                         onClick={() => removeNote(note.id)}

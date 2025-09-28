@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect } from "react";
+import { Suspense, lazy } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { GlobalStyles } from "./styles/GlobalStyles";
@@ -30,28 +30,6 @@ const MainPage = styled.div`
     min-height: 100vh;
     overflow-x: hidden;
 
-    /* Performance optimizations */
-    * {
-        will-change: auto;
-    }
-
-    /* Responsive layout improvements */
-    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-        /* Mobile-specific optimizations */
-        & > section {
-            padding-left: ${({ theme }) => theme.spacing.sm};
-            padding-right: ${({ theme }) => theme.spacing.sm};
-        }
-    }
-
-    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-        /* Small mobile optimizations */
-        & > section {
-            padding-left: ${({ theme }) => theme.spacing.xs};
-            padding-right: ${({ theme }) => theme.spacing.xs};
-        }
-    }
-
     /* Reduce motion for users who prefer it */
     @media (prefers-reduced-motion: reduce) {
         * {
@@ -60,39 +38,9 @@ const MainPage = styled.div`
             transition-duration: 0.01ms !important;
         }
     }
-
-    /* Touch device optimizations */
-    @media (hover: none) and (pointer: coarse) {
-        /* Larger touch targets for mobile */
-        button,
-        a {
-            min-height: 44px;
-            min-width: 44px;
-        }
-    }
 `;
 
 function App() {
-    useEffect(() => {
-        // Performance monitoring
-        const observer = new PerformanceObserver((list) => {
-            for (const entry of list.getEntries()) {
-                if (entry.duration > 100) {
-                    // Log slow operations
-                    console.log("Slow operation detected:", entry);
-                }
-            }
-        });
-
-        try {
-            observer.observe({ entryTypes: ["measure", "longtask"] });
-        } catch (e) {
-            // Performance API not fully supported
-        }
-
-        return () => observer.disconnect();
-    }, []);
-
     return (
         <ThemeProvider theme={theme}>
             <MusicProvider>

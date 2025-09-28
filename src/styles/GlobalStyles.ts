@@ -64,35 +64,6 @@ export const GlobalStyles = createGlobalStyle`
     }
   }
 
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes heartBeat {
-    0%, 100% {
-      transform: scale(1);
-    }
-    14% {
-      transform: scale(1.3);
-    }
-    28% {
-      transform: scale(1);
-    }
-    42% {
-      transform: scale(1.3);
-    }
-    70% {
-      transform: scale(1);
-    }
-  }
-
   @keyframes sparkle {
     0%, 100% {
       opacity: 0;
@@ -105,20 +76,12 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   /* Utility classes */
-  .fade-in-up {
-    animation: fadeInUp 0.8s ease-out;
-  }
-
   .pulse {
     animation: pulse 2s infinite;
   }
 
   .float {
     animation: float 6s ease-in-out infinite;
-  }
-
-  .heart-beat {
-    animation: heartBeat 1.3s ease-in-out infinite;
   }
 
   /* Container styles */
@@ -186,30 +149,6 @@ export const GlobalStyles = createGlobalStyle`
     display: none;
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
       display: block;
-    }
-  }
-
-  /* Responsive grid */
-  .responsive-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: ${({ theme }) => theme.spacing.lg};
-
-    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-      grid-template-columns: 1fr;
-      gap: ${({ theme }) => theme.spacing.md};
-    }
-  }
-
-  /* Responsive flex */
-  .responsive-flex {
-    display: flex;
-    flex-wrap: wrap;
-    gap: ${({ theme }) => theme.spacing.md};
-
-    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-      flex-direction: column;
-      align-items: center;
     }
   }
 

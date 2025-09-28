@@ -117,33 +117,30 @@ const Footer: React.FC = () => {
     }, [currentIndex, footerMessage]);
 
     return (
-        <>
-            <FooterContainer>
-                <Container>
-                    <FooterContent>
-                        <FooterHeart
-                            animate={{
-                                scale: [1, 1.2, 1],
-                            }}
-                            transition={{
-                                duration: 2,
-                                repeat: Infinity,
-                                ease: "easeInOut",
-                            }}
-                        >
-                            💖
-                        </FooterHeart>
+        <FooterContainer>
+            <Container>
+                <FooterContent>
+                    <FooterHeart
+                        animate={{
+                            scale: [1, 1.2, 1],
+                        }}
+                        transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                        }}
+                    >
+                        💖
+                    </FooterHeart>
 
-                        <FooterMessage>
-                            {" "}
-                            <TypewriterText $isTyping={isTyping}>
-                                {displayedText}
-                            </TypewriterText>
-                        </FooterMessage>
-                    </FooterContent>
-                </Container>
-            </FooterContainer>
-        </>
+                    <FooterMessage>
+                        <TypewriterText $isTyping={isTyping}>
+                            {displayedText}
+                        </TypewriterText>
+                    </FooterMessage>
+                </FooterContent>
+            </Container>
+        </FooterContainer>
     );
 };
 

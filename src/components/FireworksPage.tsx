@@ -417,6 +417,18 @@ const FireworksPage: React.FC = () => {
                     this.starLife
                 );
                 BurstFlash.add(x, y, this.spreadSize / 4);
+
+                // Remove the comet when it bursts
+                if (this.comet) {
+                    // Find and remove the comet from the stars array
+                    const whiteStars = stars[COLOR.White];
+                    const cometIndex = whiteStars.indexOf(this.comet);
+                    if (cometIndex !== -1) {
+                        whiteStars.splice(cometIndex, 1);
+                        Star.returnInstance(this.comet);
+                    }
+                    this.comet = null;
+                }
             }
         }
 

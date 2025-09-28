@@ -1,10 +1,4 @@
-import React, {
-    createContext,
-    useContext,
-    useState,
-    useRef,
-    useEffect,
-} from "react";
+import React, { createContext, useContext, useState, useRef } from "react";
 
 interface MusicContextType {
     isPlaying: boolean;
@@ -59,24 +53,6 @@ export const MusicProvider: React.FC<MusicProviderProps> = ({ children }) => {
             setIsLoading(false);
         }
     };
-
-    // Handle page visibility changes to pause/resume music appropriately
-    useEffect(() => {
-        const handleVisibilityChange = () => {
-            if (document.hidden && audioRef.current) {
-                // Optional: pause music when tab is not visible
-                // audioRef.current.pause();
-                // setIsPlaying(false);
-            }
-        };
-
-        document.addEventListener("visibilitychange", handleVisibilityChange);
-        return () =>
-            document.removeEventListener(
-                "visibilitychange",
-                handleVisibilityChange
-            );
-    }, []);
 
     const value = {
         isPlaying,

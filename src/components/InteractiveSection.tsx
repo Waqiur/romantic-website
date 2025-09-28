@@ -982,8 +982,7 @@ const InteractiveSection = forwardRef<
     // Initialize memory game
     useEffect(() => {
         if (showPuzzle) {
-            // const cardEmojis = ["🌹", "💖", "🌸", "�", "🌺", "�", "🌷", "💓"];
-            const cardEmojis = ["🌹", "💖"];
+            const cardEmojis = ["🌹", "💖", "🌸", "�", "🌺", "�", "🌷", "💓"];
             const shuffledCards = [...cardEmojis, ...cardEmojis]
                 .sort(() => Math.random() - 0.5)
                 .map((emoji, index) => ({
@@ -1158,7 +1157,6 @@ const InteractiveSection = forwardRef<
                         initial="hidden"
                         animate={inView ? "visible" : "hidden"}
                     >
-                        {" "}
                         <InteractiveGrid>
                             <InteractiveCard
                                 variants={cardVariants}
@@ -1198,7 +1196,7 @@ const InteractiveSection = forwardRef<
                                     Watch a spectacular fireworks display in the
                                     night sky! ✨
                                 </CardDescription>
-                            </InteractiveCard>{" "}
+                            </InteractiveCard>
                         </InteractiveGrid>
                     </motion.div>
 
@@ -1215,7 +1213,7 @@ const InteractiveSection = forwardRef<
                         </PuzzleButton>
                     </PuzzleButtonContainer>
                 </Container>
-            </InteractiveContainer>{" "}
+            </InteractiveContainer>
             <PuzzleModal $isVisible={showPuzzle}>
                 <PuzzleContent
                     initial={{ scale: 0, opacity: 0, rotateY: -90 }}

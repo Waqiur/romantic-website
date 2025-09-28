@@ -7,21 +7,7 @@ import { theme } from "../styles/theme";
 
 const LoveMapContainer = styled(motion.div)<{ $isVisible: boolean }>`
     position: fixed;
-    top                    <motion.div
-                        key={currentMilestoneIndex}
-                        initial={currentVariant.initial}
-                        animate={currentVariant.animate}
-                        exit={currentVariant.exit}
-                        transition={currentVariant.transition || { duration: 0.5 }}
-                        style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "space-around",
-                            width: "80%",
-                            height: "80%",
-                            gap: "2rem",
-                        }}
-                    > 0;
+    top: 0;
     width: 100%;
     height: 100%;
     background: radial-gradient(ellipse at center, #1c2837 0%, #050608 100%);

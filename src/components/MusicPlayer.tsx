@@ -87,11 +87,11 @@ const MusicPlayer: React.FC = () => {
     };
 
     const handleAudioLoad = () => {
-        console.log("Audio file loaded successfully");
+        // Audio file loaded successfully
     };
 
     const handleAudioEnded = () => {
-        console.log("Song ended - looping back to start");
+        // Song ended - looping back to start
         // The loop attribute should handle this automatically,
         // but we can add custom logic here if needed
     };
