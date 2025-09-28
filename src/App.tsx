@@ -20,9 +20,9 @@ const FloatingHearts = lazy(() => import("./components/FloatingHearts"));
 const LoveNotes = lazy(() => import("./components/LoveNotes"));
 const SpaceBackground = lazy(() => import("./components/SpaceBackground"));
 const CursorFollower = lazy(() => import("./components/CursorFollower"));
-const GalaxyPage = lazy(() => import("./components/GalaxyPage"));
 const EarthPage = lazy(() => import("./components/EarthPage"));
 const LoveMapPage = lazy(() => import("./components/LoveMapPage"));
+const FireworksPage = lazy(() => import("./components/FireworksPage"));
 
 const MainPage = styled.div`
     position: relative;
@@ -246,9 +246,12 @@ function App() {
                                     </MainPage>
                                 }
                             />
-                            <Route path="/galaxy" element={<GalaxyPage />} />
                             <Route path="/earth" element={<EarthPage />} />
                             <Route path="/lovemap" element={<LoveMapPage />} />
+                            <Route
+                                path="/fireworks"
+                                element={<FireworksPage />}
+                            />
                         </Routes>
                         <MusicPlayer />
                     </Suspense>

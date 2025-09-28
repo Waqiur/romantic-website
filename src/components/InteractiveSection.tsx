@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, forwardRef } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
 import { useNavigate } from "react-router-dom";
 import LovePoems from "./LovePoems";
 import CuteReminders from "./CuteReminders";
@@ -325,32 +324,6 @@ const CardDescription = styled.p`
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
         margin-bottom: ${({ theme }) => theme.spacing.sm};
         line-height: 1.5;
-    }
-`;
-
-const CountdownDisplay = styled(motion.div)`
-    font-size: clamp(1rem, 2.5vw, 1.3rem);
-    font-weight: bold;
-    color: #ff6b9d;
-    margin-top: ${({ theme }) => theme.spacing.md};
-    font-family: ${({ theme }) => theme.fonts.heading};
-    transition: transform 0.15s ease-out, background 0.15s ease-out;
-    background: rgba(255, 255, 255, 0.9);
-    padding: ${({ theme }) => theme.spacing.sm}
-        ${({ theme }) => theme.spacing.sm};
-    border-radius: 20px;
-    border: 1px solid rgba(255, 107, 157, 0.2);
-    will-change: transform, background;
-
-    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-        padding: ${({ theme }) => theme.spacing.xs}
-            ${({ theme }) => theme.spacing.sm};
-        margin-top: ${({ theme }) => theme.spacing.sm};
-    }
-
-    ${InteractiveCard}:hover & {
-        transform: scale(1.05);
-        background: rgba(255, 255, 255, 0.95);
     }
 `;
 
@@ -970,24 +943,27 @@ const JourneyText = styled(motion.div)`
     }
 `;
 
-interface CountdownTime {
-    days: number;
-    hours: number;
-    minutes: number;
-    seconds: number;
-}
+const InteractiveSection = forwardRef<
+    HTMLDivElement,
+    React.PropsWithChildren<{}>
+>((props, ref) => {
+    const [inView, setInView] = useState(true);
 
-const InteractiveSection: React.FC = () => {
-    const [ref, inView] = useInView({
-        triggerOnce: true,
-        threshold: 0.1,
-    });
-    const [countdown, setCountdown] = useState<CountdownTime>({
-        days: 0,
-        hours: 0,
-        minutes: 0,
-        seconds: 0,
-    });
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setInView(entry.isIntersecting);
+            },
+            { threshold: 0.1 }
+        );
+
+        if (ref && "current" in ref && ref.current) {
+            observer.observe(ref.current);
+        }
+
+        return () => observer.disconnect();
+    }, [ref]);
+
     const [showPuzzle, setShowPuzzle] = useState(false);
     const [showJourneyMessage, setShowJourneyMessage] = useState(false);
     const navigate = useNavigate();
@@ -1069,34 +1045,6 @@ const InteractiveSection: React.FC = () => {
             }
         }
     };
-
-    // Countdown to a special date (you can customize this)
-    useEffect(() => {
-        const targetDate = new Date("2025-12-31"); // Change this to your special date
-
-        const updateCountdown = () => {
-            const now = new Date().getTime();
-            const distance = targetDate.getTime() - now;
-
-            if (distance > 0) {
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor(
-                    (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-                );
-                const minutes = Math.floor(
-                    (distance % (1000 * 60 * 60)) / (1000 * 60)
-                );
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                setCountdown({ days, hours, minutes, seconds });
-            }
-        };
-
-        const interval = setInterval(updateCountdown, 1000);
-        updateCountdown();
-
-        return () => clearInterval(interval);
-    }, []);
 
     const handlePuzzle = () => {
         setShowPuzzle(true);
@@ -1250,17 +1198,6 @@ const InteractiveSection: React.FC = () => {
                                     Watch a spectacular fireworks display in the
                                     night sky! ✨
                                 </CardDescription>
-                            </InteractiveCard>
-                            <InteractiveCard variants={cardVariants}>
-                                <CardIcon>⏰</CardIcon>
-                                <CardTitle>Countdown</CardTitle>
-                                <CardDescription>
-                                    Days until our special date
-                                </CardDescription>
-                                <CountdownDisplay>
-                                    {countdown.days}d {countdown.hours}h{" "}
-                                    {countdown.minutes}m {countdown.seconds}s
-                                </CountdownDisplay>
                             </InteractiveCard>{" "}
                         </InteractiveGrid>
                     </motion.div>
@@ -1370,6 +1307,6 @@ const InteractiveSection: React.FC = () => {
             )}
         </>
     );
-};
+});
 
 export default InteractiveSection;
