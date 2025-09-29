@@ -5,8 +5,8 @@ import { GlobalStyles } from "./styles/GlobalStyles";
 import { theme } from "./styles/theme";
 import { MusicProvider } from "./contexts/MusicContext";
 import MusicPlayer from "./components/MusicPlayer";
-import { ScrollOptimizer } from "./utils/performance";
 import { preloadAllImages } from "./utils/imagePreloader";
+import { ScrollOptimizer } from "./utils/performance";
 
 // Group components into logical chunks for better code splitting
 
@@ -19,12 +19,6 @@ const SpaceBackground = lazy(
 );
 
 // Interactive components chunk - animations and effects
-const CursorFollower = lazy(
-    () =>
-        import(
-            /* webpackChunkName: "interactive" */ "./components/CursorFollower"
-        )
-);
 const FloatingHearts = lazy(
     () =>
         import(
@@ -229,9 +223,6 @@ function App() {
                                             <SpaceBackground />
                                         </Suspense>
 
-                                        <Suspense fallback={null}>
-                                            <CursorFollower />
-                                        </Suspense>
                                         <Suspense fallback={null}>
                                             <FloatingHearts />
                                         </Suspense>

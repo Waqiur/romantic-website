@@ -7,29 +7,29 @@ import { useEffect } from "react";
 // List of all images to preload
 const IMAGES_TO_PRELOAD = [
     // Carousel images
-    "/carousel-images/image_1.webp",
-    "/carousel-images/image_2.webp",
-    "/carousel-images/image_3.webp",
-    "/carousel-images/image_4.webp",
-    "/carousel-images/image_5.webp",
-    "/carousel-images/image_6.webp",
-    "/carousel-images/image_7.webp",
-    "/carousel-images/image_8.webp",
-    "/carousel-images/image_9.webp",
+    `${process.env.PUBLIC_URL}/carousel-images/image_1.webp`,
+    `${process.env.PUBLIC_URL}/carousel-images/image_2.webp`,
+    `${process.env.PUBLIC_URL}/carousel-images/image_3.webp`,
+    `${process.env.PUBLIC_URL}/carousel-images/image_4.webp`,
+    `${process.env.PUBLIC_URL}/carousel-images/image_5.webp`,
+    `${process.env.PUBLIC_URL}/carousel-images/image_6.webp`,
+    `${process.env.PUBLIC_URL}/carousel-images/image_7.webp`,
+    `${process.env.PUBLIC_URL}/carousel-images/image_8.webp`,
+    `${process.env.PUBLIC_URL}/carousel-images/image_9.webp`,
 
     // Planet images
-    "/planets/earth.png",
-    "/planets/jupiter.png",
-    "/planets/mars.png",
-    "/planets/mercury.png",
-    "/planets/neptune.png",
-    "/planets/saturn.png",
-    "/planets/uranus.png",
-    "/planets/venus.png",
+    `${process.env.PUBLIC_URL}/planets/earth.png`,
+    `${process.env.PUBLIC_URL}/planets/jupiter.png`,
+    `${process.env.PUBLIC_URL}/planets/mars.png`,
+    `${process.env.PUBLIC_URL}/planets/mercury.png`,
+    `${process.env.PUBLIC_URL}/planets/neptune.png`,
+    `${process.env.PUBLIC_URL}/planets/saturn.png`,
+    `${process.env.PUBLIC_URL}/planets/uranus.png`,
+    `${process.env.PUBLIC_URL}/planets/venus.png`,
 
     // Other images
-    "/image.webp",
-    "/rocket.webp",
+    `${process.env.PUBLIC_URL}/image.webp`,
+    `${process.env.PUBLIC_URL}/rocket.webp`,
 ];
 
 /**

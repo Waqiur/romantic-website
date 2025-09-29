@@ -111,8 +111,10 @@ const MusicPlayer: React.FC = React.memo(() => {
                 onEnded={handleAudioEnded}
                 preload="metadata"
             >
-                <source src="/La Mentira.aac" type="audio/aac" />
-                <source src="./La Mentira.aac" type="audio/aac" />
+                <source
+                    src={`${process.env.PUBLIC_URL}/La Mentira.aac`}
+                    type="audio/aac"
+                />
                 Your browser does not support the audio element.
             </audio>{" "}
             <MusicButton
