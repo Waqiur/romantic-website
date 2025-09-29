@@ -579,7 +579,7 @@ const PuzzleButton = styled(motion.button)`
     }
 `;
 
-const FloatingDecorations = styled.div`
+const FloatingDecorations = styled.div<{ $inView: boolean }>`
     position: absolute;
     top: 0;
     left: 0;
@@ -588,6 +588,7 @@ const FloatingDecorations = styled.div`
     pointer-events: none;
     z-index: 1;
     overflow: hidden;
+    display: ${({ $inView }) => ($inView ? "block" : "none")};
 
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
         display: none; /* Hide on mobile for better performance */
@@ -1124,7 +1125,7 @@ const InteractiveSection = forwardRef<
     return (
         <>
             <InteractiveContainer ref={ref}>
-                <FloatingDecorations>
+                <FloatingDecorations $inView={inView}>
                     <FloatingDecoration
                         delay={0}
                         size={50}

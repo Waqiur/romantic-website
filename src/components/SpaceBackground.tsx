@@ -39,24 +39,9 @@ const SpaceBackgroundContainer = styled.div`
                 rgba(16, 185, 129, 0.1) 0%,
                 transparent 50%
             );
-        animation: backgroundShift 20s ease-in-out infinite alternate;
+        /* Removed animation for better performance */
         will-change: transform, opacity;
         transform: translate3d(0, 0, 0);
-    }
-
-    @keyframes backgroundShift {
-        0% {
-            transform: scale(1) rotate(0deg);
-            opacity: 0.8;
-        }
-        50% {
-            transform: scale(1.02) rotate(0.1deg); /* Reduced scale and rotation */
-            opacity: 0.85;
-        }
-        100% {
-            transform: scale(1) rotate(0deg);
-            opacity: 0.8;
-        }
     }
 `;
 
@@ -77,45 +62,20 @@ const Starfield = styled.div`
         height: 100%;
         background: radial-gradient(1px 1px at 10% 20%, #ffffff, transparent),
             radial-gradient(1px 1px at 20% 40%, #ffffff, transparent),
-            radial-gradient(2px 2px at 30% 60%, #ffffff, transparent),
+            radial-gradient(1px 1px at 30% 60%, #ffffff, transparent),
             radial-gradient(1px 1px at 40% 80%, #ffffff, transparent),
             radial-gradient(1px 1px at 50% 10%, #ffffff, transparent),
-            radial-gradient(2px 2px at 60% 30%, #ffffff, transparent),
+            radial-gradient(1px 1px at 60% 30%, #ffffff, transparent),
             radial-gradient(1px 1px at 70% 50%, #ffffff, transparent),
             radial-gradient(1px 1px at 80% 70%, #ffffff, transparent),
-            radial-gradient(2px 2px at 90% 90%, #ffffff, transparent),
-            radial-gradient(1px 1px at 15% 85%, #ffffff, transparent),
-            radial-gradient(1px 1px at 25% 5%, #ffffff, transparent),
-            radial-gradient(2px 2px at 35% 25%, #ffffff, transparent),
-            radial-gradient(1px 1px at 45% 45%, #ffffff, transparent),
-            radial-gradient(1px 1px at 55% 65%, #ffffff, transparent),
-            radial-gradient(2px 2px at 65% 85%, #ffffff, transparent),
-            radial-gradient(1px 1px at 75% 15%, #ffffff, transparent),
-            radial-gradient(1px 1px at 85% 35%, #ffffff, transparent),
-            radial-gradient(2px 2px at 95% 55%, #ffffff, transparent),
-            radial-gradient(1px 1px at 5% 75%, #ffffff, transparent),
-            radial-gradient(1px 1px at 35% 95%, #ffffff, transparent);
+            radial-gradient(1px 1px at 90% 90%, #ffffff, transparent),
+            radial-gradient(1px 1px at 15% 85%, #ffffff, transparent);
         background-repeat: repeat;
         background-size: 400px 300px;
-        animation: twinkleField 8s ease-in-out infinite alternate; /* Reduced frequency */
+        /* Removed animation for better performance */
         opacity: 0.9;
         will-change: transform, opacity;
         transform: translate3d(0, 0, 0);
-    }
-
-    @keyframes twinkleField {
-        0% {
-            opacity: 0.6;
-            transform: scale(1);
-        }
-        50% {
-            opacity: 1;
-            transform: scale(1.02);
-        }
-        100% {
-            opacity: 0.8;
-            transform: scale(1);
-        }
     }
 `;
 

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import SpaceBackground from "./SpaceBackground";
 import { theme } from "../styles/theme";
+import { debounce } from "../utils/performance";
 
 const LoveMapContainer = styled(motion.div)<{ $isVisible: boolean }>`
     position: fixed;
@@ -294,8 +295,10 @@ const LoveMapPage: React.FC<LoveMapPageProps> = ({ isVisible = true }) => {
         const handleResize = () => {
             setIsMobile(window.innerWidth <= 768);
         };
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
+        const debouncedHandleResize = debounce(handleResize, 200);
+        window.addEventListener("resize", debouncedHandleResize);
+        return () =>
+            window.removeEventListener("resize", debouncedHandleResize);
     }, []);
 
     // Auto redirect to main page after celebration
@@ -633,6 +636,7 @@ const LoveMapPage: React.FC<LoveMapPageProps> = ({ isVisible = true }) => {
                             alt="Final romantic image"
                             onLoad={() => setImageLoaded(true)}
                             style={{ display: imageLoaded ? "block" : "none" }}
+                            decoding="async"
                         />
                         {!imageLoaded && (
                             <div

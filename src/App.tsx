@@ -5,8 +5,8 @@ import { GlobalStyles } from "./styles/GlobalStyles";
 import { theme } from "./styles/theme";
 import { MusicProvider } from "./contexts/MusicContext";
 import MusicPlayer from "./components/MusicPlayer";
-import { preloadAllImages } from "./utils/imagePreloader";
 import { ScrollOptimizer } from "./utils/performance";
+import { preloadAllImages } from "./utils/imagePreloader";
 
 // Group components into logical chunks for better code splitting
 
