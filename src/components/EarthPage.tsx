@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import SpaceBackground from "./SpaceBackground";
 
 // Helper functions for generating stars
 function alphaRandom() {
@@ -257,6 +258,7 @@ const EarthPage: React.FC<EarthPageProps> = ({ isVisible = true, onClose }) => {
 
     return (
         <EarthContainer isVisible={isVisible}>
+            <SpaceBackground />
             {/* Main Content */}
             <EarthContent
                 initial={{ scale: 0, opacity: 0 }}
