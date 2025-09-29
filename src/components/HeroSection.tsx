@@ -240,10 +240,12 @@ const FloatingElement = styled(motion.div)<{ delay: number }>`
 `;
 
 const HeroSection: React.FC = () => {
-    const [displayedText, setDisplayedText] = useState("");
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [showCursor, setShowCursor] = useState(true);
-    const [isTypingComplete, setIsTypingComplete] = useState(false);
+    const [typingState, setTypingState] = useState({
+        displayedText: "",
+        currentIndex: 0,
+        showCursor: true,
+        isTypingComplete: false,
+    });
 
     // Poetic name for typewriter effect
     const poeticName = "My Love";
@@ -251,24 +253,31 @@ const HeroSection: React.FC = () => {
     useEffect(() => {
         // Cursor blinking effect
         const cursorInterval = setInterval(() => {
-            setShowCursor((prev) => !prev);
+            setTypingState((prev) => ({
+                ...prev,
+                showCursor: !prev.showCursor,
+            }));
         }, 500);
 
         return () => clearInterval(cursorInterval);
     }, []);
 
     useEffect(() => {
-        if (currentIndex < poeticName.length) {
+        if (typingState.currentIndex < poeticName.length) {
             const timeout = setTimeout(() => {
-                setDisplayedText((prev) => prev + poeticName[currentIndex]);
-                setCurrentIndex((prev) => prev + 1);
+                setTypingState((prev) => ({
+                    ...prev,
+                    displayedText:
+                        prev.displayedText + poeticName[prev.currentIndex],
+                    currentIndex: prev.currentIndex + 1,
+                }));
             }, 90);
 
             return () => clearTimeout(timeout);
         } else {
-            setIsTypingComplete(true);
+            setTypingState((prev) => ({ ...prev, isTypingComplete: true }));
         }
-    }, [currentIndex, poeticName]);
+    }, [typingState.currentIndex, poeticName]);
 
     const handleHeartClick = () => {
         // Trigger special heart animation
@@ -291,8 +300,13 @@ const HeroSection: React.FC = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.5 }}
                     >
-                        {displayedText}
-                        <Cursor $visible={showCursor && !isTypingComplete}>
+                        {typingState.displayedText}
+                        <Cursor
+                            $visible={
+                                typingState.showCursor &&
+                                !typingState.isTypingComplete
+                            }
+                        >
                             |
                         </Cursor>
                     </HeroName>

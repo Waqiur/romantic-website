@@ -96,7 +96,7 @@ const StarTrail = styled.div.attrs<{ style: React.CSSProperties }>(
     will-change: transform, opacity;
 `;
 
-const CursorFollower: React.FC = () => {
+const CursorFollower: React.FC = React.memo(() => {
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [hoverType, setHoverType] = useState<string>("");
     const [isVisible, setIsVisible] = useState(false);
@@ -312,6 +312,6 @@ const CursorFollower: React.FC = () => {
             {hoverType && <CursorGlow style={getGlowStyles()} />}
         </CursorContainer>
     );
-};
+});
 
 export default CursorFollower;

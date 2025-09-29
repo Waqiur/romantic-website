@@ -1,28 +1,66 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { GlobalStyles } from "./styles/GlobalStyles";
 import { theme } from "./styles/theme";
 import { MusicProvider } from "./contexts/MusicContext";
 import MusicPlayer from "./components/MusicPlayer";
+import { preloadAllImages } from "./utils/imagePreloader";
 
-// Lazy load heavy components
-const ParticleBackground = lazy(
-    () => import("./components/ParticleBackground")
+// Group components into logical chunks for better code splitting
+
+// Background components chunk - loaded together as they're always needed
+const SpaceBackground = lazy(
+    () =>
+        import(
+            /* webpackChunkName: "background" */ "./components/SpaceBackground"
+        )
 );
-const HeroSection = lazy(() => import("./components/HeroSection"));
-const AboutSection = lazy(() => import("./components/AboutSection"));
+
+// Interactive components chunk - animations and effects
+const CursorFollower = lazy(
+    () =>
+        import(
+            /* webpackChunkName: "interactive" */ "./components/CursorFollower"
+        )
+);
+const FloatingHearts = lazy(
+    () =>
+        import(
+            /* webpackChunkName: "interactive" */ "./components/FloatingHearts"
+        )
+);
+const LoveNotes = lazy(
+    () => import(/* webpackChunkName: "interactive" */ "./components/LoveNotes")
+);
+
+// Main content components chunk - core page content
+const HeroSection = lazy(
+    () => import(/* webpackChunkName: "content" */ "./components/HeroSection")
+);
+const AboutSection = lazy(
+    () => import(/* webpackChunkName: "content" */ "./components/AboutSection")
+);
 const InteractiveSection = lazy(
-    () => import("./components/InteractiveSection")
+    () =>
+        import(
+            /* webpackChunkName: "content" */ "./components/InteractiveSection"
+        )
 );
-const Footer = lazy(() => import("./components/Footer"));
-const FloatingHearts = lazy(() => import("./components/FloatingHearts"));
-const LoveNotes = lazy(() => import("./components/LoveNotes"));
-const SpaceBackground = lazy(() => import("./components/SpaceBackground"));
-const CursorFollower = lazy(() => import("./components/CursorFollower"));
-const EarthPage = lazy(() => import("./components/EarthPage"));
-const LoveMapPage = lazy(() => import("./components/LoveMapPage"));
-const FireworksPage = lazy(() => import("./components/FireworksPage"));
+const Footer = lazy(
+    () => import(/* webpackChunkName: "content" */ "./components/Footer")
+);
+
+// Page components chunk - individual route pages
+const EarthPage = lazy(
+    () => import(/* webpackChunkName: "pages" */ "./components/EarthPage")
+);
+const LoveMapPage = lazy(
+    () => import(/* webpackChunkName: "pages" */ "./components/LoveMapPage")
+);
+const FireworksPage = lazy(
+    () => import(/* webpackChunkName: "pages" */ "./components/FireworksPage")
+);
 
 const MainPage = styled.div`
     position: relative;
@@ -41,6 +79,17 @@ const MainPage = styled.div`
 `;
 
 function App() {
+    // Preload critical background components and images for better UX
+    useEffect(() => {
+        // Preload background components as they're always visible
+        import(
+            /* webpackChunkName: "background" */ "./components/SpaceBackground"
+        );
+
+        // Preload all images to prevent cache read failures
+        preloadAllImages();
+    }, []);
+
     return (
         <ThemeProvider theme={theme}>
             <MusicProvider>
@@ -175,9 +224,7 @@ function App() {
                                         <Suspense fallback={null}>
                                             <SpaceBackground />
                                         </Suspense>
-                                        <Suspense fallback={null}>
-                                            <ParticleBackground />
-                                        </Suspense>
+
                                         <Suspense fallback={null}>
                                             <CursorFollower />
                                         </Suspense>

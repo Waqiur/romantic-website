@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -38,6 +38,7 @@ const FloatingHearts: React.FC = React.memo(() => {
     const [hearts, setHearts] = useState<Heart[]>([]);
     const [isGenerating, setIsGenerating] = useState(false);
     const [lastGenerationTime, setLastGenerationTime] = useState(0);
+    const animationFrameRef = useRef<number | undefined>(undefined);
 
     const generateHearts = useCallback(() => {
         const now = Date.now();
@@ -135,11 +136,22 @@ const FloatingHearts: React.FC = React.memo(() => {
 
     useEffect(() => {
         const handleGenerateHearts = () => {
-            generateHearts();
+            // Use RAF for smooth heart generation
+            if (animationFrameRef.current) {
+                cancelAnimationFrame(animationFrameRef.current);
+            }
+            animationFrameRef.current = requestAnimationFrame(() => {
+                generateHearts();
+            });
         };
 
         const handleHeartClicked = () => {
-            generateSpecialHearts();
+            if (animationFrameRef.current) {
+                cancelAnimationFrame(animationFrameRef.current);
+            }
+            animationFrameRef.current = requestAnimationFrame(() => {
+                generateSpecialHearts();
+            });
         };
 
         // Listen for custom events
@@ -149,6 +161,9 @@ const FloatingHearts: React.FC = React.memo(() => {
         return () => {
             window.removeEventListener("generateHearts", handleGenerateHearts);
             window.removeEventListener("heartClicked", handleHeartClicked);
+            if (animationFrameRef.current) {
+                cancelAnimationFrame(animationFrameRef.current);
+            }
         };
     }, [generateHearts, generateSpecialHearts]);
 

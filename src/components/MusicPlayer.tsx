@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { useMusic } from "../contexts/MusicContext";
@@ -77,24 +77,25 @@ const PlayIcon = styled(motion.i)`
     z-index: 1;
 `;
 
-const MusicPlayer: React.FC = () => {
+const MusicPlayer: React.FC = React.memo(() => {
     const { isPlaying, isLoading, toggleMusic, audioRef } = useMusic();
 
-    const handleAudioError = (
-        e: React.SyntheticEvent<HTMLAudioElement, Event>
-    ) => {
-        console.error("Audio loading error:", e);
-    };
+    const handleAudioError = useCallback(
+        (e: React.SyntheticEvent<HTMLAudioElement, Event>) => {
+            console.error("Audio loading error:", e);
+        },
+        []
+    );
 
-    const handleAudioLoad = () => {
+    const handleAudioLoad = useCallback(() => {
         // Audio file loaded successfully
-    };
+    }, []);
 
-    const handleAudioEnded = () => {
+    const handleAudioEnded = useCallback(() => {
         // Song ended - looping back to start
         // The loop attribute should handle this automatically,
         // but we can add custom logic here if needed
-    };
+    }, []);
 
     return (
         <MusicContainer>
@@ -106,8 +107,8 @@ const MusicPlayer: React.FC = () => {
                 onEnded={handleAudioEnded}
                 preload="metadata"
             >
-                <source src="/La Mentira.mp3" type="audio/mpeg" />
-                <source src="./La Mentira.mp3" type="audio/mpeg" />
+                <source src="/La Mentira.aac" type="audio/aac" />
+                <source src="./La Mentira.aac" type="audio/aac" />
                 Your browser does not support the audio element.
             </audio>{" "}
             <MusicButton
@@ -155,6 +156,6 @@ const MusicPlayer: React.FC = () => {
             </MusicButton>
         </MusicContainer>
     );
-};
+});
 
 export default MusicPlayer;

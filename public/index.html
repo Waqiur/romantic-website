@@ -12,6 +12,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=National+Park&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- Preload critical images to prevent cache read failures -->
+  <link rel="preload" href="%PUBLIC_URL%/image.webp" as="image" type="image/webp">
+  <link rel="preload" href="%PUBLIC_URL%/rocket.webp" as="image" type="image/webp">
+  <link rel="preload" href="%PUBLIC_URL%/carousel-images/image_1.webp" as="image" type="image/webp">
+  <link rel="preload" href="%PUBLIC_URL%/planets/earth.png" as="image" type="image/png">
   <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, forwardRef } from "react";
+import React, { useState, useEffect, forwardRef, useCallback } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -954,7 +954,10 @@ const InteractiveSection = forwardRef<
             ([entry]) => {
                 setInView(entry.isIntersecting);
             },
-            { threshold: 0.1 }
+            {
+                threshold: 0.1,
+                rootMargin: "50px 0px -10% 0px", // Start animations 50px before entering viewport, stop when 10% from bottom
+            }
         );
 
         if (ref && "current" in ref && ref.current) {
@@ -964,25 +967,25 @@ const InteractiveSection = forwardRef<
         return () => observer.disconnect();
     }, [ref]);
 
-    const [showPuzzle, setShowPuzzle] = useState(false);
-    const [showJourneyMessage, setShowJourneyMessage] = useState(false);
+    const [modalState, setModalState] = useState({
+        showPuzzle: false,
+        showJourneyMessage: false,
+        showPoemsModal: false,
+        showCuteReminders: false,
+    });
     const navigate = useNavigate();
 
     // Memory game state
-    const [cards, setCards] = useState<any[]>([]);
-    const [flippedCards, setFlippedCards] = useState<number[]>([]);
-    const [matchedCards, setMatchedCards] = useState<number[]>([]);
-
-    // Poems modal state
-    const [showPoemsModal, setShowPoemsModal] = useState(false);
-
-    // Cute reminders state
-    const [showCuteReminders, setShowCuteReminders] = useState(false);
+    const [gameState, setGameState] = useState({
+        cards: [] as any[],
+        flippedCards: [] as number[],
+        matchedCards: [] as number[],
+    });
 
     // Initialize memory game
     useEffect(() => {
-        if (showPuzzle) {
-            const cardEmojis = ["🌹", "💖", "🌸", "�", "🌺", "�", "🌷", "💓"];
+        if (modalState.showPuzzle) {
+            const cardEmojis = ["🌹", "💖", "🌸", "💕", "🌺", "💓", "🌷", "�"];
             const shuffledCards = [...cardEmojis, ...cardEmojis]
                 .sort(() => Math.random() - 0.5)
                 .map((emoji, index) => ({
@@ -991,71 +994,109 @@ const InteractiveSection = forwardRef<
                     flipped: false,
                     matched: false,
                 }));
-            setCards(shuffledCards);
-            setFlippedCards([]);
-            setMatchedCards([]);
+            setGameState({
+                cards: shuffledCards,
+                flippedCards: [],
+                matchedCards: [],
+            });
         }
-    }, [showPuzzle]);
+    }, [modalState.showPuzzle]);
 
     // Handle card click
-    const handleCardClick = (index: number) => {
-        if (
-            flippedCards.length === 2 ||
-            cards[index].flipped ||
-            cards[index].matched
-        )
-            return;
+    const handleCardClick = useCallback(
+        (index: number) => {
+            setGameState((prev) => {
+                if (
+                    prev.flippedCards.length === 2 ||
+                    prev.cards[index].flipped ||
+                    prev.cards[index].matched
+                )
+                    return prev;
 
-        const newFlipped = [...flippedCards, index];
-        setFlippedCards(newFlipped);
+                const newFlipped = [...prev.flippedCards, index];
+                const newCards = [...prev.cards];
+                newCards[index].flipped = true;
 
-        const newCards = [...cards];
-        newCards[index].flipped = true;
-        setCards(newCards);
+                if (newFlipped.length === 2) {
+                    const [first, second] = newFlipped;
+                    if (prev.cards[first].value === prev.cards[second].value) {
+                        // Match - instantly turn green
+                        newCards[first].matched = true;
+                        newCards[second].matched = true;
+                        const newMatchedCards = [
+                            ...prev.matchedCards,
+                            first,
+                            second,
+                        ];
 
-        if (newFlipped.length === 2) {
-            const [first, second] = newFlipped;
-            if (cards[first].value === cards[second].value) {
-                // Match - instantly turn green
-                newCards[first].matched = true;
-                newCards[second].matched = true;
-                setCards(newCards);
-                setMatchedCards([...matchedCards, first, second]);
-                setFlippedCards([]);
-                if (matchedCards.length + 2 === cards.length) {
-                    // Wait 2 seconds with modal open, then show rocket and close modal
-                    setTimeout(() => {
-                        setShowJourneyMessage(true);
-                        setShowPuzzle(false); // Close modal after rocket appears
+                        if (newMatchedCards.length === prev.cards.length) {
+                            // Wait 2 seconds with modal open, then show rocket and close modal
+                            setTimeout(() => {
+                                setModalState((prevModal) => ({
+                                    ...prevModal,
+                                    showJourneyMessage: true,
+                                    showPuzzle: false,
+                                }));
+                                setTimeout(() => {
+                                    setModalState((prevModal) => ({
+                                        ...prevModal,
+                                        showJourneyMessage: false,
+                                    }));
+                                    navigate("/earth");
+                                }, 3000); // 3 seconds
+                            }, 1000); // Wait 2 seconds before showing rocket
+                        }
+
+                        return {
+                            ...prev,
+                            cards: newCards,
+                            matchedCards: newMatchedCards,
+                            flippedCards: [],
+                        };
+                    } else {
+                        // No match
                         setTimeout(() => {
-                            setShowJourneyMessage(false);
-                            navigate("/earth");
-                        }, 3000); // 3 seconds
-                    }, 1000); // Wait 2 seconds before showing rocket
+                            setGameState((current) => {
+                                const resetCards = [...current.cards];
+                                resetCards[first].flipped = false;
+                                resetCards[second].flipped = false;
+                                return {
+                                    ...current,
+                                    cards: resetCards,
+                                    flippedCards: [],
+                                };
+                            });
+                        }, 1000);
+
+                        return {
+                            ...prev,
+                            cards: newCards,
+                            flippedCards: newFlipped,
+                        };
+                    }
                 }
-            } else {
-                // No match
-                setTimeout(() => {
-                    newCards[first].flipped = false;
-                    newCards[second].flipped = false;
-                    setCards(newCards);
-                    setFlippedCards([]);
-                }, 1000);
-            }
-        }
-    };
 
-    const handlePuzzle = () => {
-        setShowPuzzle(true);
-    };
+                return {
+                    ...prev,
+                    cards: newCards,
+                    flippedCards: newFlipped,
+                };
+            });
+        },
+        [navigate]
+    );
 
-    const handlePoemsClick = () => {
-        setShowPoemsModal(true);
-    };
+    const handlePuzzle = useCallback(() => {
+        setModalState((prev) => ({ ...prev, showPuzzle: true }));
+    }, []);
 
-    const handleCuteReminders = () => {
-        setShowCuteReminders(true);
-    };
+    const handlePoemsClick = useCallback(() => {
+        setModalState((prev) => ({ ...prev, showPoemsModal: true }));
+    }, []);
+
+    const handleCuteReminders = useCallback(() => {
+        setModalState((prev) => ({ ...prev, showCuteReminders: true }));
+    }, []);
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -1214,13 +1255,20 @@ const InteractiveSection = forwardRef<
                     </PuzzleButtonContainer>
                 </Container>
             </InteractiveContainer>
-            <PuzzleModal $isVisible={showPuzzle}>
+            <PuzzleModal $isVisible={modalState.showPuzzle}>
                 <PuzzleContent
                     initial={{ scale: 0, opacity: 0, rotateY: -90 }}
                     animate={{ scale: 1, opacity: 1, rotateY: 0 }}
                     transition={{ duration: 0.5, ease: "easeOut" }}
                 >
-                    <CloseButton onClick={() => setShowPuzzle(false)}>
+                    <CloseButton
+                        onClick={() =>
+                            setModalState((prev) => ({
+                                ...prev,
+                                showPuzzle: false,
+                            }))
+                        }
+                    >
                         ×
                     </CloseButton>
 
@@ -1237,7 +1285,7 @@ const InteractiveSection = forwardRef<
                             story! 💖
                         </MemoryGameTitle>
                         <MemoryGameContainer>
-                            {cards.map((card, index) => (
+                            {gameState.cards.map((card, index) => (
                                 <MemoryCard
                                     key={card.id}
                                     flipped={card.flipped || card.matched}
@@ -1263,16 +1311,26 @@ const InteractiveSection = forwardRef<
             </PuzzleModal>
             {/* Poems Modal */}
             <LovePoems
-                isOpen={showPoemsModal}
-                onClose={() => setShowPoemsModal(false)}
+                isOpen={modalState.showPoemsModal}
+                onClose={() =>
+                    setModalState((prev) => ({
+                        ...prev,
+                        showPoemsModal: false,
+                    }))
+                }
             />
             {/* Cute Reminders Modal */}
             <CuteReminders
-                isOpen={showCuteReminders}
-                onClose={() => setShowCuteReminders(false)}
+                isOpen={modalState.showCuteReminders}
+                onClose={() =>
+                    setModalState((prev) => ({
+                        ...prev,
+                        showCuteReminders: false,
+                    }))
+                }
             />
             {/* Full-screen Journey Overlay */}
-            {showJourneyMessage && (
+            {modalState.showJourneyMessage && (
                 <JourneyOverlay
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}

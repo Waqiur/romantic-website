@@ -427,15 +427,16 @@ interface LovePoemsProps {
     onClose: () => void;
 }
 
-const LovePoems: React.FC<LovePoemsProps> = ({ isOpen, onClose }) => {
-    const [currentPoemIndex, setCurrentPoemIndex] = useState(0);
+const LovePoems: React.FC<LovePoemsProps> = React.memo(
+    ({ isOpen, onClose }) => {
+        const [currentPoemIndex, setCurrentPoemIndex] = useState(0);
 
-    // Sample poems data
-    const poems: Poem[] = [
-        {
-            id: 1,
-            title: "Cosmic Love",
-            content: `Among the stars so bright and true,
+        // Sample poems data
+        const poems: Poem[] = [
+            {
+                id: 1,
+                title: "Cosmic Love",
+                content: `Among the stars so bright and true,
 I found my universe in you.
 Your eyes like galaxies so deep,
 In your love, my soul does sleep.
@@ -444,12 +445,12 @@ Through meteor showers and moonlit nights,
 You are my guiding starlight.
 Forever orbiting your heart,
 Never again shall we part.`,
-            date: "September 2024",
-        },
-        {
-            id: 2,
-            title: "Stardust Dreams",
-            content: `We are made of stardust, they say,
+                date: "September 2024",
+            },
+            {
+                id: 2,
+                title: "Stardust Dreams",
+                content: `We are made of stardust, they say,
 Born from the same celestial clay.
 In the vastness of space and time,
 Your heart found its way to mine.
@@ -458,12 +459,12 @@ Like comets dancing through the sky,
 Our love will never say goodbye.
 Written in the constellations above,
 This is our eternal love.`,
-            date: "August 2024",
-        },
-        {
-            id: 3,
-            title: "Gravity of Your Love",
-            content: `Like planets pulled by gravity's force,
+                date: "August 2024",
+            },
+            {
+                id: 3,
+                title: "Gravity of Your Love",
+                content: `Like planets pulled by gravity's force,
 You changed my life, my destined course.
 No black hole could consume the light,
 That shines from you so pure and bright.
@@ -472,12 +473,12 @@ In this universe so vast and wide,
 You're the constant by my side.
 My personal star, my guiding sun,
 With you, my journey's just begun.`,
-            date: "July 2024",
-        },
-        {
-            id: 4,
-            title: "Moonlight Serenade",
-            content: `Under the silver moonlight's glow,
+                date: "July 2024",
+            },
+            {
+                id: 4,
+                title: "Moonlight Serenade",
+                content: `Under the silver moonlight's glow,
 Our love stories begin to grow.
 Whispers carried on gentle breeze,
 Bring you closer, put my heart at ease.
@@ -486,12 +487,12 @@ In the quiet of the night so deep,
 Promises we silently keep.
 Your love is my guiding light,
 Through the darkness to morning bright.`,
-            date: "June 2024",
-        },
-        {
-            id: 5,
-            title: "Aurora Whispers",
-            content: `Northern lights dance in the sky,
+                date: "June 2024",
+            },
+            {
+                id: 5,
+                title: "Aurora Whispers",
+                content: `Northern lights dance in the sky,
 Colors of love that never die.
 Green and purple, pink and blue,
 Each hue reminds me of you.
@@ -500,92 +501,101 @@ Like the aurora's gentle sway,
 Our love grows stronger every day.
 In the heavens above so grand,
 I found my love, my promised land.`,
-            date: "May 2024",
-        },
-    ];
+                date: "May 2024",
+            },
+        ];
 
-    const handleNextPoem = () => {
-        setCurrentPoemIndex((prev) => (prev + 1) % poems.length);
-    };
+        const handleNextPoem = () => {
+            setCurrentPoemIndex((prev) => (prev + 1) % poems.length);
+        };
 
-    const handlePrevPoem = () => {
-        setCurrentPoemIndex((prev) => (prev - 1 + poems.length) % poems.length);
-    };
+        const handlePrevPoem = () => {
+            setCurrentPoemIndex(
+                (prev) => (prev - 1 + poems.length) % poems.length
+            );
+        };
 
-    return (
-        <AnimatePresence>
-            {isOpen && (
-                <PoemsModal
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    onClick={onClose}
-                >
-                    <PoemsModalContent
-                        initial={{ scale: 0.8, opacity: 0, y: 50 }}
-                        animate={{ scale: 1, opacity: 1, y: 0 }}
-                        exit={{ scale: 0.8, opacity: 0, y: 50 }}
-                        transition={{ duration: 0.4, ease: "easeOut" }}
-                        onClick={(e) => e.stopPropagation()}
+        return (
+            <AnimatePresence>
+                {isOpen && (
+                    <PoemsModal
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        onClick={onClose}
                     >
-                        <ModalCloseButton onClick={onClose}>×</ModalCloseButton>
+                        <PoemsModalContent
+                            initial={{ scale: 0.8, opacity: 0, y: 50 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            exit={{ scale: 0.8, opacity: 0, y: 50 }}
+                            transition={{ duration: 0.4, ease: "easeOut" }}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <ModalCloseButton onClick={onClose}>
+                                ×
+                            </ModalCloseButton>
 
-                        <ModalPoemTitle>
-                            {poems[currentPoemIndex].title}
-                        </ModalPoemTitle>
+                            <ModalPoemTitle>
+                                {poems[currentPoemIndex].title}
+                            </ModalPoemTitle>
 
-                        <PoemContentWrapper>
-                            <ModalPoemContent>
-                                {poems[currentPoemIndex].content
-                                    .split("\n\n")
-                                    .map((stanza, index) => (
-                                        <p key={index}>
-                                            {stanza
-                                                .split("\n")
-                                                .map(
-                                                    (
-                                                        line,
-                                                        lineIndex,
-                                                        array
-                                                    ) => (
-                                                        <span key={lineIndex}>
-                                                            {line}
-                                                            {lineIndex <
-                                                                array.length -
-                                                                    1 && <br />}
-                                                        </span>
-                                                    )
-                                                )}
-                                        </p>
-                                    ))}
-                            </ModalPoemContent>
-                        </PoemContentWrapper>
+                            <PoemContentWrapper>
+                                <ModalPoemContent>
+                                    {poems[currentPoemIndex].content
+                                        .split("\n\n")
+                                        .map((stanza, index) => (
+                                            <p key={index}>
+                                                {stanza
+                                                    .split("\n")
+                                                    .map(
+                                                        (
+                                                            line,
+                                                            lineIndex,
+                                                            array
+                                                        ) => (
+                                                            <span
+                                                                key={lineIndex}
+                                                            >
+                                                                {line}
+                                                                {lineIndex <
+                                                                    array.length -
+                                                                        1 && (
+                                                                    <br />
+                                                                )}
+                                                            </span>
+                                                        )
+                                                    )}
+                                            </p>
+                                        ))}
+                                </ModalPoemContent>
+                            </PoemContentWrapper>
 
-                        <NavigationContainer>
-                            <BottomNavButton
-                                onClick={handlePrevPoem}
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.9 }}
-                            >
-                                ←
-                            </BottomNavButton>
-                            <PoemCounter>
-                                {currentPoemIndex + 1} / {poems.length}
-                            </PoemCounter>
-                            <BottomNavButton
-                                onClick={handleNextPoem}
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.9 }}
-                            >
-                                →
-                            </BottomNavButton>
-                        </NavigationContainer>
-                    </PoemsModalContent>
-                </PoemsModal>
-            )}
-        </AnimatePresence>
-    );
-};
+                            <NavigationContainer>
+                                <BottomNavButton
+                                    onClick={handlePrevPoem}
+                                    whileHover={{ scale: 1.1 }}
+                                    whileTap={{ scale: 0.9 }}
+                                >
+                                    ←
+                                </BottomNavButton>
+                                <PoemCounter>
+                                    {currentPoemIndex + 1} / {poems.length}
+                                </PoemCounter>
+                                <BottomNavButton
+                                    onClick={handleNextPoem}
+                                    whileHover={{ scale: 1.1 }}
+                                    whileTap={{ scale: 0.9 }}
+                                >
+                                    →
+                                </BottomNavButton>
+                            </NavigationContainer>
+                        </PoemsModalContent>
+                    </PoemsModal>
+                )}
+            </AnimatePresence>
+        );
+    }
+);
 
 export default LovePoems;

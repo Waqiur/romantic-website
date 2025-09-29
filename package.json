@@ -3,7 +3,6 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
-        "@types/node": "^16.18.126",
         "@types/react": "^19.1.6",
         "@types/react-dom": "^19.1.5",
         "@types/react-router-dom": "^5.3.3",
@@ -13,15 +12,16 @@
         "react-dom": "^19.1.0",
         "react-intersection-observer": "^9.16.0",
         "react-router-dom": "^7.8.2",
-        "react-scripts": "5.0.1",
         "styled-components": "^6.1.18",
         "typescript": "^4.9.5"
     },
     "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build",
-        "test": "react-scripts test",
-        "eject": "react-scripts eject"
+        "start": "craco start",
+        "build": "craco build",
+        "test": "craco test",
+        "eject": "react-scripts eject",
+        "analyze": "cross-env ANALYZE=true craco build",
+        "build:analyze": "npm run build && npx serve -s build -l 3001"
     },
     "eslintConfig": {
         "extends": [
@@ -40,5 +40,13 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
+    },
+    "devDependencies": {
+        "@craco/craco": "^7.1.0",
+        "compression-webpack-plugin": "^11.1.0",
+        "cross-env": "^10.0.0",
+        "react-scripts": "^5.0.1",
+        "webpack-bundle-analyzer": "^4.10.2",
+        "workbox-webpack-plugin": "^7.3.0"
     }
 }
