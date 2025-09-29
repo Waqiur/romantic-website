@@ -5,6 +5,9 @@ export const GlobalStyles = createGlobalStyle`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    /* Use transform3d for hardware acceleration where appropriate */
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 
   html {
@@ -22,6 +25,8 @@ export const GlobalStyles = createGlobalStyle`
     overflow-x: hidden;
     overscroll-behavior: none;
     will-change: scroll-position;
+    /* CSS containment for better scroll performance */
+    contain: layout style paint;
   }
 
   /* Custom scrollbar */
@@ -31,11 +36,16 @@ export const GlobalStyles = createGlobalStyle`
 
   ::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.1);
+    /* Prevent scrollbar from causing layout shifts */
+    contain: strict;
   }
 
   ::-webkit-scrollbar-thumb {
     background: ${({ theme }) => theme.colors.gradients.primary};
     border-radius: 4px;
+    /* Optimize scrollbar thumb rendering */
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
   }
 
   ::-webkit-scrollbar-thumb:hover {
@@ -188,5 +198,27 @@ export const GlobalStyles = createGlobalStyle`
   textarea:focus {
     outline: 2px solid ${({ theme }) => theme.colors.primary};
     outline-offset: 2px;
+  }
+
+  /* Fast scrolling optimization */
+  body.scrolling-fast * {
+    animation-play-state: paused !important;
+    transition: none !important;
+  }
+
+  body.scrolling-fast .float,
+  body.scrolling-fast .pulse {
+    animation: none !important;
+  }
+
+  /* Reduce motion for performance during scroll */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 `;

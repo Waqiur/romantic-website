@@ -6,6 +6,7 @@ import { theme } from "./styles/theme";
 import { MusicProvider } from "./contexts/MusicContext";
 import MusicPlayer from "./components/MusicPlayer";
 import { preloadAllImages } from "./utils/imagePreloader";
+import { ScrollOptimizer } from "./utils/performance";
 
 // Group components into logical chunks for better code splitting
 
@@ -88,6 +89,9 @@ function App() {
 
         // Preload all images to prevent cache read failures
         preloadAllImages();
+
+        // Initialize scroll performance optimizations
+        ScrollOptimizer.init();
     }, []);
 
     return (
