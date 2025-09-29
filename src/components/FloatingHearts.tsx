@@ -11,6 +11,13 @@ const HeartsContainer = styled.div`
     pointer-events: none;
     z-index: 999;
     overflow: hidden;
+    /* Hardware acceleration for container */
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    will-change: transform;
+    contain: layout style paint;
 `;
 
 const FloatingHeart = styled(motion.div)<{ size: number; color: string }>`
@@ -20,8 +27,17 @@ const FloatingHeart = styled(motion.div)<{ size: number; color: string }>`
     pointer-events: none;
     user-select: none;
     filter: drop-shadow(0 2px 10px rgba(255, 107, 157, 0.3));
+    /* Enhanced hardware acceleration */
     will-change: transform, opacity;
     transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    perspective: 1000px;
+    -webkit-perspective: 1000px;
+    /* Force GPU compositing */
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
 `;
 
 interface Heart {

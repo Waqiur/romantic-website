@@ -1,6 +1,9 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, Suspense, lazy } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
+
+// Lazy load the 3D scene for better performance
+const RomanticScene3D = lazy(() => import("./three/RomanticScene3D"));
 
 // Glassmorphic container
 const Glass = styled.div`
@@ -19,6 +22,17 @@ const HeroContainer = styled.section`
     position: relative;
     background: transparent;
     overflow: hidden;
+`;
+
+const Hero3DBackground = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 0.8;
+    pointer-events: none;
 `;
 
 const HeroContent = styled(Glass)`
@@ -103,7 +117,8 @@ const HeroName = styled(motion.h1)`
     text-shadow: 0 0 40px rgba(255, 107, 157, 0.3),
         0 0 80px rgba(161, 140, 209, 0.2), 0 0 120px rgba(79, 209, 199, 0.1);
     letter-spacing: -0.02em;
-    line-height: 0.9;
+    line-height: 1;
+    padding-bottom: 0.2em;
 
     @keyframes gradientShift {
         0%,
@@ -218,27 +233,6 @@ const PulsingHeart = styled(motion.div)`
     }
 `;
 
-const FloatingElements = styled.div`
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
-`;
-
-const FloatingElement = styled(motion.div)<{ delay: number }>`
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    background: linear-gradient(135deg, #232946 0%, #4fd1c7 100%);
-    border-radius: 50%;
-    opacity: 0.3;
-    box-shadow: 0 0 16px 4px #4fd1c733;
-    animation: float 6s ease-in-out infinite;
-`;
-
 const HeroSection: React.FC = React.memo(() => {
     const [typingState, setTypingState] = useState({
         displayedText: "",
@@ -287,11 +281,16 @@ const HeroSection: React.FC = React.memo(() => {
 
     return (
         <HeroContainer>
-            <FloatingElements>
-                {[0, 2, 4, 6, 8].map((delay, index) => (
-                    <FloatingElement key={index} delay={delay} />
-                ))}
-            </FloatingElements>
+            <Hero3DBackground>
+                <Suspense fallback={null}>
+                    <RomanticScene3D
+                        showFloatingHearts={true}
+                        showCrystalHeart={true}
+                        showRomanticStars={true}
+                        enableControls={false}
+                    />
+                </Suspense>
+            </Hero3DBackground>
 
             <HeroContent>
                 <TypewriterContainer>

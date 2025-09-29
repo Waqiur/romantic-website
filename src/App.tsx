@@ -6,7 +6,7 @@ import { theme } from "./styles/theme";
 import { MusicProvider } from "./contexts/MusicContext";
 import MusicPlayer from "./components/MusicPlayer";
 import { preloadAllImages } from "./utils/imagePreloader";
-import { ScrollOptimizer } from "./utils/performance";
+import { ScrollOptimizer, HardwareAccelerator } from "./utils/performance";
 
 // Group components into logical chunks for better code splitting
 
@@ -86,6 +86,11 @@ function App() {
 
         // Initialize scroll performance optimizations
         ScrollOptimizer.init();
+
+        // Apply hardware acceleration to key animated elements after a short delay
+        setTimeout(() => {
+            HardwareAccelerator.accelerateChildren(document.body);
+        }, 100);
     }, []);
 
     return (
