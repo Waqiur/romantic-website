@@ -54,6 +54,10 @@ const PoemsModalContent = styled(motion.div)`
         0 0 0 1px rgba(255, 255, 255, 0.1) inset,
         0 10px 30px rgba(255, 107, 157, 0.2);
 
+    /* Performance optimization for scrolling */
+    transform: translate3d(0, 0, 0);
+    will-change: scroll-position;
+
     /* Custom scrollbar */
     &::-webkit-scrollbar {
         width: 8px;

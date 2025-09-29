@@ -29,6 +29,8 @@ const MusicButton = styled(motion.button)<{ $isPlaying: boolean }>`
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
 
     &:hover {
         transform: scale(1.1);
@@ -75,6 +77,8 @@ const LoopIndicator = styled.div<{ $isPlaying: boolean }>`
 const PlayIcon = styled(motion.i)`
     position: relative;
     z-index: 1;
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
 `;
 
 const MusicPlayer: React.FC = React.memo(() => {

@@ -10,6 +10,7 @@ export const GlobalStyles = createGlobalStyle`
   html {
     overflow-x: hidden;
     scroll-behavior: smooth;
+    overscroll-behavior: none;
   }
 
   body {
@@ -19,6 +20,8 @@ export const GlobalStyles = createGlobalStyle`
     background: ${({ theme }) => theme.colors.gradients.romantic};
     min-height: 100vh;
     overflow-x: hidden;
+    overscroll-behavior: none;
+    will-change: scroll-position;
   }
 
   /* Custom scrollbar */

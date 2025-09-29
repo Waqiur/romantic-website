@@ -36,6 +36,8 @@ const LoveNote = styled(motion.div)`
     border: 2px solid rgba(255, 255, 255, 0.2);
     pointer-events: auto;
     cursor: pointer;
+    will-change: transform, opacity;
+    transform: translate3d(0, 0, 0);
 
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
         padding: ${({ theme }) => theme.spacing.sm}

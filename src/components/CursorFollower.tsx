@@ -28,6 +28,7 @@ const CursorDot = styled.div.attrs<{ style: React.CSSProperties }>(
     align-items: center;
     justify-content: center;
     will-change: transform;
+    transform: translate3d(0, 0, 0);
 `;
 
 const CursorRing = styled.div.attrs<{ style: React.CSSProperties }>(
@@ -47,6 +48,8 @@ const CursorRing = styled.div.attrs<{ style: React.CSSProperties }>(
     align-items: center;
     justify-content: center;
     filter: drop-shadow(0 0 10px rgba(255, 107, 157, 0.4));
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
 `;
 
 const CursorGlow = styled.div.attrs<{ style: React.CSSProperties }>(
@@ -67,6 +70,8 @@ const CursorGlow = styled.div.attrs<{ style: React.CSSProperties }>(
     transition: all 0.4s ease-out;
     transform-origin: center;
     opacity: 0;
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
 `;
 
 const starTwinkle = keyframes`

@@ -20,6 +20,8 @@ const FloatingHeart = styled(motion.div)<{ size: number; color: string }>`
     pointer-events: none;
     user-select: none;
     filter: drop-shadow(0 2px 10px rgba(255, 107, 157, 0.3));
+    will-change: transform, opacity;
+    transform: translate3d(0, 0, 0);
 `;
 
 interface Heart {

@@ -354,7 +354,10 @@ const PuzzleContent = styled(motion.div)`
     border: 3px solid rgba(255, 107, 157, 0.3);
     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3),
         0 0 60px rgba(255, 107, 157, 0.1);
-    animation: puzzleGlow 2s ease-in-out infinite alternate;
+
+    /* Performance optimization for scrolling */
+    transform: translate3d(0, 0, 0);
+    will-change: scroll-position;
 
     @keyframes puzzleGlow {
         0% {

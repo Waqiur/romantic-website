@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
@@ -796,7 +796,7 @@ const FloatingSparkle = styled(motion.div)<{ delay: number; size: number }>`
     }
 `;
 
-const AboutSection: React.FC = () => {
+const AboutSection: React.FC = React.memo(() => {
     const [ref, inView] = useInView({
         triggerOnce: true,
         threshold: 0.1,
@@ -805,6 +805,22 @@ const AboutSection: React.FC = () => {
     const [hoveredDetail, setHoveredDetail] = React.useState<string | null>(
         null
     );
+
+    const handleMouseEnterLaugh = useCallback(() => {
+        setHoveredDetail("laugh");
+    }, []);
+
+    const handleMouseLeaveLaugh = useCallback(() => {
+        setHoveredDetail(null);
+    }, []);
+
+    const handleMouseEnterForever = useCallback(() => {
+        setHoveredDetail("forever");
+    }, []);
+
+    const handleMouseLeaveForever = useCallback(() => {
+        setHoveredDetail(null);
+    }, []);
 
     const containerVariants = {
         hidden: { opacity: 0, y: 50 },
@@ -955,10 +971,8 @@ const AboutSection: React.FC = () => {
                             <InteractiveDetails>
                                 <DetailItem
                                     variants={itemVariants}
-                                    onMouseEnter={() =>
-                                        setHoveredDetail("laugh")
-                                    }
-                                    onMouseLeave={() => setHoveredDetail(null)}
+                                    onMouseEnter={handleMouseEnterLaugh}
+                                    onMouseLeave={handleMouseLeaveLaugh}
                                     initial={{ opacity: 0, x: -30 }}
                                     animate={inView ? { opacity: 1, x: 0 } : {}}
                                     transition={{ duration: 0.6, delay: 0.6 }}
@@ -1023,10 +1037,8 @@ const AboutSection: React.FC = () => {
 
                                 <DetailItem
                                     variants={itemVariants}
-                                    onMouseEnter={() =>
-                                        setHoveredDetail("forever")
-                                    }
-                                    onMouseLeave={() => setHoveredDetail(null)}
+                                    onMouseEnter={handleMouseEnterForever}
+                                    onMouseLeave={handleMouseLeaveForever}
                                     initial={{ opacity: 0, x: -30 }}
                                     animate={inView ? { opacity: 1, x: 0 } : {}}
                                     transition={{ duration: 0.6, delay: 0.8 }}
@@ -1097,6 +1109,6 @@ const AboutSection: React.FC = () => {
             </Container>
         </AboutContainer>
     );
-};
+});
 
 export default AboutSection;

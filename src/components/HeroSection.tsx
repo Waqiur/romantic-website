@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
@@ -239,7 +239,7 @@ const FloatingElement = styled(motion.div)<{ delay: number }>`
     animation: float 6s ease-in-out infinite;
 `;
 
-const HeroSection: React.FC = () => {
+const HeroSection: React.FC = React.memo(() => {
     const [typingState, setTypingState] = useState({
         displayedText: "",
         currentIndex: 0,
@@ -279,11 +279,11 @@ const HeroSection: React.FC = () => {
         }
     }, [typingState.currentIndex, poeticName]);
 
-    const handleHeartClick = () => {
+    const handleHeartClick = useCallback(() => {
         // Trigger special heart animation
         const event = new CustomEvent("heartClicked");
         window.dispatchEvent(event);
-    };
+    }, []);
 
     return (
         <HeroContainer>
@@ -350,6 +350,6 @@ const HeroSection: React.FC = () => {
             </HeroContent>
         </HeroContainer>
     );
-};
+});
 
 export default HeroSection;

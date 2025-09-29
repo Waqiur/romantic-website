@@ -40,6 +40,8 @@ const SpaceBackgroundContainer = styled.div`
                 transparent 50%
             );
         animation: backgroundShift 20s ease-in-out infinite alternate;
+        will-change: transform, opacity;
+        transform: translate3d(0, 0, 0);
     }
 
     @keyframes backgroundShift {
@@ -97,6 +99,8 @@ const Starfield = styled.div`
         background-size: 400px 300px;
         animation: twinkleField 8s ease-in-out infinite alternate; /* Reduced frequency */
         opacity: 0.9;
+        will-change: transform, opacity;
+        transform: translate3d(0, 0, 0);
     }
 
     @keyframes twinkleField {
@@ -206,6 +210,8 @@ const TwinklingStars = styled.div`
             );
         background-size: 500px 400px;
         animation: twinkleStars 6s ease-in-out infinite alternate; /* Reduced frequency */
+        will-change: transform, opacity;
+        transform: translate3d(0, 0, 0);
     }
 
     &::after {
@@ -275,6 +281,8 @@ const TwinklingStars = styled.div`
             );
         background-size: 600px 500px;
         animation: twinkleStars2 8s ease-in-out infinite alternate-reverse; /* Reduced frequency */
+        will-change: transform, opacity;
+        transform: translate3d(0, 0, 0);
     }
 
     @keyframes twinkleStars {
@@ -308,13 +316,13 @@ const TwinklingStars = styled.div`
     }
 `;
 
-const SpaceBackground: React.FC = () => {
+const SpaceBackground: React.FC = React.memo(() => {
     return (
         <SpaceBackgroundContainer>
             <Starfield />
             <TwinklingStars />
         </SpaceBackgroundContainer>
     );
-};
+});
 
 export default SpaceBackground;

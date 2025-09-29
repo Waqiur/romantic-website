@@ -94,7 +94,7 @@ const TypewriterText = styled.span<{ $isTyping: boolean }>`
     }
 `;
 
-const Footer: React.FC = () => {
+const Footer: React.FC = React.memo(() => {
     const [displayedText, setDisplayedText] = useState("");
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isTyping, setIsTyping] = useState(true);
@@ -142,6 +142,6 @@ const Footer: React.FC = () => {
             </Container>
         </FooterContainer>
     );
-};
+});
 
 export default Footer;
