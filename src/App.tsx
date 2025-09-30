@@ -6,7 +6,6 @@ import { theme } from "./styles/theme";
 import { MusicProvider } from "./contexts/MusicContext";
 import MusicPlayer from "./components/MusicPlayer";
 import { preloadAllImages } from "./utils/imagePreloader";
-import { ScrollOptimizer, HardwareAccelerator } from "./utils/performance";
 
 // Group components into logical chunks for better code splitting
 
@@ -18,7 +17,6 @@ const SpaceBackground = lazy(
         )
 );
 
-// Interactive components chunk - animations and effects
 const FloatingHearts = lazy(
     () =>
         import(
@@ -83,14 +81,6 @@ function App() {
 
         // Preload all images to prevent cache read failures
         preloadAllImages();
-
-        // Initialize scroll performance optimizations
-        ScrollOptimizer.init();
-
-        // Apply hardware acceleration to key animated elements after a short delay
-        setTimeout(() => {
-            HardwareAccelerator.accelerateChildren(document.body);
-        }, 100);
     }, []);
 
     return (
@@ -227,7 +217,6 @@ function App() {
                                         <Suspense fallback={null}>
                                             <SpaceBackground />
                                         </Suspense>
-
                                         <Suspense fallback={null}>
                                             <FloatingHearts />
                                         </Suspense>

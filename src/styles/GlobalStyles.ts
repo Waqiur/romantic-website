@@ -5,21 +5,12 @@ export const GlobalStyles = createGlobalStyle`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /* Comprehensive hardware acceleration optimizations */
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    transform-style: preserve-3d;
-    -webkit-transform-style: preserve-3d;
-    perspective: 1000px;
-    -webkit-perspective: 1000px;
   }
 
   html {
     overflow-x: hidden;
     scroll-behavior: smooth;
     overscroll-behavior: none;
-    /* GPU acceleration for smooth scrolling */
-    -webkit-overflow-scrolling: touch;
   }
 
   body {
@@ -31,46 +22,24 @@ export const GlobalStyles = createGlobalStyle`
     overflow-x: hidden;
     overscroll-behavior: none;
     will-change: scroll-position;
-    /* Enhanced CSS containment for maximum performance */
-    contain: layout style paint;
-    /* Force hardware compositing */
-    transform: translate3d(0, 0, 0);
-    -webkit-transform: translate3d(0, 0, 0);
   }
 
-  /* Custom scrollbar with hardware acceleration */
+  /* Custom scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
-    /* Force GPU compositing */
-    transform: translate3d(0, 0, 0);
-    -webkit-transform: translate3d(0, 0, 0);
   }
 
   ::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.1);
-    /* Prevent scrollbar from causing layout shifts */
-    contain: strict;
-    /* Hardware acceleration */
-    transform: translate3d(0, 0, 0);
-    -webkit-transform: translate3d(0, 0, 0);
   }
 
   ::-webkit-scrollbar-thumb {
     background: ${({ theme }) => theme.colors.gradients.primary};
     border-radius: 4px;
-    /* Optimize scrollbar thumb rendering with GPU */
-    will-change: transform;
-    transform: translate3d(0, 0, 0);
-    -webkit-transform: translate3d(0, 0, 0);
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
   }
 
   ::-webkit-scrollbar-thumb:hover {
     background: ${({ theme }) => theme.colors.primary};
-    /* Maintain hardware acceleration on hover */
-    transform: translate3d(0, 0, 0);
-    -webkit-transform: translate3d(0, 0, 0);
   }
 
   /* Selection styles */
@@ -219,55 +188,5 @@ export const GlobalStyles = createGlobalStyle`
   textarea:focus {
     outline: 2px solid ${({ theme }) => theme.colors.primary};
     outline-offset: 2px;
-  }
-
-  /* Aggressive fast scrolling optimization with hardware acceleration */
-  body.scrolling-fast * {
-    animation-play-state: paused !important;
-    transition: none !important;
-    /* Force GPU compositing during scroll */
-    transform: translate3d(0, 0, 0) !important;
-    -webkit-transform: translate3d(0, 0, 0) !important;
-    will-change: auto !important;
-  }
-
-  body.scrolling-fast .float,
-  body.scrolling-fast .pulse,
-  body.scrolling-fast .sparkle {
-    animation: none !important;
-    /* Remove all transforms during scroll for maximum performance */
-    transform: none !important;
-    -webkit-transform: none !important;
-  }
-
-  /* Hardware-accelerated animation classes */
-  .gpu-accelerated {
-    transform: translate3d(0, 0, 0);
-    -webkit-transform: translate3d(0, 0, 0);
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    perspective: 1000px;
-    -webkit-perspective: 1000px;
-    will-change: transform, opacity;
-  }
-
-  .gpu-accelerated::before,
-  .gpu-accelerated::after {
-    transform: translate3d(0, 0, 0);
-    -webkit-transform: translate3d(0, 0, 0);
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    will-change: transform, opacity;
-  }
-
-  /* Reduce motion for performance during scroll */
-  @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
   }
 `;
