@@ -1,10 +1,7 @@
-import React, { useCallback, Suspense, lazy } from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-
-// Lazy load 3D components for performance
-const RomanticScene3D = lazy(() => import("./three/RomanticScene3D"));
 
 const AboutContainer = styled.section`
     padding: ${({ theme }) => theme.spacing.xxl} 0;
@@ -850,29 +847,6 @@ const AboutSection: React.FC = React.memo(() => {
 
     return (
         <AboutContainer ref={ref}>
-            {/* 3D Romantic Background */}
-            <div
-                style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    width: "100%",
-                    height: "100%",
-                    zIndex: 0,
-                    opacity: 0.3,
-                    pointerEvents: "none",
-                }}
-            >
-                <Suspense fallback={null}>
-                    <RomanticScene3D
-                        showFloatingHearts={true}
-                        showCrystalHeart={false}
-                        showRomanticStars={true}
-                        enableControls={false}
-                    />
-                </Suspense>
-            </div>
-
             <FloatingDecorations>
                 <FloatingDecoration
                     delay={0}

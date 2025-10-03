@@ -1,9 +1,6 @@
-import React, { useState, useEffect, useCallback, Suspense, lazy } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
-
-// Lazy load the 3D scene for better performance
-const RomanticScene3D = lazy(() => import("./three/RomanticScene3D"));
 
 // Glassmorphic container
 const Glass = styled.div`
@@ -22,17 +19,6 @@ const HeroContainer = styled.section`
     position: relative;
     background: transparent;
     overflow: hidden;
-`;
-
-const Hero3DBackground = styled.div`
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    opacity: 0.8;
-    pointer-events: none;
 `;
 
 const HeroContent = styled(Glass)`
@@ -281,17 +267,6 @@ const HeroSection: React.FC = React.memo(() => {
 
     return (
         <HeroContainer>
-            <Hero3DBackground>
-                <Suspense fallback={null}>
-                    <RomanticScene3D
-                        showFloatingHearts={true}
-                        showCrystalHeart={true}
-                        showRomanticStars={true}
-                        enableControls={false}
-                    />
-                </Suspense>
-            </Hero3DBackground>
-
             <HeroContent>
                 <TypewriterContainer>
                     <HeroName
