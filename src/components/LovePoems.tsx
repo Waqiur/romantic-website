@@ -423,7 +423,6 @@ interface Poem {
     id: number;
     title: string;
     content: string;
-    date: string;
 }
 
 interface LovePoemsProps {
@@ -439,73 +438,55 @@ const LovePoems: React.FC<LovePoemsProps> = React.memo(
         const poems: Poem[] = [
             {
                 id: 1,
-                title: "Cosmic Love",
-                content: `Among the stars so bright and true,
-I found my universe in you.
-Your eyes like galaxies so deep,
-In your love, my soul does sleep.
+                title: "💖 Your Smile",
+                content: `Your smile's a light that warms my soul,
+It mends the parts that life made whole.
+A single glance, and time stands still,
+My heart obeys your gentle will.
 
-Through meteor showers and moonlit nights,
-You are my guiding starlight.
-Forever orbiting your heart,
-Never again shall we part.`,
-                date: "September 2024",
+You lift my days, you calm my fear,
+Your voice, the song I long to hear.
+In every breath, in every mile,
+My world begins within your smile.`,
             },
             {
                 id: 2,
-                title: "Stardust Dreams",
-                content: `We are made of stardust, they say,
-Born from the same celestial clay.
-In the vastness of space and time,
-Your heart found its way to mine.
+                title: "💫 Across the Distance",
+                content: `Though miles may stretch from me to you,
+My heart still finds your heartbeat true.
+No map can hide, no time can part,
+The love that lives inside my heart.
 
-Like comets dancing through the sky,
-Our love will never say goodbye.
-Written in the constellations above,
-This is our eternal love.`,
-                date: "August 2024",
+Each message sent, each call we share,
+Reminds me just how much you care.
+No distance breaks what's meant to be,
+For love still binds your soul to me.`,
             },
             {
                 id: 3,
-                title: "Gravity of Your Love",
-                content: `Like planets pulled by gravity's force,
-You changed my life, my destined course.
-No black hole could consume the light,
-That shines from you so pure and bright.
+                title: "💞 If I Could Hold You",
+                content: `If I could hold you, just tonight,
+The world would fade, and all feel right.
+Your touch would silence every fear,
+And whisper softly, "I am here."
 
-In this universe so vast and wide,
-You're the constant by my side.
-My personal star, my guiding sun,
-With you, my journey's just begun.`,
-                date: "July 2024",
+Though miles may stretch and keep us far,
+My love still reaches where you are.
+No distance, time, or endless sea,
+Could dim the bond between you and me.`,
             },
             {
                 id: 4,
-                title: "Moonlight Serenade",
-                content: `Under the silver moonlight's glow,
-Our love stories begin to grow.
-Whispers carried on gentle breeze,
-Bring you closer, put my heart at ease.
+                title: "💖 Flawless",
+                content: `Your beauty shines in every way,
+A perfect light that steals the day.
+Each feature holds a work of art,
+A masterpiece that wins the heart.
 
-In the quiet of the night so deep,
-Promises we silently keep.
-Your love is my guiding light,
-Through the darkness to morning bright.`,
-                date: "June 2024",
-            },
-            {
-                id: 5,
-                title: "Aurora Whispers",
-                content: `Northern lights dance in the sky,
-Colors of love that never die.
-Green and purple, pink and blue,
-Each hue reminds me of you.
-
-Like the aurora's gentle sway,
-Our love grows stronger every day.
-In the heavens above so grand,
-I found my love, my promised land.`,
-                date: "May 2024",
+From sparkling eyes to radiant skin,
+Every glance draws me within.
+No brush, no jewel, could ever do,
+The wonder of the sight of you.`,
             },
         ];
 
