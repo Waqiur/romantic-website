@@ -132,10 +132,6 @@ const HeroSubtitle = styled(motion.p)`
         padding: 0 ${({ theme }) => theme.spacing.xs};
         margin-bottom: ${({ theme }) => theme.spacing.md};
         line-height: 1.5;
-
-        br {
-            display: none;
-        }
     }
 
     &::before {
@@ -183,6 +179,7 @@ const PulsingHeart = styled(motion.div)`
     /* Touch-friendly for mobile */
     min-width: 44px;
     min-height: 44px;
+    -webkit-tap-highlight-color: transparent;
 
     /* Glow effect around the heart icon */
     i {

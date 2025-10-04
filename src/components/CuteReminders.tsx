@@ -201,18 +201,18 @@ const StarsContainer = styled.div`
     }
 `;
 
-const StarWrapper = styled(motion.div)<{ clicked: boolean }>`
+const StarWrapper = styled(motion.div)`
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     position: relative;
-    opacity: ${({ clicked }) => (clicked ? 0.6 : 1)};
     transition: opacity 0.3s ease;
     will-change: transform;
 
     &:hover {
         transform: scale(1.1);
+        z-index: 10;
     }
 
     &:active {
@@ -220,16 +220,12 @@ const StarWrapper = styled(motion.div)<{ clicked: boolean }>`
     }
 `;
 
-const Star = styled(motion.div)<{ clicked: boolean; color: string }>`
+const Star = styled(motion.div)<{ color: string }>`
     font-size: clamp(3rem, 8vw, 5rem);
-    color: ${({ clicked, color }) => (clicked ? "#FFD700" : color)};
-    filter: ${({ clicked }) =>
-        clicked
-            ? "drop-shadow(0 0 15px #FFD700)"
-            : "drop-shadow(0 2px 8px rgba(255, 107, 157, 0.3))"};
+    color: ${({ color }) => color};
+    filter: drop-shadow(0 2px 8px rgba(255, 107, 157, 0.3));
     transition: color 0.3s ease, filter 0.3s ease;
     will-change: transform;
-    transform: ${({ clicked }) => (clicked ? "scale(1.1)" : "scale(1)")};
 
     @keyframes starGlow {
         0% {
@@ -245,80 +241,86 @@ const Star = styled(motion.div)<{ clicked: boolean; color: string }>`
     }
 `;
 
-const ConnectionMessage = styled(motion.div)<{ starId: number }>`
+const ExpandedStarOverlay = styled(motion.div)`
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3000;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+`;
+
+const ExpandedStarContainer = styled(motion.div)`
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(300px, 50vw, 600px);
+    height: clamp(300px, 50vw, 600px);
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        width: clamp(280px, 80vw, 500px);
+        height: clamp(280px, 80vw, 500px);
+    }
+`;
+
+const ExpandedStar = styled(motion.div)`
     position: absolute;
-    left: 50%;
-    top: -10px;
-    transform: translate(-50%, -100%);
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 20px;
-    padding: ${({ theme }) => theme.spacing.sm}
-        ${({ theme }) => theme.spacing.md};
-    border: 2px solid rgba(255, 107, 157, 0.8);
-    font-size: 0.85rem;
-    color: #2d3748;
-    font-weight: 600;
-    text-align: center;
-    white-space: nowrap;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    z-index: 60;
-    pointer-events: auto;
-    cursor: pointer;
-    margin: 0 10px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(18rem, 40vw, 30rem);
+    filter: drop-shadow(0 0 30px #ffd700) drop-shadow(0 0 60px #ffd700);
+    animation: expandedStarPulse 2s ease-in-out infinite;
+    z-index: 1;
 
-    &::after {
-        content: "✨";
-        position: absolute;
-        bottom: -12px;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 0.8rem;
-        animation: sparkle 2s ease-in-out infinite;
-    }
-
-    &::before {
-        content: "";
-        position: absolute;
-        bottom: -8px;
-        left: 50%;
-        transform: translateX(-50%);
-        border-left: 8px solid transparent;
-        border-right: 8px solid transparent;
-        border-top: 8px solid rgba(255, 255, 255, 0.95);
-    }
-
-    @keyframes sparkle {
+    @keyframes expandedStarPulse {
         0%,
         100% {
-            transform: translateX(-50%) scale(1);
+            transform: scale(1) rotate(0deg);
         }
         50% {
-            transform: translateX(-50%) scale(1.2) rotate(180deg);
+            transform: scale(1.05) rotate(2deg);
         }
-    }
-
-    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-        font-size: 0.8rem;
-        padding: ${({ theme }) => theme.spacing.xs}
-            ${({ theme }) => theme.spacing.sm};
-        margin: 0 8px;
-        max-width: 250px;
-        min-width: 180px;
-        white-space: normal;
     }
 
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-        font-size: 0.75rem;
-        padding: ${({ theme }) => theme.spacing.xs}
-            ${({ theme }) => theme.spacing.sm};
-        border-radius: 15px;
-        margin: 0 5px;
+        font-size: clamp(15rem, 60vw, 25rem);
+    }
+`;
+
+const ExpandedMessage = styled(motion.div)`
+    position: relative;
+    z-index: 2;
+    color: #2d3748;
+    font-weight: 700;
+    text-align: center;
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+    line-height: 1.4;
+    max-width: 70%;
+    text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8),
+        0 0 10px rgba(255, 255, 255, 0.6);
+    padding: ${({ theme }) => theme.spacing.md};
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+        font-size: clamp(0.95rem, 3vw, 1.3rem);
+        max-width: 75%;
     }
 
-    @media (max-width: 400px) {
-        font-size: 0.7rem;
-        padding: 6px 10px;
-        margin: 0 3px;
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        font-size: clamp(0.85rem, 3.5vw, 1.1rem);
+        max-width: 80%;
+        line-height: 1.3;
     }
 `;
 
@@ -339,7 +341,6 @@ const Instructions = styled.p`
 
 interface StarData {
     id: number;
-    clicked: boolean;
     color: string;
     message: string;
 }
@@ -351,46 +352,40 @@ interface CuteRemindersProps {
 
 const CuteReminders: React.FC<CuteRemindersProps> = React.memo(
     ({ isOpen, onClose }) => {
-        const [stars, setStars] = useState<StarData[]>([
+        const stars: StarData[] = [
             {
                 id: 1,
-                clicked: false,
                 color: "#ff6b9d",
                 message:
                     "You’re effortlessly beautiful, even when you don’t try 💕",
             },
             {
                 id: 2,
-                clicked: false,
                 color: "#a18cd1",
                 message: "Your smile could brighten even the dullest day ☀️",
             },
             {
                 id: 3,
-                clicked: false,
                 color: "#4fd1c7",
                 message: "Every glance at you feels like the first time 💖",
             },
             {
                 id: 4,
-                clicked: false,
                 color: "#ffd93d",
                 message: "You look beautiful in every mood, every moment 💛",
             },
             {
                 id: 5,
-                clicked: false,
                 color: "#ff9f43",
                 message: "There’s something so gentle and lovely about you 🌸",
             },
             {
                 id: 6,
-                clicked: false,
                 color: "#e74c3c",
                 message:
                     "You’re the kind of beautiful that stays in my heart ❤️",
             },
-        ]);
+        ];
 
         const [activeMessage, setActiveMessage] = useState<{
             starId: number;
@@ -401,20 +396,13 @@ const CuteReminders: React.FC<CuteRemindersProps> = React.memo(
             const star = stars.find((s) => s.id === starId);
             if (!star) return;
 
-            // Show message bubble
+            // Show expanded star with message
             setActiveMessage({ starId, message: star.message });
 
-            // Mark star as clicked
-            setStars((prev) =>
-                prev.map((s) => (s.id === starId ? { ...s, clicked: true } : s))
-            );
-        };
-
-        const resetReminders = () => {
-            setStars((prev) =>
-                prev.map((star) => ({ ...star, clicked: false }))
-            );
-            setActiveMessage(null);
+            // Auto-close after 3.5 seconds
+            setTimeout(() => {
+                setActiveMessage(null);
+            }, 3500);
         };
 
         return (
@@ -445,71 +433,72 @@ const CuteReminders: React.FC<CuteRemindersProps> = React.memo(
                                     {stars.map((star) => (
                                         <StarWrapper
                                             key={star.id}
-                                            clicked={star.clicked}
                                             onClick={() =>
                                                 handleStarClick(star.id)
                                             }
                                             whileHover={{ scale: 1.1 }}
                                             whileTap={{ scale: 0.95 }}
                                         >
-                                            <Star
-                                                clicked={star.clicked}
-                                                color={star.color}
-                                            >
-                                                ⭐
-                                            </Star>
-                                            {activeMessage?.starId ===
-                                                star.id && (
-                                                <ConnectionMessage
-                                                    starId={star.id}
-                                                    initial={{
-                                                        scale: 0,
-                                                        opacity: 0,
-                                                    }}
-                                                    animate={{
-                                                        scale: 1,
-                                                        opacity: 1,
-                                                    }}
-                                                    exit={{
-                                                        scale: 0,
-                                                        opacity: 0,
-                                                    }}
-                                                    transition={{
-                                                        duration: 0.3,
-                                                        ease: "easeOut",
-                                                    }}
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        setActiveMessage(null);
-                                                    }}
-                                                >
-                                                    {activeMessage.message}
-                                                </ConnectionMessage>
-                                            )}
+                                            <Star color={star.color}>⭐</Star>
                                         </StarWrapper>
                                     ))}
                                 </StarsContainer>
 
+                                {/* Expanded Star Overlay */}
+                                <AnimatePresence>
+                                    {activeMessage && (
+                                        <ExpandedStarOverlay
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            exit={{ opacity: 0 }}
+                                            transition={{ duration: 0.3 }}
+                                            onClick={() =>
+                                                setActiveMessage(null)
+                                            }
+                                        >
+                                            <ExpandedStarContainer
+                                                initial={{
+                                                    scale: 0,
+                                                    rotate: -180,
+                                                }}
+                                                animate={{
+                                                    scale: 1,
+                                                    rotate: 0,
+                                                }}
+                                                exit={{ scale: 0, rotate: 180 }}
+                                                transition={{
+                                                    duration: 0.5,
+                                                    ease: "backOut",
+                                                }}
+                                                onClick={(e) =>
+                                                    e.stopPropagation()
+                                                }
+                                            >
+                                                <ExpandedStar>⭐</ExpandedStar>
+                                                <ExpandedMessage
+                                                    initial={{
+                                                        opacity: 0,
+                                                        scale: 0.8,
+                                                    }}
+                                                    animate={{
+                                                        opacity: 1,
+                                                        scale: 1,
+                                                    }}
+                                                    transition={{
+                                                        delay: 0.3,
+                                                        duration: 0.4,
+                                                    }}
+                                                >
+                                                    {activeMessage.message}
+                                                </ExpandedMessage>
+                                            </ExpandedStarContainer>
+                                        </ExpandedStarOverlay>
+                                    )}
+                                </AnimatePresence>
+
                                 <Instructions>
                                     Click on the stars to reveal cute reminders!
                                     💕
-                                    <br />
-                                    <button
-                                        onClick={resetReminders}
-                                        style={{
-                                            background:
-                                                "rgba(255, 107, 157, 0.2)",
-                                            border: "1px solid rgba(255, 107, 157, 0.5)",
-                                            borderRadius: "20px",
-                                            padding: "5px 15px",
-                                            color: "white",
-                                            cursor: "pointer",
-                                            marginTop: "10px",
-                                            fontSize: "0.9rem",
-                                        }}
-                                    >
-                                        Reset Stars ✨
-                                    </button>
                                 </Instructions>
                             </RemindersModalContent>
                         </RemindersModal>
