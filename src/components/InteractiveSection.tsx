@@ -986,7 +986,7 @@ const InteractiveSection = forwardRef<
                         }
                         return card;
                     });
-                    
+
                     return {
                         ...prev,
                         cards: resetCards,
@@ -1044,7 +1044,7 @@ const InteractiveSection = forwardRef<
                     return prev;
 
                 const newFlipped = [...prev.flippedCards, index];
-                const newCards = prev.cards.map((card, i) => 
+                const newCards = prev.cards.map((card, i) =>
                     i === index ? { ...card, flipped: true } : card
                 );
 
@@ -1054,11 +1054,15 @@ const InteractiveSection = forwardRef<
                         // Match - instantly turn green
                         const matchedCards = newCards.map((card, i) => {
                             if (i === first || i === second) {
-                                return { ...card, matched: true, flipped: true };
+                                return {
+                                    ...card,
+                                    matched: true,
+                                    flipped: true,
+                                };
                             }
                             return card;
                         });
-                        
+
                         const newMatchedCards = [
                             ...prev.matchedCards,
                             first,
