@@ -180,6 +180,7 @@ const PulsingHeart = styled(motion.div)`
     min-width: 44px;
     min-height: 44px;
     -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 
     /* Glow effect around the heart icon */
     i {
