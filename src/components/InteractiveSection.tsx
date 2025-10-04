@@ -971,12 +971,48 @@ const InteractiveSection = forwardRef<
         cards: [] as any[],
         flippedCards: [] as number[],
         matchedCards: [] as number[],
+        cardsToFlipBack: [] as number[],
     });
+
+    // Handle flipping back unmatched cards
+    useEffect(() => {
+        if (gameState.cardsToFlipBack.length === 2) {
+            const timeoutId = setTimeout(() => {
+                setGameState((prev) => {
+                    // Create a new array of cards with the unmatched cards flipped back
+                    const resetCards = prev.cards.map((card, index) => {
+                        if (prev.cardsToFlipBack.includes(index)) {
+                            return { ...card, flipped: false };
+                        }
+                        return card;
+                    });
+                    
+                    return {
+                        ...prev,
+                        cards: resetCards,
+                        flippedCards: [],
+                        cardsToFlipBack: [],
+                    };
+                });
+            }, 1000);
+
+            return () => clearTimeout(timeoutId);
+        }
+    }, [gameState.cardsToFlipBack]);
 
     // Initialize memory game
     useEffect(() => {
         if (modalState.showPuzzle) {
-            const cardEmojis = ["🌹", "💖", "🌸", "💕", "🌺", "💓", "🌷", "�"];
+            const cardEmojis = [
+                "&#x1F493;",
+                "&#x1F495;",
+                "&#x1F496;",
+                "&#x1F497;",
+                "&#x1F498;",
+                "&#x1F49D;",
+                "&#x1F49E;",
+                "&#x1F499;",
+            ];
             const shuffledCards = [...cardEmojis, ...cardEmojis]
                 .sort(() => Math.random() - 0.5)
                 .map((emoji, index) => ({
@@ -989,6 +1025,7 @@ const InteractiveSection = forwardRef<
                 cards: shuffledCards,
                 flippedCards: [],
                 matchedCards: [],
+                cardsToFlipBack: [],
             });
         }
     }, [modalState.showPuzzle]);
@@ -997,30 +1034,38 @@ const InteractiveSection = forwardRef<
     const handleCardClick = useCallback(
         (index: number) => {
             setGameState((prev) => {
+                // Prevent clicking during flip back animation or if card is already flipped/matched
                 if (
                     prev.flippedCards.length === 2 ||
                     prev.cards[index].flipped ||
-                    prev.cards[index].matched
+                    prev.cards[index].matched ||
+                    prev.cardsToFlipBack.length > 0
                 )
                     return prev;
 
                 const newFlipped = [...prev.flippedCards, index];
-                const newCards = [...prev.cards];
-                newCards[index].flipped = true;
+                const newCards = prev.cards.map((card, i) => 
+                    i === index ? { ...card, flipped: true } : card
+                );
 
                 if (newFlipped.length === 2) {
                     const [first, second] = newFlipped;
                     if (prev.cards[first].value === prev.cards[second].value) {
                         // Match - instantly turn green
-                        newCards[first].matched = true;
-                        newCards[second].matched = true;
+                        const matchedCards = newCards.map((card, i) => {
+                            if (i === first || i === second) {
+                                return { ...card, matched: true, flipped: true };
+                            }
+                            return card;
+                        });
+                        
                         const newMatchedCards = [
                             ...prev.matchedCards,
                             first,
                             second,
                         ];
 
-                        if (newMatchedCards.length === prev.cards.length) {
+                        if (newMatchedCards.length === matchedCards.length) {
                             // Wait 2 seconds with modal open, then show rocket and close modal
                             setTimeout(() => {
                                 setModalState((prevModal) => ({
@@ -1040,29 +1085,18 @@ const InteractiveSection = forwardRef<
 
                         return {
                             ...prev,
-                            cards: newCards,
+                            cards: matchedCards,
                             matchedCards: newMatchedCards,
                             flippedCards: [],
+                            cardsToFlipBack: [],
                         };
                     } else {
-                        // No match
-                        setTimeout(() => {
-                            setGameState((current) => {
-                                const resetCards = [...current.cards];
-                                resetCards[first].flipped = false;
-                                resetCards[second].flipped = false;
-                                return {
-                                    ...current,
-                                    cards: resetCards,
-                                    flippedCards: [],
-                                };
-                            });
-                        }, 1000);
-
+                        // No match - mark both cards to flip back
                         return {
                             ...prev,
                             cards: newCards,
                             flippedCards: newFlipped,
+                            cardsToFlipBack: [first, second],
                         };
                     }
                 }
@@ -1288,7 +1322,11 @@ const InteractiveSection = forwardRef<
                                     >
                                         <MemoryCardFront />
                                         <MemoryCardBack matched={card.matched}>
-                                            {card.value}
+                                            <span
+                                                dangerouslySetInnerHTML={{
+                                                    __html: card.value,
+                                                }}
+                                            />
                                         </MemoryCardBack>
                                     </MemoryCardInner>
                                 </MemoryCard>
