@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 
 const SpaceBackground = () => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
-    const STAR_COUNT = 800;
+    const STAR_COUNT = 150; // Reduced from 300 for better performance
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -37,10 +37,8 @@ const SpaceBackground = () => {
             }
 
             update() {
-                const sinValue = Math.sin(
-                    performance.now() * this.twinkleSpeed + this.twinkleOffset
-                );
-                this.opacity = Math.max(0.4, 0.5 + sinValue * 0.5);
+                // Simplified twinkling - less calculations
+                this.opacity = 0.6 + Math.random() * 0.4;
             }
 
             draw() {
@@ -66,17 +64,30 @@ const SpaceBackground = () => {
             initializeStars();
         };
 
-        const animate = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            stars.forEach((star) => {
-                star.update();
-                star.draw();
-            });
+        let lastFrameTime = 0;
+        const targetFPS = 24; // Reduced from 30 for better performance
+        const frameInterval = 1000 / targetFPS;
+
+        const animate = (currentTime: number) => {
+            const elapsed = currentTime - lastFrameTime;
+
+            if (elapsed > frameInterval) {
+                lastFrameTime = currentTime - (elapsed % frameInterval);
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Update and draw stars in a single pass
+                for (let i = 0; i < stars.length; i++) {
+                    stars[i].update();
+                    stars[i].draw();
+                }
+            }
+
             animationFrameId = requestAnimationFrame(animate);
         };
 
         resizeCanvas();
-        animate();
+        animate(0);
         window.addEventListener("resize", resizeCanvas);
 
         return () => {
@@ -134,17 +145,11 @@ const SpaceBackground = () => {
                 }
 
                 @keyframes backgroundShift {
-                    0% {
-                        transform: scale(1) rotate(0deg);
-                        opacity: 0.8;
+                    0%, 100% {
+                        opacity: 0.7;
                     }
                     50% {
-                        transform: scale(1.02) rotate(0.1deg);
-                        opacity: 0.85;
-                    }
-                    100% {
-                        transform: scale(1) rotate(0deg);
-                        opacity: 0.8;
+                        opacity: 0.75;
                     }
                 }
                 `}

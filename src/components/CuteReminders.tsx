@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -9,8 +9,6 @@ const RemindersModal = styled(motion.div)`
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.95);
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -194,6 +192,7 @@ const StarsContainer = styled.div`
     margin: 0 auto;
     justify-items: center;
     align-items: center;
+    position: relative;
 
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
         grid-template-columns: repeat(2, 1fr);
@@ -210,6 +209,7 @@ const StarWrapper = styled(motion.div)<{ clicked: boolean }>`
     position: relative;
     opacity: ${({ clicked }) => (clicked ? 0.6 : 1)};
     transition: opacity 0.3s ease;
+    will-change: transform;
 
     &:hover {
         transform: scale(1.1);
@@ -225,11 +225,11 @@ const Star = styled(motion.div)<{ clicked: boolean; color: string }>`
     color: ${({ clicked, color }) => (clicked ? "#FFD700" : color)};
     filter: ${({ clicked }) =>
         clicked
-            ? "drop-shadow(0 0 15px #FFD700) drop-shadow(0 0 30px #FFD700)"
+            ? "drop-shadow(0 0 15px #FFD700)"
             : "drop-shadow(0 2px 8px rgba(255, 107, 157, 0.3))"};
-    transition: all 0.3s ease;
-    animation: ${({ clicked }) =>
-        clicked ? "starGlow 1s ease-in-out infinite alternate" : "none"};
+    transition: color 0.3s ease, filter 0.3s ease;
+    will-change: transform;
+    transform: ${({ clicked }) => (clicked ? "scale(1.1)" : "scale(1)")};
 
     @keyframes starGlow {
         0% {
@@ -245,20 +245,12 @@ const Star = styled(motion.div)<{ clicked: boolean; color: string }>`
     }
 `;
 
-const ConnectionMessage = styled(motion.div)<{
-    x: number;
-    y: number;
-    flipped: boolean;
-}>`
+const ConnectionMessage = styled(motion.div)<{ starId: number }>`
     position: absolute;
-    left: ${({ x }) => x}px;
-    top: ${({ y }) => y}px;
+    left: 50%;
+    top: -10px;
     transform: translate(-50%, -100%);
-    background: linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.95),
-        rgba(248, 249, 255, 0.95)
-    );
+    background: rgba(255, 255, 255, 0.95);
     border-radius: 20px;
     padding: ${({ theme }) => theme.spacing.sm}
         ${({ theme }) => theme.spacing.md};
@@ -288,23 +280,11 @@ const ConnectionMessage = styled(motion.div)<{
         content: "";
         position: absolute;
         bottom: -8px;
-        ${(props) =>
-            props.flipped
-                ? `
-            left: 100%;
-            transform: translateX(-100%);
-            border-left: 8px solid rgba(255, 255, 255, 0.95);
-            border-right: none;
-            border-top: none;
-            border-bottom: 8px solid transparent;
-        `
-                : `
-            left: 50%;
-            transform: translateX(-50%);
-            border-left: 8px solid transparent;
-            border-right: 8px solid transparent;
-            border-top: 8px solid rgba(255, 255, 255, 0.95);
-        `}
+        left: 50%;
+        transform: translateX(-50%);
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-top: 8px solid rgba(255, 255, 255, 0.95);
     }
 
     @keyframes sparkle {
@@ -416,41 +396,6 @@ const CuteReminders: React.FC<CuteRemindersProps> = React.memo(
             starId: number;
             message: string;
         } | null>(null);
-        const [starPositions, setStarPositions] = useState<{
-            [key: number]: { x: number; y: number };
-        }>({});
-        const containerRef = useRef<HTMLDivElement>(null);
-        const starRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
-
-        useEffect(() => {
-            if (isOpen && containerRef.current) {
-                // Calculate positions after modal is fully rendered
-                const timer = setTimeout(() => {
-                    const newPositions: {
-                        [key: number]: { x: number; y: number };
-                    } = {};
-                    Object.entries(starRefs.current).forEach(([id, ref]) => {
-                        if (ref && containerRef.current) {
-                            const starRect = ref.getBoundingClientRect();
-                            const containerRect =
-                                containerRef.current.getBoundingClientRect();
-                            newPositions[parseInt(id)] = {
-                                x:
-                                    starRect.left +
-                                    starRect.width / 2 -
-                                    containerRect.left,
-                                y:
-                                    starRect.top +
-                                    starRect.height / 2 -
-                                    containerRect.top,
-                            };
-                        }
-                    });
-                    setStarPositions(newPositions);
-                }, 100);
-                return () => clearTimeout(timer);
-            }
-        }, [isOpen, stars]);
 
         const handleStarClick = (starId: number) => {
             const star = stars.find((s) => s.id === starId);
@@ -459,43 +404,10 @@ const CuteReminders: React.FC<CuteRemindersProps> = React.memo(
             // Show message bubble
             setActiveMessage({ starId, message: star.message });
 
-            // Hide message after 4 seconds for better readability
-            setTimeout(() => {
-                setActiveMessage(null);
-            }, 4000);
-
             // Mark star as clicked
             setStars((prev) =>
                 prev.map((s) => (s.id === starId ? { ...s, clicked: true } : s))
             );
-        };
-
-        const getConstrainedPosition = (starId: number) => {
-            const starPos = starPositions[starId];
-            if (!starPos || !containerRef.current)
-                return { x: 0, y: 0, flipped: false };
-
-            const containerRect = containerRef.current.getBoundingClientRect();
-            const bubbleWidth = 250;
-            const halfBubble = bubbleWidth / 2;
-            const padding = 10;
-
-            // Calculate constrained y position (always above the star)
-            const constrainedY = Math.max(80, starPos.y - 20);
-
-            let constrainedX = starPos.x;
-            let flipped = false;
-
-            if (constrainedX + halfBubble > containerRect.width - padding) {
-                // Not enough space on right, flip to left
-                flipped = true;
-                constrainedX = starPos.x - halfBubble;
-                if (constrainedX - halfBubble < padding) {
-                    constrainedX = padding + halfBubble;
-                }
-            }
-
-            return { x: constrainedX, y: constrainedY, flipped };
         };
 
         const resetReminders = () => {
@@ -517,12 +429,11 @@ const CuteReminders: React.FC<CuteRemindersProps> = React.memo(
                             onClick={onClose}
                         >
                             <RemindersModalContent
-                                initial={{ scale: 0.8, opacity: 0, y: 50 }}
-                                animate={{ scale: 1, opacity: 1, y: 0 }}
-                                exit={{ scale: 0.8, opacity: 0, y: 50 }}
-                                transition={{ duration: 0.4, ease: "easeOut" }}
+                                initial={{ scale: 0.9, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                exit={{ scale: 0.9, opacity: 0 }}
+                                transition={{ duration: 0.25, ease: "easeOut" }}
                                 onClick={(e) => e.stopPropagation()}
-                                ref={containerRef}
                             >
                                 <ModalCloseButton onClick={onClose}>
                                     ×
@@ -540,9 +451,6 @@ const CuteReminders: React.FC<CuteRemindersProps> = React.memo(
                                             }
                                             whileHover={{ scale: 1.1 }}
                                             whileTap={{ scale: 0.95 }}
-                                            ref={(el) => {
-                                                starRefs.current[star.id] = el;
-                                            }}
                                         >
                                             <Star
                                                 clicked={star.clicked}
@@ -550,48 +458,36 @@ const CuteReminders: React.FC<CuteRemindersProps> = React.memo(
                                             >
                                                 ⭐
                                             </Star>
-                                        </StarWrapper>
-                                    ))}
-
-                                    {activeMessage &&
-                                        containerRef.current &&
-                                        (() => {
-                                            const { x, y, flipped } =
-                                                getConstrainedPosition(
-                                                    activeMessage.starId
-                                                );
-                                            return (
+                                            {activeMessage?.starId ===
+                                                star.id && (
                                                 <ConnectionMessage
-                                                    x={x}
-                                                    y={y}
-                                                    flipped={flipped}
+                                                    starId={star.id}
                                                     initial={{
                                                         scale: 0,
                                                         opacity: 0,
-                                                        y: 10,
                                                     }}
                                                     animate={{
                                                         scale: 1,
                                                         opacity: 1,
-                                                        y: 0,
                                                     }}
                                                     exit={{
                                                         scale: 0,
                                                         opacity: 0,
-                                                        y: 10,
                                                     }}
                                                     transition={{
-                                                        duration: 0.5,
-                                                        ease: "backOut",
+                                                        duration: 0.3,
+                                                        ease: "easeOut",
                                                     }}
-                                                    onClick={() =>
-                                                        setActiveMessage(null)
-                                                    }
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        setActiveMessage(null);
+                                                    }}
                                                 >
                                                     {activeMessage.message}
                                                 </ConnectionMessage>
-                                            );
-                                        })()}
+                                            )}
+                                        </StarWrapper>
+                                    ))}
                                 </StarsContainer>
 
                                 <Instructions>

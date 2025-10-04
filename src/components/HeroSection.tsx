@@ -2,10 +2,9 @@ import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
-// Glassmorphic container
+// Solid container (backdrop-filter removed for performance)
 const Glass = styled.div`
-    background: rgba(35, 41, 70, 0.5);
-    backdrop-filter: blur(8px);
+    background: rgba(35, 41, 70, 0.9);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 2rem;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
@@ -28,14 +27,12 @@ const HeroContent = styled(Glass)`
     max-width: 800px;
     margin: 0 ${({ theme }) => theme.spacing.md};
     padding: ${({ theme }) => theme.spacing.xl};
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(20px);
+    background: rgba(35, 41, 70, 0.85);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 24px;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4),
-        0 0 0 1px rgba(255, 255, 255, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
     position: relative;
+    /* Remove expensive backdrop-filter for better performance */
 
     @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
         max-width: 90%;
@@ -95,26 +92,15 @@ const HeroName = styled(motion.h1)`
         #4fd1c7 75%,
         #ffd93d 100%
     );
-    background-size: 300% 300%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: gradientShift 4s ease-in-out infinite;
-    text-shadow: 0 0 40px rgba(255, 107, 157, 0.3),
-        0 0 80px rgba(161, 140, 209, 0.2), 0 0 120px rgba(79, 209, 199, 0.1);
+    /* Remove expensive infinite animation and text-shadow */
     letter-spacing: -0.02em;
     line-height: 1;
     padding-bottom: 0.2em;
-
-    @keyframes gradientShift {
-        0%,
-        100% {
-            background-position: 0% 50%;
-        }
-        50% {
-            background-position: 100% 50%;
-        }
-    }
+    /* Use will-change for better performance */
+    will-change: transform;
 `;
 
 const Cursor = styled.span<{ $visible: boolean }>`
@@ -186,18 +172,38 @@ const HeroSubtitle = styled(motion.p)`
 const PulsingHeart = styled(motion.div)`
     font-size: clamp(3rem, 8vw, 5rem);
     color: #ff6b9d;
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin: ${({ theme }) => theme.spacing.xl} 0;
     cursor: pointer;
     position: relative;
-    filter: drop-shadow(0 0 40px rgba(255, 107, 157, 0.4));
+    /* Remove expensive drop-shadow filter */
 
     /* Touch-friendly for mobile */
     min-width: 44px;
     min-height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
+    /* Glow effect around the heart icon */
+    i {
+        filter: drop-shadow(0 0 10px rgba(255, 107, 157, 0.8))
+            drop-shadow(0 0 20px rgba(255, 107, 157, 0.6))
+            drop-shadow(0 0 30px rgba(255, 107, 157, 0.4));
+        animation: heartIconGlow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes heartIconGlow {
+        0% {
+            filter: drop-shadow(0 0 8px rgba(255, 107, 157, 0.6))
+                drop-shadow(0 0 15px rgba(255, 107, 157, 0.4))
+                drop-shadow(0 0 25px rgba(255, 107, 157, 0.3));
+        }
+        100% {
+            filter: drop-shadow(0 0 15px rgba(255, 107, 157, 0.9))
+                drop-shadow(0 0 30px rgba(255, 107, 157, 0.7))
+                drop-shadow(0 0 45px rgba(255, 107, 157, 0.5));
+        }
+    }
 
     @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
         margin: ${({ theme }) => theme.spacing.lg} 0;
@@ -210,10 +216,10 @@ const PulsingHeart = styled(motion.div)`
     @keyframes heartGlow {
         0% {
             transform: translate(-50%, -50%) scale(1);
-            opacity: 0.5;
+            opacity: 0.3;
         }
         100% {
-            transform: translate(-50%, -50%) scale(1.2);
+            transform: translate(-50%, -50%) scale(1.3);
             opacity: 0.8;
         }
     }
@@ -251,7 +257,7 @@ const HeroSection: React.FC = React.memo(() => {
                         prev.displayedText + poeticName[prev.currentIndex],
                     currentIndex: prev.currentIndex + 1,
                 }));
-            }, 90);
+            }, 120);
 
             return () => clearTimeout(timeout);
         } else {
@@ -304,8 +310,8 @@ const HeroSection: React.FC = React.memo(() => {
                     onClick={handleHeartClick}
                     initial={{ opacity: 0, scale: 0 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.8, delay: 2 }}
-                    whileHover={{ scale: 1.2 }}
+                    transition={{ duration: 0.6, delay: 2 }}
+                    whileHover={{ scale: 1.15 }}
                     whileTap={{ scale: 0.9 }}
                     title="Click me for a burst of love!"
                 >

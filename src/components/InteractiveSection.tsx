@@ -344,7 +344,7 @@ const PuzzleModal = styled(motion.div)<{ $isVisible: boolean }>`
 const PuzzleContent = styled(motion.div)`
     background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 50%, #fff5f7 100%);
     backdrop-filter: blur(20px);
-    padding: ${({ theme }) => theme.spacing.xxl};
+    padding: 0 ${({ theme }) => theme.spacing.xxl};
     border-radius: ${({ theme }) => theme.borderRadius.xl};
     max-width: 700px;
     width: 90%;
@@ -397,7 +397,7 @@ const PuzzleContent = styled(motion.div)`
 
 const PuzzleHeader = styled.div`
     text-align: center;
-    margin-bottom: ${({ theme }) => theme.spacing.xl};
+    margin-bottom: ${({ theme }) => theme.spacing.md};
     padding-top: ${({ theme }) => theme.spacing.lg};
     position: relative;
 
@@ -433,17 +433,6 @@ const PuzzleTitle = styled.h3`
         50% {
             background-position: 100% 50%;
         }
-    }
-`;
-
-const PuzzleSubtitle = styled.p`
-    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
-    color: #666;
-    margin-bottom: ${({ theme }) => theme.spacing.lg};
-    font-style: italic;
-
-    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-        margin-bottom: ${({ theme }) => theme.spacing.md};
     }
 `;
 
@@ -807,7 +796,6 @@ const MemoryCardBack = styled.div<{ matched: boolean }>`
 
 const MemoryGameTitle = styled.h3`
     text-align: center;
-    margin-bottom: ${({ theme }) => theme.spacing.xl};
     font-size: clamp(1.2rem, 3.5vw, 2.2rem);
     color: #ff6b9d;
     font-weight: 400;
@@ -1277,9 +1265,6 @@ const InteractiveSection = forwardRef<
 
                     <PuzzleHeader>
                         <PuzzleTitle>💕 Love's Challenge 💕</PuzzleTitle>
-                        <PuzzleSubtitle>
-                            Show me the depth of your love, my dear!
-                        </PuzzleSubtitle>
                     </PuzzleHeader>
 
                     <PuzzleContainer>
