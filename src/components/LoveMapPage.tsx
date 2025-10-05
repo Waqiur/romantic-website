@@ -190,7 +190,7 @@ const Button = styled(motion.button)`
     padding: clamp(0.6rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.5rem);
     border-radius: 25px;
     cursor: pointer;
-    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    font-size: clamp(1.1rem, 2.5vw, 1.3rem);
     font-weight: 600;
     margin: 0 clamp(0.25rem, 1vw, 0.5rem);
     transition: all 0.3s ease;
@@ -203,7 +203,7 @@ const Button = styled(motion.button)`
 
     @media (max-width: ${theme.breakpoints.mobile}) {
         padding: clamp(0.5rem, 3vw, 0.7rem) clamp(0.8rem, 4vw, 1.2rem);
-        font-size: clamp(0.8rem, 3.5vw, 0.95rem);
+        font-size: clamp(1rem, 3.5vw, 1.2rem);
         margin: clamp(0.5rem, 2vw, 1rem) clamp(0.2rem, 1vw, 0.3rem);
     }
 `;

@@ -225,7 +225,7 @@ const StartJourneyButton = styled(motion.button)`
     padding: 1rem 2rem;
     border-radius: 50px;
     cursor: pointer;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     font-weight: 600;
     font-family: ${({ theme }) => theme?.fonts?.heading || "Arial, sans-serif"};
     box-shadow: 0 10px 30px rgba(66, 225, 245, 0.4);
