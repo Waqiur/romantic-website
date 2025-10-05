@@ -38,6 +38,7 @@ const LoveNote = styled(motion.div)`
     cursor: pointer;
     will-change: transform, opacity;
     transform: translate3d(0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
 
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
         padding: ${({ theme }) => theme.spacing.sm}

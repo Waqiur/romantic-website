@@ -304,6 +304,7 @@ const DetailItem = styled(motion.div)`
     backdrop-filter: blur(10px);
     will-change: transform, box-shadow;
     transform-style: preserve-3d;
+    -webkit-tap-highlight-color: transparent;
 
     &:hover {
         transform: translateY(-5px);

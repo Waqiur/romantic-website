@@ -161,6 +161,7 @@ const InteractiveCard = styled(motion.div)`
     transition: all 0.15s ease-out;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     will-change: transform, box-shadow, border-color;
+    -webkit-tap-highlight-color: transparent;
 
     @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
         padding: ${({ theme }) => theme.spacing.lg};
@@ -597,6 +598,7 @@ const MemoryCard = styled(motion.div)<{ flipped: boolean; matched: boolean }>`
     cursor: pointer;
     position: relative;
     transition: transform 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
 
     @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
         width: 75px;

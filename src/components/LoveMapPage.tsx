@@ -52,8 +52,8 @@ const PlanetImage = styled.img`
     }
 
     @media (max-width: 480px) {
-        width: clamp(100px, 40vw, 150px);
-        height: clamp(100px, 40vw, 150px);
+        width: clamp(100px, 60vw, 150px);
+        height: clamp(100px, 60vw, 150px);
     }
 `;
 
@@ -62,9 +62,7 @@ const CenterContent = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: clamp(1rem, 4vw, 3rem);
     text-align: center;
-    max-width: clamp(300px, 50vw, 500px);
     position: relative;
     z-index: 1;
 
@@ -97,7 +95,7 @@ const CarouselImage = styled.img`
     }
 
     @media (max-width: 480px) {
-        max-width: clamp(100px, 40vw, 150px);
+        max-width: clamp(100px, 60vw, 150px);
     }
 `;
 
@@ -117,10 +115,10 @@ const ModalText = styled.p`
     margin-bottom: clamp(1rem, 3vw, 1.5rem);
     line-height: 1.6;
     white-space: pre-line;
-    font-size: clamp(0.9rem, 2.5vw, 1.15rem);
+    font-size: clamp(1.5rem, 2.5vw, 1.15rem);
 
     @media (max-width: ${theme.breakpoints.mobile}) {
-        font-size: clamp(0.8rem, 3vw, 1rem);
+        font-size: clamp(1rem, 3vw, 1rem);
         line-height: 1.5;
         margin-bottom: clamp(0.8rem, 2.5vw, 1.2rem);
     }
@@ -145,11 +143,10 @@ const ScrollingContent = styled.div`
     color: white;
     font-size: clamp(1rem, 3vw, 1.4rem);
     line-height: 1.8;
-    max-width: clamp(300px, 80vw, 600px);
     white-space: pre-line;
 
     @media (max-width: ${theme.breakpoints.mobile}) {
-        font-size: clamp(0.9rem, 4vw, 1.2rem);
+        font-size: clamp(1rem, 4vw, 1.2rem);
         line-height: 1.6;
     }
 `;
@@ -388,12 +385,11 @@ const LoveMapPage: React.FC<LoveMapPageProps> = ({ isVisible = true }) => {
                                 ? "center"
                                 : "space-around",
                             width: isMobile
-                                ? "clamp(90%, 75vw, 75%)"
+                                ? "clamp(100%, 75vw, 75%)"
                                 : "clamp(80%, 75vw, 75%)",
                             height: "clamp(70%, 80vh, 80%)",
                             gap: "clamp(0.5rem, 3vw, 2rem)",
                             flexDirection: isMobile ? "column" : "row",
-                            padding: "clamp(1rem, 3vw, 2rem)",
                         }}
                     >
                         <PlanetImage
@@ -490,7 +486,7 @@ const LoveMapPage: React.FC<LoveMapPageProps> = ({ isVisible = true }) => {
                             initial={{ y: 100, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 0.5, duration: 1 }}
-                            style={{ marginBottom: "1rem" }}
+                            style={{ marginBottom: "2rem" }}
                         >
                             <motion.div
                                 initial={{ y: 100, opacity: 0 }}
@@ -526,7 +522,7 @@ const LoveMapPage: React.FC<LoveMapPageProps> = ({ isVisible = true }) => {
                             initial={{ y: 100, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 2.5, duration: 1 }}
-                            style={{ marginBottom: "1rem" }}
+                            style={{ marginBottom: "2rem" }}
                         >
                             <motion.div
                                 initial={{ y: 100, opacity: 0 }}
@@ -562,7 +558,7 @@ const LoveMapPage: React.FC<LoveMapPageProps> = ({ isVisible = true }) => {
                             initial={{ y: 100, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 4.5, duration: 1 }}
-                            style={{ marginBottom: "1rem" }}
+                            style={{ marginBottom: "2rem" }}
                         >
                             <motion.div
                                 initial={{ y: 100, opacity: 0 }}
