@@ -232,6 +232,7 @@ const StartJourneyButton = styled(motion.button)`
     transition: all 0.3s ease;
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
     z-index: 1000;
+    -webkit-tap-highlight-color: transparent;
 
     &:hover {
         transform: translateX(-50%) translateY(-3px);
