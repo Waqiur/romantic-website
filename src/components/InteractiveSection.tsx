@@ -8,21 +8,11 @@ import CuteReminders from "./CuteReminders";
 const InteractiveContainer = styled.section`
     padding: ${({ theme }) => theme.spacing.xxl} 0;
     background: linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.95) 0%,
-            rgba(161, 140, 209, 0.1) 50%,
-            rgba(255, 182, 193, 0.05) 100%
-        ),
-        radial-gradient(
-            circle at 30% 20%,
-            rgba(255, 107, 157, 0.08) 0%,
-            transparent 50%
-        ),
-        radial-gradient(
-            circle at 70% 80%,
-            rgba(79, 209, 199, 0.06) 0%,
-            transparent 50%
-        );
+        135deg,
+        rgba(255, 255, 255, 0.95) 0%,
+        rgba(161, 140, 209, 0.1) 50%,
+        rgba(255, 182, 193, 0.05) 100%
+    );
     position: relative;
     width: 100%;
     overflow-x: hidden;
@@ -33,37 +23,6 @@ const InteractiveContainer = styled.section`
 
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
         padding: ${({ theme }) => theme.spacing.lg} 0;
-    }
-
-    &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: radial-gradient(
-                circle at 20% 30%,
-                rgba(255, 107, 157, 0.03) 0%,
-                transparent 40%
-            ),
-            radial-gradient(
-                circle at 80% 70%,
-                rgba(161, 140, 209, 0.03) 0%,
-                transparent 40%
-            );
-        animation: subtleFloat 20s ease-in-out infinite alternate;
-        pointer-events: none;
-        z-index: 0;
-    }
-
-    @keyframes subtleFloat {
-        0% {
-            transform: translateY(0px) rotate(0deg);
-        }
-        100% {
-            transform: translateY(-15px) rotate(0.3deg);
-        }
     }
 
     /* Reduce animation on mobile for performance */
@@ -111,7 +70,7 @@ const SectionTitle = styled(motion.h2)`
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: titleGradient 6s ease-in-out infinite;
+    /* Removed animation for performance */
     margin-bottom: ${({ theme }) => theme.spacing.md};
     text-align: center;
     position: relative;
@@ -134,7 +93,7 @@ const SectionTitle = styled(motion.h2)`
         top: -25px;
         left: -30px;
         font-size: 1.8rem;
-        animation: sparkleFloat 4s ease-in-out infinite;
+        /* Removed animation for performance */
         color: #ff6b9d;
 
         @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
@@ -150,7 +109,7 @@ const SectionTitle = styled(motion.h2)`
         top: -20px;
         right: -40px;
         font-size: 2rem;
-        animation: heartFloat 3s ease-in-out infinite;
+        /* Removed animation for performance */
 
         @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
             font-size: 1.4rem;
@@ -159,25 +118,7 @@ const SectionTitle = styled(motion.h2)`
         }
     }
 
-    @keyframes sparkleFloat {
-        0%,
-        100% {
-            transform: translateY(0px) rotate(0deg) scale(1);
-        }
-        50% {
-            transform: translateY(-8px) rotate(180deg) scale(1.2);
-        }
-    }
-
-    @keyframes heartFloat {
-        0%,
-        100% {
-            transform: translateY(0px) rotate(0deg);
-        }
-        50% {
-            transform: translateY(-10px) rotate(5deg);
-        }
-    }
+    /* Removed keyframes for performance */
 `;
 
 const AnimatedUnderline = styled(motion.div)`
@@ -249,12 +190,7 @@ const InteractiveCard = styled(motion.div)`
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(255, 107, 157, 0.1),
-            transparent
-        );
+        background: rgba(255, 107, 157, 0.1);
         transition: left 0.2s ease-out;
         z-index: 1;
     }
@@ -305,7 +241,7 @@ const CardTitle = styled.h3`
         transform: translateX(-50%);
         width: 0;
         height: 2px;
-        background: linear-gradient(90deg, #ff6b9d, #a18cd1);
+        background: #ff6b9d;
         transition: width 0.15s ease-out;
         will-change: width;
     }
@@ -342,7 +278,7 @@ const PuzzleModal = styled(motion.div)<{ $isVisible: boolean }>`
 `;
 
 const PuzzleContent = styled(motion.div)`
-    background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 50%, #fff5f7 100%);
+    background: #ffffff;
     backdrop-filter: blur(20px);
     padding: 0 ${({ theme }) => theme.spacing.xxl};
     border-radius: ${({ theme }) => theme.borderRadius.xl};
@@ -415,12 +351,12 @@ const PuzzleHeader = styled.div`
 const PuzzleTitle = styled.h3`
     font-size: clamp(1.5rem, 4vw, 2.2rem);
     font-family: ${({ theme }) => theme.fonts.heading};
-    background: linear-gradient(45deg, #ff6b9d, #a18cd1, #4fd1c7, #ffd93d);
+    background: linear-gradient(45deg, #ff6b9d, #a18cd1);
     background-size: 400% 400%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: puzzleTitleGradient 3s ease-in-out infinite;
+    /* Removed animation for performance */
     margin-bottom: ${({ theme }) => theme.spacing.md};
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     font-weight: 600;
@@ -587,15 +523,9 @@ const FloatingDecoration = styled(motion.div)<{ delay: number; size: number }>`
     position: absolute;
     width: ${({ size }) => size}px;
     height: ${({ size }) => size}px;
-    background: linear-gradient(
-        135deg,
-        rgba(255, 107, 157, 0.15),
-        rgba(161, 140, 209, 0.15)
-    );
     border-radius: 50%;
     opacity: 0.5;
-    animation: floatDecoration ${({ delay }) => 10 + delay}s ease-in-out
-        infinite;
+    /* Removed animation for performance */
 
     @keyframes floatDecoration {
         0%,
@@ -615,7 +545,7 @@ const FloatingSparkle = styled(motion.div)<{ delay: number; size: number }>`
     position: absolute;
     font-size: ${({ size }) => size}px;
     opacity: 0.6;
-    animation: sparkleTwinkle ${({ delay }) => 5 + delay}s ease-in-out infinite;
+    /* Removed animation for performance */
     color: #ff6b9d;
 
     @keyframes sparkleTwinkle {
@@ -756,10 +686,7 @@ const MemoryCardBack = styled.div<{ matched: boolean }>`
     display: flex;
     align-items: center;
     justify-content: center;
-    background: ${({ matched }) =>
-        matched
-            ? "linear-gradient(135deg, #4ade80 0%, #22c55e 100%)"
-            : "linear-gradient(135deg, #ff6b9d 0%, #a18cd1 100%)"};
+    background: ${({ matched }) => (matched ? "#4ade80" : "#ff6b9d")};
     border-radius: 16px;
     border: 3px solid rgba(255, 255, 255, 0.3);
     font-size: 2.2rem;
@@ -839,7 +766,7 @@ const RocketEmoji = styled(motion.div)`
     font-size: clamp(4rem, 12vw, 8rem);
     color: white;
     text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-    animation: rocketFloat 3s ease-in-out infinite;
+    /* Removed animation for performance */
 
     @keyframes rocketFloat {
         0%,
@@ -896,14 +823,9 @@ const JourneyText = styled(motion.div)`
         transform: translateX(-50%);
         width: 80%;
         height: 3px;
-        background: linear-gradient(
-            90deg,
-            transparent 0%,
-            rgba(255, 255, 255, 0.8) 50%,
-            transparent 100%
-        );
+        background: rgba(255, 255, 255, 0.8);
         border-radius: 2px;
-        animation: rainbowLine 3s ease-in-out infinite;
+        /* Removed animation for performance */
 
         @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
             bottom: -10px;

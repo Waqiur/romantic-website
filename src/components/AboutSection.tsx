@@ -15,91 +15,13 @@ const AboutContainer = styled.section`
     }
 
     background: linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.95) 0%,
-            rgba(254, 207, 239, 0.7) 50%,
-            rgba(255, 182, 193, 0.6) 100%
-        ),
-        radial-gradient(
-            circle at 30% 20%,
-            rgba(147, 51, 234, 0.1) 0%,
-            transparent 50%
-        ),
-        radial-gradient(
-            circle at 70% 80%,
-            rgba(59, 130, 246, 0.1) 0%,
-            transparent 50%
-        );
+        135deg,
+        rgba(255, 255, 255, 0.95) 0%,
+        rgba(254, 207, 239, 0.7) 50%,
+        rgba(255, 182, 193, 0.6) 100%
+    );
     position: relative;
     overflow: hidden;
-
-    &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: radial-gradient(
-                circle at 20% 30%,
-                rgba(255, 107, 157, 0.05) 0%,
-                transparent 40%
-            ),
-            radial-gradient(
-                circle at 80% 70%,
-                rgba(161, 140, 209, 0.05) 0%,
-                transparent 40%
-            ),
-            radial-gradient(
-                circle at 50% 50%,
-                rgba(79, 209, 199, 0.03) 0%,
-                transparent 40%
-            );
-        animation: subtleFloat 15s ease-in-out infinite alternate;
-    }
-
-    &::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-image: radial-gradient(
-                circle at 25% 25%,
-                rgba(255, 107, 157, 0.03) 0%,
-                transparent 50%
-            ),
-            radial-gradient(
-                circle at 75% 75%,
-                rgba(161, 140, 209, 0.03) 0%,
-                transparent 50%
-            ),
-            radial-gradient(
-                circle at 50% 10%,
-                rgba(255, 182, 193, 0.02) 0%,
-                transparent 50%
-            );
-        animation: backgroundShift 20s ease-in-out infinite alternate;
-    }
-
-    @keyframes subtleFloat {
-        0% {
-            transform: translateY(0px) rotate(0deg);
-        }
-        100% {
-            transform: translateY(-10px) rotate(0.5deg);
-        }
-    }
-
-    @keyframes backgroundShift {
-        0% {
-            opacity: 0.3;
-        }
-        100% {
-            opacity: 0.7;
-        }
-    }
 `;
 
 const Container = styled.div`
@@ -143,21 +65,10 @@ const SectionTitle = styled(motion.h2)`
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: titleGradient 6s ease-in-out infinite;
     margin-bottom: ${({ theme }) => theme.spacing.lg};
     text-align: center;
     position: relative;
     text-shadow: 0 0 30px rgba(255, 107, 157, 0.3);
-
-    @keyframes titleGradient {
-        0%,
-        100% {
-            background-position: 0% 50%;
-        }
-        50% {
-            background-position: 100% 50%;
-        }
-    }
 
     &::before {
         content: "✨";
@@ -165,7 +76,6 @@ const SectionTitle = styled(motion.h2)`
         top: -25px;
         left: -30px;
         font-size: 1.8rem;
-        animation: sparkleFloat 4s ease-in-out infinite;
         color: #ff6b9d;
 
         @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
@@ -181,32 +91,12 @@ const SectionTitle = styled(motion.h2)`
         top: -20px;
         right: -40px;
         font-size: 2rem;
-        animation: heartFloat 3s ease-in-out infinite;
+        color: #ff6b9d;
 
         @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
             font-size: 1.4rem;
             top: -15px;
             right: -25px;
-        }
-    }
-
-    @keyframes sparkleFloat {
-        0%,
-        100% {
-            transform: translateY(0px) rotate(0deg) scale(1);
-        }
-        50% {
-            transform: translateY(-8px) rotate(180deg) scale(1.2);
-        }
-    }
-
-    @keyframes heartFloat {
-        0%,
-        100% {
-            transform: translateY(0px) rotate(0deg);
-        }
-        50% {
-            transform: translateY(-10px) rotate(5deg);
         }
     }
 `;
@@ -274,25 +164,9 @@ const PortraitFrame = styled.div`
         left: -2px;
         right: -2px;
         bottom: -2px;
-        background: linear-gradient(
-            45deg,
-            rgba(255, 107, 157, 0.3),
-            rgba(161, 140, 209, 0.3),
-            rgba(79, 209, 199, 0.3),
-            rgba(255, 107, 157, 0.3)
-        );
+        background: rgba(255, 107, 157, 0.3);
         border-radius: ${({ theme }) => theme.borderRadius.xl};
         z-index: -1;
-        animation: borderGlow 3s ease-in-out infinite alternate;
-    }
-
-    @keyframes borderGlow {
-        0% {
-            opacity: 0.3;
-        }
-        100% {
-            opacity: 0.8;
-        }
     }
 `;
 
@@ -326,12 +200,6 @@ const PortraitOverlay = styled.div`
     left: 8px;
     right: 8px;
     bottom: 8px;
-    background: linear-gradient(
-        135deg,
-        rgba(255, 107, 157, 0.1) 0%,
-        rgba(161, 140, 209, 0.1) 100%
-    );
-    border-radius: ${({ theme }) => theme.borderRadius.lg};
     opacity: 0;
     transition: opacity 0.3s ease;
 
@@ -365,12 +233,7 @@ const HighlightText = styled(motion.p)`
         font-size: 1rem;
     }
 
-    background: linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.95) 0%,
-        rgba(254, 207, 239, 0.5) 50%,
-        rgba(255, 182, 193, 0.4) 100%
-    );
+    background: rgba(255, 255, 255, 0.95);
     border-radius: ${({ theme }) => theme.borderRadius.lg};
     border-left: 5px solid #ff6b9d;
     box-shadow: 0 8px 25px rgba(255, 107, 157, 0.15),
@@ -393,7 +256,6 @@ const HighlightText = styled(motion.p)`
         top: -15px;
         left: 20px;
         font-size: 1.5rem;
-        animation: sparkle 2s ease-in-out infinite alternate;
         filter: drop-shadow(0 0 5px rgba(255, 107, 157, 0.5));
     }
 
@@ -403,17 +265,7 @@ const HighlightText = styled(motion.p)`
         bottom: -15px;
         right: 20px;
         font-size: 1.5rem;
-        animation: sparkle 2s ease-in-out infinite alternate-reverse;
         filter: drop-shadow(0 0 5px rgba(161, 140, 209, 0.5));
-    }
-
-    @keyframes sparkle {
-        0% {
-            transform: scale(1) rotate(0deg);
-        }
-        100% {
-            transform: scale(1.2) rotate(10deg);
-        }
     }
 `;
 
@@ -440,12 +292,7 @@ const DetailItem = styled(motion.div)`
         padding: ${({ theme }) => theme.spacing.sm};
         margin-bottom: ${({ theme }) => theme.spacing.sm};
     }
-    background: linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.95) 0%,
-        rgba(254, 207, 239, 0.4) 50%,
-        rgba(255, 182, 193, 0.3) 100%
-    );
+    background: rgba(255, 255, 255, 0.95);
     border-radius: ${({ theme }) => theme.borderRadius.lg};
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08),
         inset 0 1px 0 rgba(255, 255, 255, 0.3);
@@ -459,16 +306,9 @@ const DetailItem = styled(motion.div)`
     transform-style: preserve-3d;
 
     &:hover {
-        transform: translateY(-20px) scale(1.08) rotateX(10deg) rotateY(3deg);
-
-        @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-            transform: translateY(-8px) scale(1.02);
-        }
-        box-shadow: 0 35px 70px rgba(255, 107, 157, 0.4),
-            0 0 0 2px rgba(255, 107, 157, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.8),
-            0 0 50px rgba(255, 107, 157, 0.3),
-            0 0 100px rgba(161, 140, 209, 0.2);
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(255, 107, 157, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.7);
         background: linear-gradient(
             135deg,
             rgba(255, 255, 255, 1) 0%,
@@ -476,8 +316,6 @@ const DetailItem = styled(motion.div)`
             rgba(255, 182, 193, 0.8) 100%
         );
         border-color: rgba(255, 107, 157, 0.6);
-        animation: cardPulse 1.5s ease-in-out infinite,
-            cardGlow 3s ease-in-out infinite;
     }
 
     &::before {
@@ -487,146 +325,13 @@ const DetailItem = styled(motion.div)`
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(255, 107, 157, 0.3),
-            rgba(161, 140, 209, 0.3),
-            rgba(79, 209, 199, 0.3),
-            transparent
-        );
+        background: rgba(255, 107, 157, 0.1);
         transition: left 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         z-index: 1;
     }
 
     &:hover::before {
         left: 100%;
-    }
-
-    &::after {
-        content: "";
-        position: absolute;
-        top: -3px;
-        left: -3px;
-        right: -3px;
-        bottom: -3px;
-        background: linear-gradient(
-            45deg,
-            rgba(255, 107, 157, 0.4),
-            rgba(161, 140, 209, 0.4),
-            rgba(79, 209, 199, 0.4),
-            rgba(255, 107, 157, 0.4)
-        );
-        border-radius: ${({ theme }) => theme.borderRadius.lg};
-        z-index: -1;
-        opacity: 0;
-        transition: opacity 0.4s ease;
-        animation: borderPulse 2s ease-in-out infinite;
-    }
-
-    &:hover::after {
-        opacity: 1;
-    }
-
-    @keyframes cardPulse {
-        0%,
-        100% {
-            transform: translateY(-20px) scale(1.08) rotateX(10deg)
-                rotateY(3deg);
-        }
-        50% {
-            transform: translateY(-25px) scale(1.12) rotateX(12deg)
-                rotateY(4deg);
-        }
-    }
-
-    @keyframes cardGlow {
-        0%,
-        100% {
-            filter: drop-shadow(0 0 20px rgba(255, 107, 157, 0.3));
-        }
-        50% {
-            filter: drop-shadow(0 0 40px rgba(255, 107, 157, 0.6));
-        }
-    }
-
-    @keyframes borderPulse {
-        0%,
-        100% {
-            opacity: 0.3;
-        }
-        50% {
-            opacity: 0.8;
-        }
-    }
-
-    /* Particle effects on hover */
-    &:hover .particle {
-        opacity: 1;
-        animation: particleFloat 2.5s ease-in-out infinite;
-        filter: drop-shadow(0 0 8px rgba(255, 107, 157, 0.8));
-    }
-
-    /* Add sparkle burst effect on hover */
-    &:hover::before {
-        left: 100%;
-        animation: shimmerSweep 1.2s ease-in-out infinite;
-    }
-
-    @keyframes shimmerSweep {
-        0% {
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 107, 157, 0.4),
-                rgba(161, 140, 209, 0.4),
-                rgba(79, 209, 199, 0.4),
-                transparent
-            );
-        }
-        50% {
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.6),
-                rgba(255, 107, 157, 0.5),
-                rgba(161, 140, 209, 0.5),
-                transparent
-            );
-        }
-        100% {
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 107, 157, 0.4),
-                rgba(161, 140, 209, 0.4),
-                rgba(79, 209, 199, 0.4),
-                transparent
-            );
-        }
-    }
-
-    @keyframes particleFloat {
-        0%,
-        100% {
-            transform: translateY(0px) translateX(0px) scale(1) rotate(0deg);
-            opacity: 0.8;
-        }
-        25% {
-            transform: translateY(-20px) translateX(8px) scale(1.3)
-                rotate(90deg);
-            opacity: 1;
-        }
-        50% {
-            transform: translateY(-35px) translateX(-8px) scale(0.9)
-                rotate(180deg);
-            opacity: 0.7;
-        }
-        75% {
-            transform: translateY(-20px) translateX(5px) scale(1.2)
-                rotate(270deg);
-            opacity: 0.9;
-        }
     }
 `;
 
@@ -660,17 +365,6 @@ const DetailValue = styled.span`
         transform: scale(1.1);
         text-shadow: 0 0 15px rgba(255, 107, 157, 0.6),
             0 0 30px rgba(255, 107, 157, 0.4);
-        animation: textPulse 2s ease-in-out infinite;
-    }
-
-    @keyframes textPulse {
-        0%,
-        100% {
-            transform: scale(1.1);
-        }
-        50% {
-            transform: scale(1.15);
-        }
     }
 
     &::after {
@@ -733,67 +427,22 @@ const FloatingDecoration = styled(motion.div)<{ delay: number; size: number }>`
     position: absolute;
     width: ${({ size }) => size}px;
     height: ${({ size }) => size}px;
-    background: linear-gradient(
-        135deg,
-        rgba(255, 107, 157, 0.2),
-        rgba(161, 140, 209, 0.2)
-    );
     border-radius: 50%;
     opacity: 0.6;
-    animation: floatDecoration ${({ delay }) => 8 + delay}s ease-in-out infinite;
-
-    @keyframes floatDecoration {
-        0%,
-        100% {
-            transform: translateY(0px) translateX(0px) scale(1);
-        }
-        33% {
-            transform: translateY(-20px) translateX(10px) scale(1.1);
-        }
-        66% {
-            transform: translateY(-10px) translateX(-10px) scale(0.9);
-        }
-    }
 `;
 
 const FloatingHeart = styled(motion.div)<{ delay: number; size: number }>`
     position: absolute;
     font-size: ${({ size }) => size}px;
     opacity: 0.7;
-    animation: heartPulse ${({ delay }) => 6 + delay}s ease-in-out infinite;
     color: #ff6b9d;
-
-    @keyframes heartPulse {
-        0%,
-        100% {
-            transform: scale(1) rotate(0deg);
-            opacity: 0.4;
-        }
-        50% {
-            transform: scale(1.3) rotate(10deg);
-            opacity: 0.8;
-        }
-    }
 `;
 
 const FloatingSparkle = styled(motion.div)<{ delay: number; size: number }>`
     position: absolute;
     font-size: ${({ size }) => size}px;
     opacity: 0.6;
-    animation: sparkleTwinkle ${({ delay }) => 4 + delay}s ease-in-out infinite;
     color: #a18cd1;
-
-    @keyframes sparkleTwinkle {
-        0%,
-        100% {
-            transform: scale(1) rotate(0deg);
-            opacity: 0.3;
-        }
-        50% {
-            transform: scale(1.5) rotate(180deg);
-            opacity: 0.9;
-        }
-    }
 `;
 
 const AboutSection: React.FC = React.memo(() => {

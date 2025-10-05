@@ -96,8 +96,7 @@ function App() {
                                     justifyContent: "center",
                                     alignItems: "center",
                                     height: "100vh",
-                                    background:
-                                        "linear-gradient(135deg, #ff6b9d 0%, #a18cd1 100%)",
+                                    background: "#ff6b9d",
                                     position: "fixed",
                                     top: 0,
                                     left: 0,
