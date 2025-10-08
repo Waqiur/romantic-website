@@ -183,6 +183,56 @@ const FinalImage = styled.img`
     }
 `;
 
+const StatsPopup = styled(motion.div)`
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, #1c2837 0%, #050608 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2700;
+    text-align: center;
+    padding: clamp(1rem, 5vw, 2rem);
+`;
+
+const StatsContent = styled.div`
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: clamp(2rem, 5vw, 3rem);
+    max-width: clamp(400px, 80vw, 600px);
+    border: 2px solid rgba(66, 225, 245, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+`;
+
+const StatsTitle = styled.h2`
+    color: #42e1f5;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 600;
+    margin-bottom: clamp(1rem, 3vw, 1.5rem);
+`;
+
+const StatsText = styled.p`
+    color: white;
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    line-height: 1.6;
+    margin-bottom: clamp(0.5rem, 2vw, 1rem);
+    white-space: pre-line;
+`;
+
+const PoemText = styled.p`
+    color: #06ca95;
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    line-height: 1.7;
+    font-style: italic;
+    margin-top: clamp(1rem, 3vw, 1.5rem);
+    white-space: pre-line;
+`;
+
 const Button = styled(motion.button)`
     background: linear-gradient(135deg, #42e1f5 0%, #06ca95 100%);
     color: white;
@@ -283,6 +333,7 @@ const LoveMapPage: React.FC<LoveMapPageProps> = ({ isVisible = true }) => {
     const [currentMilestoneIndex, setCurrentMilestoneIndex] = useState(0);
     const [showFinalMessage, setShowFinalMessage] = useState(false);
     const [showFinalImage, setShowFinalImage] = useState(false);
+    const [showStatsPopup, setShowStatsPopup] = useState(false);
     const [imageLoaded, setImageLoaded] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     const navigate = useNavigate();
@@ -586,7 +637,7 @@ const LoveMapPage: React.FC<LoveMapPageProps> = ({ isVisible = true }) => {
                                 animate={{ y: 0, opacity: 1 }}
                                 transition={{ delay: 6, duration: 1 }}
                             >
-                                So tell me—will you be my girlfriend too?
+                                So tell me, will you be my girlfriend too?
                             </motion.div>
                         </motion.div>
 
@@ -660,7 +711,7 @@ const LoveMapPage: React.FC<LoveMapPageProps> = ({ isVisible = true }) => {
                         <Button
                             onClick={() => {
                                 setShowFinalImage(false);
-                                setProposalAccepted(true);
+                                setShowStatsPopup(true);
                             }}
                             style={{ marginTop: "2rem" }}
                             whileHover={{ scale: 1.05 }}
@@ -670,6 +721,49 @@ const LoveMapPage: React.FC<LoveMapPageProps> = ({ isVisible = true }) => {
                         </Button>
                     </motion.div>
                 </FinalImageContainer>
+            )}
+
+            {/* Stats Popup */}
+            {showStatsPopup && (
+                <StatsPopup
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.6, ease: "easeOut" }}
+                >
+                    <StatsContent>
+                        <StatsTitle>Development Journey</StatsTitle>
+                        <StatsText>
+                            57 Coding Files{"\n"}
+                            68,778 Lines of Codes{"\n"}
+                            423 Hours 37 Minutes of Work{"\n"}
+                        </StatsText>
+                        <PoemText>
+                            Through sleepless nights and endless lines of code,
+                            {"\n"}I poured my heart into this complex code.
+                            {"\n"}
+                            Every file, every line, every minute spent,{"\n"}
+                            Was all worth it the moment you said yes.
+                        </PoemText>
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.5, duration: 0.6 }}
+                        >
+                            <Button
+                                onClick={() => {
+                                    setShowStatsPopup(false);
+                                    setProposalAccepted(true);
+                                }}
+                                style={{ marginTop: "2rem" }}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                Continue to Celebration! 🎉
+                            </Button>
+                        </motion.div>
+                    </StatsContent>
+                </StatsPopup>
             )}
 
             {/* Celebration */}
