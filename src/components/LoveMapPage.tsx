@@ -737,7 +737,7 @@ const LoveMapPage: React.FC<LoveMapPageProps> = ({ isVisible = true }) => {
                             57 Coding Files{"\n"}
                             68,778 Lines of Codes{"\n"}
                             423 Hours 37 Minutes of Work{"\n"}
-                            132 Days{"\n"}
+                            132 Days of Dedication{"\n"}
                         </StatsText>
                         <PoemText>
                             Through sleepless nights and endless lines of code,
